@@ -1,0 +1,20 @@
+- query: google
+  category: Images
+  result:
+    url:
+      params:
+        tbm: isch
+        q: google
+
+- query: bing
+  category: News
+  result:
+    url:
+      params:
+        tbm: nws
+        q: bing
+    page_elements:
+      tools:
+        - All news
+        - Recent
+        - Sorted by relevance

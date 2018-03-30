@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite">
+    <test name="Demo">
+        <packages>
+            <package name="com.sysgears.seleniumbundle.tests.demo.*"/>
+        </packages>
+    </test>
+</suite>

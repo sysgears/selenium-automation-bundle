@@ -1,0 +1,116 @@
+group 'com.sysgears.seleniumbundle'
+version '1.0-SNAPSHOT'
+
+// Groovy plugin will also apply the Java plugin
+apply plugin: 'groovy'
+
+// Allure plugin provides advanced reporting
+apply plugin: 'io.qameta.allure'
+
+// Gradle plugin allows to execute commands
+apply plugin: 'application'
+
+// tasks below will be executed if none specified
+defaultTasks 'clean', 'test'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.5"
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile(
+
+            // Groovy language
+            ['org.codehaus.groovy:groovy-all:2.4.14'],
+
+            // Testing framework
+            ['org.testng:testng:6.14.2'],
+
+            // TestNG uses Guice, but does not provide it by default
+            [ 'com.google.inject:guice:4.2.0'],
+
+            // Library to control web browser for tests
+            ['com.codeborne:selenide:4.10.01'],
+
+            // Web driver for browser Safari
+            ['org.seleniumhq.selenium:selenium-safari-driver:3.6.0'],
+
+            // HTTP client
+            ['com.mashape.unirest:unirest-java:1.4.9'],
+
+            // Dropbox client
+            ['com.dropbox.core:dropbox-core-sdk:3.0.6'],
+
+            // CSV reader
+            ['org.apache.commons:commons-csv:1.5'],
+
+            // Yaml reader
+            ['org.yaml:snakeyaml:1.20'],
+
+            // Library to take and compare screenshots
+            ['ru.yandex.qatools.ashot:ashot:1.5.4'],
+
+            // Library to take video recordings of failed tests
+            ['com.automation-remarks:video-recorder-testng:1.7'],
+
+            // Allure Reporting
+            ['io.qameta.allure:allure-testng:2.0-BETA21'],
+
+            // Logging
+            ['ch.qos.logback:logback-classic:1.2.3']
+    )
+}
+
+// Allure configuration.
+allure {
+    autoconfigure = true
+    version = '2.6.0'
+}
+
+mainClassName = "com.sysgears.seleniumbundle.Main"
+
+/**
+ * Runs Main class of the application and passes arguments specified in the property "command".
+ * E.g. "./gradlew -Pcommand="updateScreenshots".
+ */
+run {
+    args command
+}
+
+/**
+ * Configures test task.
+ */
+test {
+
+    ignoreFailures = true
+
+    // adds all system properties with the "test." prefix to system properties of application
+    systemProperties(System.properties.findAll { (it.key.contains("test.")) })
+
+    doFirst {
+
+        useTestNG() {
+            // default groups are specified in gradle.properties, but can be overwritten by task arguments,
+            // example: -PincludeGroups=ui,functional
+
+            // configures testng to run only specified groups
+            includeGroups << includedGroups
+
+            // configures testng to exclude specified groups from test run
+            excludeGroups << excludedGroups
+
+            // sets testng.xml file for TestNG
+            suiteXmlFiles << new File(rootDir, "src/test/resources/testng.xml")
+        }
+    }
+}
+
