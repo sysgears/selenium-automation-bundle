@@ -43,6 +43,7 @@ enum Driver {
     },
     HEADLESS{
         WebDriver getWebDriverObject(DesiredCapabilities capabilities = null) {
+            ChromeDriverManager.getInstance().setup()
             capabilities = capabilities ?: new DesiredCapabilities()
 
             // configures Chrome to start in headless mode
