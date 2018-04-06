@@ -81,15 +81,16 @@ class UITest extends BaseTest {
             allure.attach("Baseline screenshot for: $screenshotName", screenshot.getImage())
         } else {
             try {
-                def baseScreenshot = screenshotLoader.retrieve(fullPaths.baseline)
+                def baseScreenshot = new Screenshot(screenshotLoader.retrieve(fullPaths.baseline))
+                baseScreenshot.setIgnoredAreas(screenshot.getIgnoredAreas())
 
-                BufferedImage markedImage = handler.compare(new Screenshot(baseScreenshot), screenshot)
+                BufferedImage markedImage = handler.compare(baseScreenshot, screenshot)
 
                 if (markedImage) {
                     screenshotLoader.save(markedImage, fullPaths.difference)
                     screenshotLoader.save(screenshot.getImage(), fullPaths.actual)
 
-                    allure.attach("Baseline screenshot for: $screenshotName", baseScreenshot)
+                    allure.attach("Baseline screenshot for: $screenshotName", baseScreenshot.getImage())
                     allure.attach("Marked screenshot for: $screenshotName", markedImage)
                     allure.attach("Actual screenshot for: $screenshotName", screenshot.getImage())
 
