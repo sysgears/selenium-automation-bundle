@@ -1,8 +1,10 @@
 package com.sysgears.seleniumbundle.core.webdriver
 
 import org.openqa.selenium.Platform
+import org.openqa.selenium.Proxy
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeOptions
+import org.openqa.selenium.remote.CapabilityType
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 
@@ -31,6 +33,20 @@ class DriverInitializer {
      */
     static WebDriver createMobileDriver(String device) {
         Driver.CHROME.getWebDriverObject(prepareMobileCapabilities(device))
+    }
+
+    /**
+     * Configures and instantiates WebDriver for local test execution with given proxy.
+     *
+     * @param proxy instance of proxy
+     *
+     * @return WebDriver instance
+     */
+    static WebDriver createChromeWithProxy(Proxy proxy) {
+        def capabilities = new DesiredCapabilities()
+        capabilities.setCapability(CapabilityType.PROXY, proxy)
+
+        Driver.CHROME.getWebDriverObject(capabilities)
     }
 
     /**
