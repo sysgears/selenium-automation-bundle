@@ -3,8 +3,10 @@ package com.sysgears.seleniumbundle.common
 import com.automation.remarks.testng.VideoListener
 import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.WebDriverRunner
+import com.codeborne.selenide.commands.Commands
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.data.DataMapper
+import com.sysgears.seleniumbundle.core.selenide.commands.Click
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
 import org.testng.annotations.*
 
@@ -67,6 +69,17 @@ class BaseTest {
                 DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser)
         driver.manage().window().maximize()
         WebDriverRunner.setWebDriver(driver)
+    }
+
+    /**
+     * Workaround for an issue with method 'click()' in Microsoft Edge. Methods replaces default Selenide command 'click'
+     * with our custom implementation.
+     */
+    @BeforeClass(alwaysRun = true, dependsOnMethods = "initSelenideWebDriverRunner")
+    void customizeSelenideCommands() {
+        if (browser == "MicrosoftEdge") {
+            Commands.getInstance().add("click", new Click())
+        }
     }
 
     @AfterClass(alwaysRun = true)
