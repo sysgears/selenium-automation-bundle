@@ -67,15 +67,23 @@ class BaseTest {
      */
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setupGlobalParameters")
     void initSelenideWebDriverRunner() {
+        def isTestFunctional = this.class.getSuperclass().getAnnotation(Test).groups().contains("functional")
         def driver
 
-        if (this.class.getSuperclass().getAnnotation(Test).groups().contains("functional")) {
+        if (conf.withBrowsermobProxy && isTestFunctional && browser == "chrome") {
             browserProxy = new BrowserProxy(new BrowserMobProxyServer())
-            driver = DriverInitializer.createChromeWithProxy(browserProxy.seleniumProxy)
-        } else if (conf.gridUrl) {
-            driver = DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser)
+
+            if (!conf.gridUrl) {
+                driver = DriverInitializer.createDriver(browser, browserProxy.seleniumProxy)
+            } else {
+                driver = DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser, browserProxy.seleniumProxy)
+            }
         } else {
-            driver = DriverInitializer.createDriver(browser)
+            if (!conf.gridUrl) {
+                driver = DriverInitializer.createDriver(browser)
+            } else {
+                driver = DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser)
+            }
         }
 
         driver.manage().window().maximize()

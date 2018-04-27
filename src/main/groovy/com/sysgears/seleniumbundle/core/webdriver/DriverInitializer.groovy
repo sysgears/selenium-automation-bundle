@@ -14,14 +14,18 @@ import org.openqa.selenium.remote.RemoteWebDriver
 class DriverInitializer {
 
     /**
-     * Configures and instantiates WebDriver for local test execution.
+     * Configures and instantiates WebDriver with given proxy for local test execution.
      *
      * @param browser browser, e.g. chrome, firefox, microsoftedge, headless
+     * @param proxy instance of proxy
      *
      * @return WebDriver instance
      */
-    static WebDriver createDriver(String browser) {
-        Driver.getDriver(browser).getWebDriverObject()
+    static WebDriver createDriver(String browser, Proxy proxy = null) {
+        def capabilities = new DesiredCapabilities()
+        capabilities.setCapability(CapabilityType.PROXY, proxy)
+
+        Driver.getDriver(browser).getWebDriverObject(capabilities)
     }
 
     /**
@@ -36,30 +40,20 @@ class DriverInitializer {
     }
 
     /**
-     * Configures and instantiates WebDriver for local test execution with given proxy.
-     *
-     * @param proxy instance of proxy
-     *
-     * @return WebDriver instance
-     */
-    static WebDriver createChromeWithProxy(Proxy proxy) {
-        def capabilities = new DesiredCapabilities()
-        capabilities.setCapability(CapabilityType.PROXY, proxy)
-
-        Driver.CHROME.getWebDriverObject(capabilities)
-    }
-
-    /**
-     * Configures and instantiates WebDriver for remote test execution.
+     * Configures and instantiates WebDriver with given proxy for remote test execution.
      *
      * @param gridUrl url of GridHub
      * @param platform platform on which the tests should be run, e.g. linux, windows
      * @param browser browser, e.g. chrome, firefox, microsoftedge, headless
+     * @param proxy instance of proxy
      *
      * @return WebDriver instance
      */
-    static WebDriver createRemoteDriver(String gridUrl, String platform, String browser) {
-        new RemoteWebDriver(URI.create(gridUrl).toURL(), prepareCapabilities(platform, browser))
+    static WebDriver createRemoteDriver(String gridUrl, String platform, String browser, Proxy proxy = null) {
+        def capabilities = prepareCapabilities(platform, browser)
+        capabilities.setCapability(CapabilityType.PROXY, proxy)
+
+        new RemoteWebDriver(URI.create(gridUrl).toURL(), capabilities)
     }
 
     /**
