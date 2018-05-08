@@ -30,7 +30,9 @@ class BaseTest {
      */
     protected DataMapper mapper = new DataMapper()
 
-
+    /**
+     * Instance of BrowserProxy.
+     */
     protected BrowserProxy browserProxy
 
     /**
