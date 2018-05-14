@@ -7,7 +7,8 @@ import net.lightbody.bmp.proxy.CaptureType
 import org.openqa.selenium.Proxy
 
 /**
- * Initializes and configures browser proxy and provides getters to get instances.
+ * Initializes, configures proxy for browser. Provides methods to interact with proxy and HAR files.
+ * HAR file - is HTTP Archive which has all the detailed information about all HTTP requests and their responses.
  */
 class BrowserProxy {
 
@@ -22,9 +23,9 @@ class BrowserProxy {
     private Proxy seleniumProxy
 
     /**
-     * Creates an instance of BrowserProxy.
+     * Creates an instance of BrowserProxy and initializes proxy server.
      *
-     * @throws IllegalStateException if you provide already started proxy
+     * @throws IllegalStateException if you provide already running proxy
      */
     BrowserProxy(BrowserMobProxyServer proxyServer) throws IllegalStateException {
         this.proxyServer = startProxyServer(proxyServer)
@@ -38,7 +39,7 @@ class BrowserProxy {
      *
      * @return instance of BrowserMobProxy
      *
-     * @throws IllegalStateException if you try to start already started server
+     * @throws IllegalStateException if you try to start already running server
      */
     private BrowserMobProxyServer startProxyServer(BrowserMobProxyServer server) throws IllegalStateException {
         server.setTrustAllServers(true)
@@ -62,7 +63,7 @@ class BrowserProxy {
     }
 
     /**
-     * Gets list of log entries from current Har object.
+     * Gets list of entries from current HAR object.
      *
      * @return list of entries from Har object
      */
