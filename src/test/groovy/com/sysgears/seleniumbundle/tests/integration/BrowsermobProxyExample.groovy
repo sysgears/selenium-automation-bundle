@@ -10,7 +10,7 @@ class BrowsermobProxyExample extends FunctionalTest {
 
     @BeforeMethod
     void createHar() {
-        browserProxy.proxyServer.newHar()
+        browserProxy.createNewHar()
     }
 
     @BeforeMethod(dependsOnMethods = "createHar")

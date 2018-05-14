@@ -2,6 +2,7 @@ package com.sysgears.seleniumbundle.core.proxy
 
 import net.lightbody.bmp.BrowserMobProxyServer
 import net.lightbody.bmp.client.ClientUtil
+import net.lightbody.bmp.core.har.Har
 import net.lightbody.bmp.core.har.HarEntry
 import net.lightbody.bmp.proxy.CaptureType
 import org.openqa.selenium.Proxy
@@ -33,33 +34,12 @@ class BrowserProxy {
     }
 
     /**
-     * Configures and starts given instance of BrowserMobProxy.
+     * Creates new HAR file to log HTTP requests and responses.
      *
-     * @param server instance of BrowserMobProxy
-     *
-     * @return instance of BrowserMobProxy
-     *
-     * @throws IllegalStateException if you try to start already running server
+     * @return current HAR file if exists, else returns null
      */
-    private BrowserMobProxyServer startProxyServer(BrowserMobProxyServer server) throws IllegalStateException {
-        server.setTrustAllServers(true)
-        server.start()
-        server.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT)
-        server
-    }
-
-    /**
-     * Configures Selenium Proxy to accept SSL certificates.
-     *
-     * @param proxy instance of Selenium Proxy
-     *
-     * @return configured instance of Selenium Proxy
-     */
-    private Proxy configureSeleniumProxy(Proxy proxy) {
-        proxy.setProxyType(Proxy.ProxyType.MANUAL)
-        String proxyStr = String.format("%s:%d", InetAddress.getLocalHost().getCanonicalHostName(), proxyServer.getPort())
-        proxy.setHttpProxy(proxyStr)
-        proxy.setSslProxy(proxyStr)
+    Har createNewHar() {
+        proxyServer.newHar()
     }
 
     /**
@@ -87,5 +67,35 @@ class BrowserProxy {
      */
     Proxy getSeleniumProxy() {
         seleniumProxy
+    }
+
+    /**
+     * Configures and starts given instance of BrowserMobProxy.
+     *
+     * @param server instance of BrowserMobProxy
+     *
+     * @return instance of BrowserMobProxy
+     *
+     * @throws IllegalStateException if you try to start already running server
+     */
+    private BrowserMobProxyServer startProxyServer(BrowserMobProxyServer server) throws IllegalStateException {
+        server.setTrustAllServers(true)
+        server.start()
+        server.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT)
+        server
+    }
+
+    /**
+     * Configures Selenium Proxy to accept SSL certificates.
+     *
+     * @param proxy instance of Selenium Proxy
+     *
+     * @return configured instance of Selenium Proxy
+     */
+    private Proxy configureSeleniumProxy(Proxy proxy) {
+        proxy.setProxyType(Proxy.ProxyType.MANUAL)
+        String proxyStr = String.format("%s:%d", InetAddress.getLocalHost().getCanonicalHostName(), proxyServer.getPort())
+        proxy.setHttpProxy(proxyStr)
+        proxy.setSslProxy(proxyStr)
     }
 }
