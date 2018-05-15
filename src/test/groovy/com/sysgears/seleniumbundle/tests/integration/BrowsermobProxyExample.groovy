@@ -20,10 +20,7 @@ class BrowsermobProxyExample extends FunctionalTest {
 
     @Test
     void testGoogle() {
-
-        def status = browserProxy.harEntries.find {
-            it.request.url == "https://google.com/"
-        }.response.status
+        def status = browserProxy.findLastResponseBy("https://google.com/").status
 
         Assert.assertEquals(status, 301, "Response status [$status] is not as expected [301]")
     }

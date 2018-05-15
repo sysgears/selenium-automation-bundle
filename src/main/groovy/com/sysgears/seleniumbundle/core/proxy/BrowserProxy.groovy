@@ -4,7 +4,9 @@ import net.lightbody.bmp.BrowserMobProxyServer
 import net.lightbody.bmp.client.ClientUtil
 import net.lightbody.bmp.core.har.Har
 import net.lightbody.bmp.core.har.HarEntry
+import net.lightbody.bmp.core.har.HarResponse
 import net.lightbody.bmp.proxy.CaptureType
+import org.json.JSONObject
 import org.openqa.selenium.Proxy
 
 /**
@@ -49,6 +51,77 @@ class BrowserProxy {
      */
     List<HarEntry> getHarEntries() {
         proxyServer.getHar().log.entries
+    }
+
+    /**
+     * Gets List of HarEntries of the requests which were sent to given url by given method.
+     *
+     * @param url which the request was sent to
+     * @param method which the request was sent by
+     *
+     * @return list of found HarEntries
+     */
+    List<HarEntry> findHarEntriesBy(String url, String method = null) {
+        getHarEntries().findAll {
+            (method ? it.request.method == method : true) && it.request.url == url
+        }
+    }
+
+    /**
+     * Gets List of HarEntries of the requests which were sent to given url by given method with given query string
+     * parameters.
+     *
+     * @param url which the request was sent to
+     * @param queryStrings map of parameters
+     * @param method which the request was sent by
+     *
+     * @return list of found HarEntries
+     */
+    List<HarEntry> findHarEntriesByQueryString(String url, Map queryStrings, String method = null) {
+        findHarEntriesBy(url, method).findAll {
+            it.request.queryString.collectEntries {
+                [it.getName(), it.getValue()]
+            }.entrySet().contains(queryStrings.entrySet())
+        }
+    }
+
+    /**
+     * Gets List of HarEntries of the requests which were sent to given url by given method with given body parameters.
+     *
+     * @param url which the request was sent to
+     * @param body key-value pairs represented in map
+     * @param method which the request was sent by
+     *
+     * @return list of found HarEntries
+     */
+    List<HarEntry> findHarEntriesByBody(String url, Map body, String method = null) {
+        findHarEntriesBy(url, method).findAll {
+            new JSONObject(it.request.postData.text).toMap().entrySet().containsAll(body.entrySet())
+        }
+    }
+
+    /**
+     * Gets HarEntry of the last request which was sent to given url by given method.
+     *
+     * @param url which the request was sent to
+     * @param method which the request was sent by
+     *
+     * @return last HarEntry from the found list
+     */
+    HarEntry findLastHarEntryBy(String url, String method = null) {
+        findHarEntriesBy(url, method).last()
+    }
+
+    /**
+     * Gets HarResponse of the last request which was sent to given url by given method.
+     *
+     * @param url which the request was sent to
+     * @param method which the request was sent by
+     *
+     * @return HarResponse of the found HTTP request
+     */
+    HarResponse findLastResponseBy(String url, String method = null) {
+        findLastHarEntryBy(url, method).response
     }
 
     /**
