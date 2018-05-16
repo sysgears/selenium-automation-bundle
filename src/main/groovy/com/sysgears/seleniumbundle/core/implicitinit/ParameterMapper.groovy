@@ -49,8 +49,8 @@ class ParameterMapper {
      *
      * @return true if argument matches the pattern, false otherwise
      */
-    private boolean validate(String value, String pattern) {
-        value.matches(pattern)
+    private boolean validate(value, String pattern) {
+        (value as String).matches(pattern)
     }
 
     /**
@@ -61,7 +61,7 @@ class ParameterMapper {
      *
      * @return true if all arguments from the list match the pattern, false otherwise
      */
-    private boolean validate(List<String> values, String pattern) {
+    private boolean validate(List<?> values, String pattern) {
         values.every { validate(it, pattern) }
     }
 
