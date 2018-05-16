@@ -37,7 +37,7 @@ class Config {
      * URL of Selenium Grid.
      */
     @ImplicitInit
-    String gridUrl
+    String remoteUrl
 
     /**
      * Code name of an operating system e.g. "linux", "windows".
@@ -49,7 +49,7 @@ class Config {
      * Browser name.
      */
     @ImplicitInit
-    String browser
+    Map<String, String> browser
 
     /**
      * Project properties map.
