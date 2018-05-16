@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <timestamp key="byDay" datePattern="yyyy-MM-dd"/>
 
     <!-- ========================= Appenders ======================= -->
 
@@ -16,7 +15,7 @@
         <file>logs/application.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 
-            <fileNamePattern>logs/application_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/application_%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
                 <maxFileSize>5MB</maxFileSize>
@@ -32,16 +31,9 @@
 
     <!-- ========================= Loggers ======================= -->
 
-    <logger name="com.sysgears.seleniumbundle" level="INFO" additivity="false">
+    <logger name="com.sysgears.seleniumbundle" level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </logger>
-
-    <!-- ========================= Root ======================= -->
-
-    <!-- By default, the level of the root level is set to DEBUG -->
-    <root level="DEBUG">
-    </root>
-
 
 </configuration>
