@@ -15,4 +15,5 @@ ui {
         difference = "build/reports/tests/uicomparison/difference" // diff images
     }
     ignoredElements = "src/test/resources/ignored_elements.yml" // a list of ignored elements for page objects
+    hiddenElements = "src/test/resources/hidden_elements.yml" // a list of hidden elements for page objects
 }
