@@ -19,14 +19,14 @@ import org.openqa.selenium.Proxy
 class BrowserProxy {
 
     /**
+     * Instance of Selenium Proxy.
+     */
+    Proxy seleniumProxy
+
+    /**
      * Instance of BrowserMobProxyServer.
      */
     private BrowserMobProxyServer proxyServer
-
-    /**
-     * Instance of Selenium Proxy.
-     */
-    private Proxy seleniumProxy
 
     /**
      * Creates an instance of BrowserProxy and starts the proxy server.
@@ -126,24 +126,6 @@ class BrowserProxy {
      */
     HarResponse findLastResponseBy(String url, String method = null) {
         findLastHarEntryBy(url, method).response
-    }
-
-    /**
-     * Gets current initialized and configured instance of BrowserMobProxyServer.
-     *
-     * @return instance of BrowserMobProxy
-     */
-    BrowserMobProxyServer getProxyServer() {
-        proxyServer
-    }
-
-    /**
-     * Gets current initialized and configured instance of Selenium Proxy.
-     *
-     * @return instance of Selenium Proxy
-     */
-    Proxy getSeleniumProxy() {
-        seleniumProxy
     }
 
     /**
