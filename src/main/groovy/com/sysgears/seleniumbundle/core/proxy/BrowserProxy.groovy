@@ -72,16 +72,16 @@ class BrowserProxy {
      * parameters.
      *
      * @param url which the request was sent to
-     * @param queryStrings map of parameters
+     * @param queryParameters map of parameters
      * @param method which the request was sent by
      *
      * @return list of found HarEntries
      */
-    List<HarEntry> findHarEntriesByQueryString(String url, Map queryStrings, String method = null) {
+    List<HarEntry> findHarEntriesByQueryString(String url, Map queryParameters, String method = null) {
         findHarEntriesBy(url, method).findAll {
             it.request.queryString.collectEntries {
                 [it.getName(), it.getValue()]
-            }.entrySet().contains(queryStrings.entrySet())
+            }.entrySet().contains(queryParameters.entrySet())
         }
     }
 
@@ -89,14 +89,14 @@ class BrowserProxy {
      * Gets List of HarEntries of the requests which were sent to given url by given method with given body parameters.
      *
      * @param url which the request was sent to
-     * @param body key-value pairs represented in map
+     * @param requestBody key-value pairs represented in map
      * @param method which the request was sent by
      *
      * @return list of found HarEntries
      */
-    List<HarEntry> findHarEntriesByBody(String url, Map body, String method = null) {
+    List<HarEntry> findHarEntriesByBody(String url, Map requestBody, String method = null) {
         findHarEntriesBy(url, method).findAll {
-            new JSONObject(it.request.postData.text).toMap().entrySet().containsAll(body.entrySet())
+            new JSONObject(it.request.postData.text).toMap().entrySet().containsAll(requestBody.entrySet())
         }
     }
 
