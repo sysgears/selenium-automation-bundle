@@ -4,6 +4,7 @@ import com.codeborne.selenide.*
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.data.DataLoader
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
+import com.sysgears.seleniumbundle.core.uicomparison.UIComparison
 import groovy.util.logging.Slf4j
 import org.openqa.selenium.Keys
 
@@ -17,12 +18,22 @@ import static org.testng.Assert.assertTrue
  * Provides common methods for page model objects.
  */
 @Slf4j
-abstract class AbstractPage<T> {
+abstract class AbstractPage<T> implements UIComparison {
 
     /**
      * Instance of Config.
      */
     protected Config conf = Config.instance
+
+    /**
+     * Name of the os.
+     */
+    protected String os
+
+    /**
+     * Name of the browser.
+     */
+    protected String browser
 
     /**
      * URL of the page.
