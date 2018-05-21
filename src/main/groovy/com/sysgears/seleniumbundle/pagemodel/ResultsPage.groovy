@@ -3,12 +3,15 @@ package com.sysgears.seleniumbundle.pagemodel
 import com.codeborne.selenide.*
 import com.sysgears.seleniumbundle.core.pagemodel.AbstractPage
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
+import com.sysgears.seleniumbundle.core.uicomparison.ScreenshotHandler
+import groovy.util.logging.Slf4j
 import io.qameta.allure.Step
 import org.testng.Assert
 
 import static com.codeborne.selenide.Selenide.$
 import static com.codeborne.selenide.Selenide.$$
 
+@Slf4j
 class ResultsPage extends AbstractPage<ResultsPage> {
 
     @StaticElement
@@ -19,6 +22,16 @@ class ResultsPage extends AbstractPage<ResultsPage> {
                                resultCategories = $$(".hdtb-imb")
 
     private ElementsCollection tools = $$(".hdtb-mn-hd")
+
+    ResultsPage() {
+    }
+
+    ResultsPage(String os, String browser) {
+        this.os = os
+        this.browser = browser
+        handler = new ScreenshotHandler(aShotFactory.getAShotForPage(os, browser, getClass()),
+                WebDriverRunner.getWebDriver())
+    }
 
     @Step("Select category")
     ResultsPage selectCategory(String name) {

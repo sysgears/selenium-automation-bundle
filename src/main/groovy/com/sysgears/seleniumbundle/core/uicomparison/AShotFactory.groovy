@@ -8,7 +8,7 @@ import ru.yandex.qatools.ashot.shooting.ShootingStrategies
 import ru.yandex.qatools.ashot.shooting.ShootingStrategy
 
 /**
- * Provides configured Ashot instance for a page object.
+ * Provides configured AShot instance for a page object.
  */
 class AShotFactory {
 
@@ -36,8 +36,8 @@ class AShotFactory {
      *
      * @throws FileNotFoundException if the file with ignored elements was not found
      */
-    AShot getAShotForPage(Class clazz) throws FileNotFoundException {
-        getAShot().ignoredElements(getSetOfIgnoredElements(clazz))
+    AShot getAShotForPage(String os, String browser, Class clazz) throws FileNotFoundException {
+        getAShot(os, browser).ignoredElements(getSetOfIgnoredElements(clazz))
     }
 
     /**
@@ -45,14 +45,14 @@ class AShotFactory {
      *
      * @return configured AShot instance
      */
-    private AShot getAShot() {
+    private AShot getAShot(String os, String browser) {
         def strategies = [
                 mac  : [chrome : ShootingStrategies.viewportRetina(250, 0, 0, 2),
                         firefox: ShootingStrategies.viewportRetina(250, 0, 0, 2),
                         safari : ShootingStrategies.simple()]
         ]
 
-        ShootingStrategy strategy = strategies?."${conf.os}"?."${conf.browser}"
+        ShootingStrategy strategy = strategies?."$os"?."$browser"
         strategy = strategy ?: ShootingStrategies.viewportPasting(250)
 
         new AShot().shootingStrategy(strategy)
