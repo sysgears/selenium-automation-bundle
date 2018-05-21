@@ -69,9 +69,9 @@ class AShotFactory {
      */
     private Set<By> getSetOfIgnoredElements(Class clazz) throws FileNotFoundException {
         def currentClass = clazz.name - "com.sysgears.seleniumbundle.pagemodel."
-        def data = (DataLoader.readMapFromYml(conf.ui.ignoredElements) as ConfigObject).flatten()
+        def locators = (DataLoader.readMapFromYml(conf.ui.ignoredElements) as ConfigObject)?.flatten()?.get(currentClass)
 
-        data.get(currentClass).collect { it ->
+        locators.collect { it ->
             new By.ByCssSelector(it as String)
         }
     }
