@@ -3,7 +3,7 @@ package config
 // global configuration
 
 baseUrl = "https://google.co.uk"  // the URL to website under the test
-browser = "chrome"                // default browser to execute tests (chrome, firefox, microsoftedge, headless)
+browser = "headless"                // default browser to execute tests (chrome, firefox, microsoftedge, headless)
 os = System.getProperty("os.name").split(/\s/).first().toLowerCase() // OS identifier to configure environment
 gridUrl = null                     // a link to Selenium Grid
 
