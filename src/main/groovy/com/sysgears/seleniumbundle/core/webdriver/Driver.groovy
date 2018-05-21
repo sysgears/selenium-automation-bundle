@@ -2,6 +2,7 @@ package com.sysgears.seleniumbundle.core.webdriver
 
 import io.github.bonigarcia.wdm.ChromeDriverManager
 import io.github.bonigarcia.wdm.EdgeDriverManager
+import io.github.bonigarcia.wdm.FirefoxDriverManager
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
@@ -35,7 +36,7 @@ enum Driver {
     },
     FIREFOX{
         WebDriver createDriver(DesiredCapabilities capabilities) {
-            ChromeDriverManager.getInstance().setup()
+            FirefoxDriverManager.getInstance().setup()
             new FirefoxDriver(capabilities)
         }
     },
@@ -52,10 +53,17 @@ enum Driver {
         }
     }
 
-    abstract WebDriver createDriver(DesiredCapabilities capabilities = new DesiredCapabilities())
+    /**
+     * Instantiates WebDriver object for specific browser.
+     *
+     * @param capabilities capabilities object to start driver with, can be null
+     *
+     * @return WebDriver for specific browser
+     */
+    abstract WebDriver createDriver(DesiredCapabilities capabilities = null)
 
     /**
-     * Returns specific enum constant by passed name (browserName).
+     * Returns specific enum constant by given browser name.
      *
      * @param browserName name of the enum constant
      *
