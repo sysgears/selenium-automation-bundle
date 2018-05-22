@@ -109,7 +109,7 @@ test {
             excludeGroups << excludedGroups
 
             // sets testng.xml file for TestNG
-            suiteXmlFiles << new File(rootDir, "src/test/resources/testng.xml")
+            suiteXmlFiles << new File(rootDir, "src/test/resources/${testngConfig}.xml")
         }
     }
 }
