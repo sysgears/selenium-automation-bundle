@@ -16,7 +16,7 @@ class CommandArgs {
     /**
      * Command arguments map.
      */
-    final Map<String, List<String>> arguments
+    final Map<String, ?> arguments
 
     /**
      * Constructs a new instance of CommandArgs object.
@@ -39,7 +39,7 @@ class CommandArgs {
 
         arguments = (cliArguments =~ /-(\S+)=(\S+)/).with { matcher ->
             matcher.find() ? matcher.collect { List<String> it ->
-                [(it[1]): it[2].split(",").toList()]
+                [(it[1]): it[2].contains(",") ? it[2].split(",").toList() : it[2]]
             }.collectEntries() : [:]
         }
     }

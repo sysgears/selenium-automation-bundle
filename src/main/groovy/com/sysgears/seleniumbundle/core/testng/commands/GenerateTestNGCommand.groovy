@@ -26,6 +26,12 @@ class GenerateTestNGCommand extends AbstractCommand {
     private List<String> devices
 
     /**
+     * Parameter alters testNG config to run tests in parallel if set to true.
+     */
+    @ImplicitInit
+    private String parallel
+
+    /**
      * Creates an instance of GenerateTestNGCommand.
      *
      * @param arguments map with arguments of the command
@@ -34,7 +40,7 @@ class GenerateTestNGCommand extends AbstractCommand {
      * @throws IllegalArgumentException is thrown in case a value is missing for a mandatory parameter or
      * the value doesn't match the validation pattern
      */
-    GenerateTestNGCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
+    GenerateTestNGCommand(Map<String, ?> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)
     }
 
@@ -57,10 +63,18 @@ class GenerateTestNGCommand extends AbstractCommand {
             [platform: "linux", browser: "chrome", device: it.toLowerCase()]
         }
 
-        def threadCount = params.size()
+
 
         def res = new StringWriter().with { sw ->
-            new MarkupBuilder(sw).suite(name: "Suite", parallel: "tests", "thread-count": "$threadCount") {
+
+            def suiteArgs = [name: "Suite"]
+
+            if (parallel) {
+                def threadCount = params.size()
+                suiteArgs << [parallel: parallel, "thread-count": "$threadCount"]
+            }
+
+            new MarkupBuilder(sw).suite(suiteArgs) {
 
                 params.each { Map<String, String> param ->
                     def testName = "${param.platform}-${param.device ?: param.browser}"
