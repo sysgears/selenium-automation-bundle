@@ -16,15 +16,27 @@ import org.openqa.selenium.remote.RemoteWebDriver
 class DriverInitializer {
 
     /**
+     * Configures and instantiates WebDriver with given desired capabilities for local test execution.
+     *
+     * @param browser browser, e.g. chrome, firefox, microsoftedge, headless for headless chrome
+     * @param capabilities capabilities to start browser with, can be empty
+     *
+     * @return WebDriver instance
+     */
+    static WebDriver createDriver(String browser, DesiredCapabilities capabilities = null) {
+        Driver.getDriverType(browser).createDriver(capabilities)
+    }
+
+    /**
      * Configures and instantiates WebDriver with given proxy for local test execution. Currently, proxy works only with
      * Chrome browser.
      *
-     * @param browser browser, e.g. chrome
+     * @param browser browser, chrome
      * @param proxy proxy for capturing network traffic
      *
-     * @return WebDriver instance if browser is Chrome, otherwise null
+     * @return WebDriver instance if browser is chrome, otherwise throws IllegalArgumentException
      *
-     * @throws IllegalArgumentException if browser is not Chrome
+     * @throws IllegalArgumentException if browser is not chrome
      */
     static WebDriver createDriver(String browser, Proxy proxy) throws IllegalArgumentException {
 
@@ -40,24 +52,30 @@ class DriverInitializer {
     }
 
     /**
-     * Configures and instantiates WebDriver with given desired capabilities for local test execution.
+     * Configures and instantiates WebDriver with given desired capabilities for remote test execution.
      *
-     * @param browser browser, e.g. chrome, firefox, microsoftedge, headless
-     * @param capabilities capabilities to start browser with, can be null
+     * @param remoteUrl url of Selenium-Grid hub or remote Selenium server
+     * @param capabilities capabilities to start browser with
      *
      * @return WebDriver instance
+     *
+     * @throws IllegalArgumentException if @param capabilities is null
      */
-    static WebDriver createDriver(String browser, DesiredCapabilities capabilities = null) {
-        Driver.getDriverType(browser).createDriver(capabilities)
+    static WebDriver createRemoteDriver(String remoteUrl, DesiredCapabilities capabilities)
+            throws IllegalArgumentException {
+        capabilities ? new RemoteWebDriver(URI.create(remoteUrl).toURL(), capabilities) : {
+            log.error("No capabilities were provided to create remote driver.")
+            throw new IllegalArgumentException("Please provide capabilities object.")
+        }()
     }
 
     /**
-     * Configures and instantiates WebDriver with given proxy for remote test execution. Currently, proxy can be set
+     * Configures and instantiates WebDriver with a given proxy for remote test execution. Currently, proxy can be set
      * only for Chrome browser.
      *
      * @param remoteUrl url of Selenium-Grid hub or remote Selenium server
      * @param platform platform on which tests should be run, e.g. linux, windows
-     * @param browser browser, e.g. chrome, firefox, microsoftedge, headless
+     * @param browser browser, e.g. chrome, firefox, microsoftedge, headless for headless chrome
      * @param proxy instance of proxy
      *
      * @return WebDriver instance
@@ -80,24 +98,6 @@ class DriverInitializer {
     }
 
     /**
-     * Configures and instantiates WebDriver with given desired capabilities for remote test execution.
-     *
-     * @param remoteUrl url of Selenium-Grid hub or remote Selenium server
-     * @param capabilities capabilities to start browser with
-     *
-     * @return WebDriver instance
-     *
-     * @throws IllegalArgumentException if @param capabilities is null
-     */
-    static WebDriver createRemoteDriver(String remoteUrl, DesiredCapabilities capabilities)
-            throws IllegalArgumentException {
-        capabilities ? new RemoteWebDriver(URI.create(remoteUrl).toURL(), capabilities) : {
-            log.error("No capabilities were provided to create remote driver.")
-            throw new IllegalArgumentException("Please provide capabilities object.")
-        }()
-    }
-
-    /**
      * Configures and instantiates WebDriver for Chrome mobile emulation mode.
      *
      * @param device name of the mobile device w/o spaces, e.g. IPHONE6, IPAD
@@ -114,13 +114,13 @@ class DriverInitializer {
      * Returns capabilities object to configure WebDriver with additional parameters e.g. platform, browser, etc.
      *
      * @param platform platform on which the tests should be run, e.g. linux, windows
-     * @param browser browser, e.g. chrome, firefox, microsoftedge, headless
+     * @param browser browser, e.g. chrome, firefox, microsoftedge, headless for headless chrome
      * @param browserVersion browser browserVersion
      *
      * @return capabilities object
      */
-    static DesiredCapabilities preapreCapabilities(String platform, String browser, String browserVersion = "") {
-        new DesiredCapabilities("chrome", browserVersion, Platform.fromString(platform))
+    static DesiredCapabilities prepareCapabilities(String platform, String browser, String browserVersion = "") {
+        new DesiredCapabilities(browser, browserVersion, Platform.fromString(platform))
     }
 
     /**
@@ -134,10 +134,9 @@ class DriverInitializer {
      *
      * @return capabilities object
      */
-    static DesiredCapabilities prepareCapabilitiesWithChromeOptions(String platform = "ANY",
-                                                                    Proxy proxy = null, String browserVersion = "",
-                                                                    String... arguments) {
-        def capabilities = preapreCapabilities(platform, "chrome", browserVersion)
+    static DesiredCapabilities prepareCapabilitiesWithChromeOptions(String platform = "ANY", Proxy proxy = null,
+                                                                    String browserVersion = "", String... arguments) {
+        def capabilities = prepareCapabilities(platform, "chrome", browserVersion)
         capabilities.setCapability(CapabilityType.PROXY, proxy)
         capabilities.setCapability(ChromeOptions.CAPABILITY, new ChromeOptions().addArguments(arguments))
 
