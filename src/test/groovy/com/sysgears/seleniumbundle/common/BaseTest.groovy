@@ -71,10 +71,10 @@ class BaseTest {
      */
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setupGlobalParameters")
     void initSelenideWebDriverRunner() {
-        def proxy = new BrowserProxy(new BrowserMobProxyServer()).seleniumProxy
+        browserProxy = new BrowserProxy(new BrowserMobProxyServer())
 
         def driver = !conf.remoteUrl ? DriverInitializer.createDriver(browser)
-                : DriverInitializer.createRemoteDriver(conf.remoteUrl, os, browser, proxy)
+                : DriverInitializer.createRemoteDriver(conf.remoteUrl, os, browser, browserProxy.seleniumProxy)
 
         def size = new Dimension(conf.browser.width as Integer, conf.browser.height as Integer)
         if (getDriverType(conf.browser.name) != HEADLESS) driver.manage().window().setSize(size)
