@@ -5,7 +5,9 @@ import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.WebDriverRunner
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.data.DataMapper
+import com.sysgears.seleniumbundle.core.proxy.BrowserProxy
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
+import net.lightbody.bmp.BrowserMobProxyServer
 import org.testng.annotations.*
 
 import static com.codeborne.selenide.Selenide.*
@@ -27,6 +29,11 @@ class BaseTest {
      * Test data mapper, is responsible for test data preparation for TestNG data providers.
      */
     protected DataMapper mapper = new DataMapper()
+
+    /**
+     * Instance of BrowserProxy.
+     */
+    protected BrowserProxy browserProxy
 
     /**
      *  OS that is used for test execution.
@@ -62,9 +69,25 @@ class BaseTest {
      */
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setupGlobalParameters")
     void initSelenideWebDriverRunner() {
-        def driver = !conf.gridUrl ?
-                DriverInitializer.createDriver(browser) :
-                DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser)
+        def isTestFunctional = this.class.getSuperclass().getAnnotation(Test).groups().contains("functional")
+        def driver
+
+        if (conf.withBrowsermobProxy && isTestFunctional && browser == "chrome") {
+            browserProxy = new BrowserProxy(new BrowserMobProxyServer())
+
+            if (!conf.gridUrl) {
+                driver = DriverInitializer.createDriver(browser, browserProxy.seleniumProxy)
+            } else {
+                driver = DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser, browserProxy.seleniumProxy)
+            }
+        } else {
+            if (!conf.gridUrl) {
+                driver = DriverInitializer.createDriver(browser)
+            } else {
+                driver = DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser)
+            }
+        }
+
         driver.manage().window().maximize()
         WebDriverRunner.setWebDriver(driver)
     }

@@ -1,22 +1,18 @@
 package com.sysgears.seleniumbundle.tests.demo
 
-import com.sysgears.seleniumbundle.common.BaseTest
+import com.sysgears.seleniumbundle.common.FunctionalTest
 import com.sysgears.seleniumbundle.core.data.DataLoader
 import com.sysgears.seleniumbundle.core.data.annotations.Find
 import com.sysgears.seleniumbundle.core.data.annotations.Locator
 import com.sysgears.seleniumbundle.core.data.annotations.Query
-import com.sysgears.seleniumbundle.listeners.AllureListener
 import com.sysgears.seleniumbundle.pagemodel.GooglePage
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.DataProvider
-import org.testng.annotations.Listeners
 import org.testng.annotations.Test
 
 import java.lang.reflect.Method
 
-@Listeners([AllureListener.class])
-@Test(groups = "functional")
-class Tools extends BaseTest {
+class Tools extends FunctionalTest {
 
     protected GooglePage googlePage
     private final static String DATAFILE = "src/test/resources/data/google/test_data.yml"
