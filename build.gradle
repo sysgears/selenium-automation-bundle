@@ -66,7 +66,11 @@ dependencies {
             ['io.qameta.allure:allure-testng:2.0-BETA21'],
 
             // Logging
-            ['ch.qos.logback:logback-classic:1.2.3']
+            ['ch.qos.logback:logback-classic:1.2.3'],
+
+            // driver for connection with mongodb
+            ['org.mongodb:mongo-java-driver:3.5.0']
+
     )
 }
 
