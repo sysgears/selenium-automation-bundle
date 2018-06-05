@@ -23,3 +23,10 @@ ui {
     }
     ignoredElements = "src/test/resources/ignored_elements.yml" // a list of ignored elements for page objects
 }
+
+mongodb {
+    name = "testdb"
+    url = "localhost:27017"
+    pojos = "src/main/groovy/com/sysgears/seleniumbundle/core/mongodb/entities"
+    dumpPath = "src/test/resources/data/dump"
+}
