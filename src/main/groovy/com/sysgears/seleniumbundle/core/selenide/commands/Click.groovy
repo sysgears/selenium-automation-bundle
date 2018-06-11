@@ -2,7 +2,6 @@ package com.sysgears.seleniumbundle.core.selenide.commands
 
 import com.codeborne.selenide.SelenideElement
 import com.codeborne.selenide.impl.WebElementSource
-import groovy.util.logging.Slf4j
 import org.openqa.selenium.WebElement
 
 import static com.codeborne.selenide.Configuration.clickViaJs
@@ -12,7 +11,6 @@ import static com.codeborne.selenide.Selenide.executeJavaScript
 /**
  * Reimplementation of default Selenide command Click.
  */
-@Slf4j
 class Click extends com.codeborne.selenide.commands.Click {
 
     @Override
