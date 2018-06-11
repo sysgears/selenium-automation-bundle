@@ -9,6 +9,7 @@ import com.sysgears.seleniumbundle.core.data.DataMapper
 import com.sysgears.seleniumbundle.core.selenide.commands.Click
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
 import org.testng.annotations.*
+import org.testng.xml.XmlTest
 
 import static com.codeborne.selenide.Selenide.*
 import static com.codeborne.selenide.WebDriverRunner.clearBrowserCache
@@ -76,9 +77,11 @@ class BaseTest {
      * with our custom implementation.
      */
     @BeforeClass(alwaysRun = true, dependsOnMethods = "initSelenideWebDriverRunner")
-    void customizeSelenideCommands() {
-        if (browser == "MicrosoftEdge") {
+    void customizeSelenideCommands(XmlTest xmlTest) {
+        if (xmlTest.parallel.isParallel() || browser == "MicrosoftEdge") {
             Commands.getInstance().add("click", new Click())
+        } else {
+            Commands.getInstance().resetDefaults()
         }
     }
 
