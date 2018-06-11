@@ -14,21 +14,22 @@ import static com.codeborne.selenide.Selenide.executeJavaScript
  */
 @Slf4j
 class Click extends com.codeborne.selenide.commands.Click {
+
     @Override
     public Void execute(SelenideElement proxy, WebElementSource locator, Object[] args) {
         if (args == null || args.length == 0) {
-            click(locator.getWebElement());
+            click(locator.getWebElement())
         } else if (args.length == 2) {
-            click(locator.getWebElement(), (int) args[0], (int) args[1]);
+            click(locator.getWebElement(), (int) args[0], (int) args[1])
         }
         return null;
     }
 
     protected void click(WebElement element) {
         if (clickViaJs) {
-            executeJavaScript("arguments[0].click()", element);
+            executeJavaScript("arguments[0].click()", element)
         } else {
-            element.click();
+            element.click()
         }
     }
 
@@ -43,14 +44,13 @@ class Click extends com.codeborne.selenide.commands.Click {
                     "}))",
                     element,
                     offsetX,
-                    offsetY);
+                    offsetY)
         } else {
             actions()
                     .moveToElement(element, offsetX, offsetY)
                     .click()
                     .build()
-                    .perform();
+                    .perform()
         }
     }
-
 }
