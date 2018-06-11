@@ -5,6 +5,7 @@ import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.WebDriverRunner
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.data.DataMapper
+import com.sysgears.seleniumbundle.core.mongodb.DBConnection
 import com.sysgears.seleniumbundle.core.proxy.BrowserProxy
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
 import net.lightbody.bmp.BrowserMobProxyServer
@@ -46,6 +47,11 @@ class BaseTest {
      * Browser name.
      */
     protected String browser
+
+    /**
+     * Connection to database
+     */
+    protected DBConnection dbConnection = new DBConnection(conf)
 
     /**
      * Sets Selenide global configuration properties. Static configuration of Selenide is thread safe. They are set as a

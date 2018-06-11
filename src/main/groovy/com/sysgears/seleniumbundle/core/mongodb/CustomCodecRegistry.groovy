@@ -18,7 +18,7 @@ class CustomCodecRegistry implements CodecRegistry {
     private final CodecRegistry codecRegistry
 
     /**
-     * Creates an instance of {@code CustomCodecRegistry} which contains registry build from pojos
+     * Creates an instance of {@code CustomCodecRegistry} which contains a registry built from POJOs
      * and default registry as well.
      */
     CustomCodecRegistry(String pojosPath) {

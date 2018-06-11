@@ -1,5 +1,6 @@
 package com.sysgears.seleniumbundle.core.mongodb.entities
 
+import com.sysgears.seleniumbundle.core.mongodb.entities.user.Address
 import org.apache.commons.lang3.builder.EqualsBuilder
 import org.apache.commons.lang3.builder.HashCodeBuilder
 import org.apache.commons.lang3.builder.ToStringBuilder
@@ -46,6 +47,11 @@ class User {
      */
     private String lastName
 
+    /**
+     * Address of a user.
+     */
+    private Address address
+
     ObjectId getId() {
         _id
     }
@@ -58,7 +64,7 @@ class User {
         emailAddress
     }
 
-    void setEmailAddress(final String emailAddress) {
+    void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress
     }
 
@@ -66,7 +72,7 @@ class User {
         firstName
     }
 
-    void setFirstName(final String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName
     }
 
@@ -74,7 +80,7 @@ class User {
         lastName
     }
 
-    void setLastName(final String lastName) {
+    void setLastName(String lastName) {
         this.lastName = lastName
     }
 
@@ -82,7 +88,7 @@ class User {
         userNameDisplay
     }
 
-    void setUserNameDisplay(final String userNameDisplay) {
+    void setUserNameDisplay(String userNameDisplay) {
         this.userNameDisplay = userNameDisplay
     }
 
@@ -90,7 +96,7 @@ class User {
         isActive
     }
 
-    void setIsActive(final Boolean status) {
+    void setIsActive(Boolean status) {
         this.isActive = status
     }
 
@@ -100,6 +106,14 @@ class User {
 
     void setPassword(String password) {
         this.password = password
+    }
+
+    Address getAddress() {
+        return address
+    }
+
+    void setAddress(Address address) {
+        this.address = address
     }
 
     @Override

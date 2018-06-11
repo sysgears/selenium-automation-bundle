@@ -18,21 +18,21 @@ class DBConnection {
     private Config conf
 
     /**
-     * Instance of database.
+     * Instance of the database.
      */
     private MongoDatabase database
 
     /**
-     * Constructor for database connection.
+     * Constructor for the database connection.
      */
     DBConnection(Config conf) {
         this.conf = conf
     }
 
     /**
-     * Gets the instance of database.
+     * Gets the instance of the database.
      *
-     * @return instance of database
+     * @return instance of the database
      */
     MongoDatabase getDatabase() {
         if (!database) {

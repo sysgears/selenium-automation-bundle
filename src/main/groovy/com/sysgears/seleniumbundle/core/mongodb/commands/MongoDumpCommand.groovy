@@ -46,8 +46,8 @@ class MongoDumpCommand extends AbstractCommand {
     }
 
     /**
-     * Executes backing up for given collections.
-     * Stores files by path that is configured in ApplicationProperties.groovy + sub-path that is specified for command.
+     * Executes backing up for given collections. Stores files by path that is configured in
+     * ApplicationProperties.groovy plus sub-path that is specified for the command.
      *
      * @throws IOException in case writing to file operation produces an error
      */

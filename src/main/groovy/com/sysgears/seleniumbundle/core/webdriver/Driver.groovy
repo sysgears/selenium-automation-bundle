@@ -19,7 +19,7 @@ enum Driver {
     CHROME{
         WebDriver createDriver(DesiredCapabilities capabilities) {
             ChromeDriverManager.getInstance().setup()
-            new ChromeDriver(capabilities)
+            new ChromeDriver(capabilities ?: new DesiredCapabilities())
         }
     },
     HEADLESS{
