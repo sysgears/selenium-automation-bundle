@@ -68,8 +68,8 @@ dependencies {
             // Logging
             ['ch.qos.logback:logback-classic:1.2.3'],
 
-            // driver for connection with mongodb
-            ['org.mongodb:mongo-java-driver:3.5.0']
+            // driver for connection to mongodb
+            ['org.mongodb:mongo-java-driver:3.7.1']
 
     )
 }

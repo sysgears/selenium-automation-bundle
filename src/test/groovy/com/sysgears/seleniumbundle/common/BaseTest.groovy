@@ -51,7 +51,7 @@ class BaseTest {
     /**
      * Connection to database
      */
-    protected DBConnection dbConnection = new DBConnection(conf)
+    protected DBConnection dbConnection
 
     /**
      * Sets Selenide global configuration properties. Static configuration of Selenide is thread safe. They are set as a
@@ -63,6 +63,17 @@ class BaseTest {
         Configuration.baseUrl = conf.baseUrl // sets base url for the application under the test
         Configuration.screenshots = false // disables screenshot for failed tests
         Configuration.savePageSource = false // prevents page source saving for failed tests
+    }
+
+    /**
+     * Initialization of connection to mongo database.
+     */
+    @BeforeSuite(alwaysRun = true)
+    void initDBConnection() {
+        def properties = conf.properties.mongodb
+
+        dbConnection = new DBConnection(properties.dbName, properties.host, properties.port, properties.auth.username,
+        properties.auth.password, properties.auth.authDb)
     }
 
     @BeforeClass(alwaysRun = true)
@@ -100,7 +111,7 @@ class BaseTest {
     void logout() {
         clearBrowserCache()
         clearBrowserCookies()
-        clearBrowserLocalStorage()
+        //clearBrowserLocalStorage()
         executeJavaScript("sessionStorage.clear();")
     }
 }

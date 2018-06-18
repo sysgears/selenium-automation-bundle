@@ -28,9 +28,9 @@ class MongoService {
      *
      * @param conf project properties
      */
-    MongoService(Config conf) {
+    MongoService(Config conf, DBConnection dbConnection) {
         this.conf = conf
-        dbConnection = new DBConnection(conf)
+        this.dbConnection = dbConnection
     }
 
     /**
@@ -44,7 +44,7 @@ class MongoService {
     void exportMongoCollectionsToJson(String subPath = null, List<String> collections = null) throws IOException {
         def path = "${conf.properties.mongodb.dumpPath}${File.separator}${subPath ?: "default"}"
 
-        (collections ?: dbConnection.getDatabase().listCollectionNames()).each {
+        (collections ?: dbConnection.database.listCollectionNames()).each {
             exportMongoCollectionToJson(path, it)
         }
     }
@@ -62,7 +62,7 @@ class MongoService {
     void importMongoCollectionsFromJson(String subPath = null, List<String> collections = null,
                                         boolean keepOtherCollections = false) throws IOException {
         if (!keepOtherCollections) {
-            dbConnection.getDatabase().drop()
+            dbConnection.database.drop()
         }
 
         def path = "${conf.properties.mongodb.dumpPath}${File.separator}${subPath ?: "default"}"
@@ -81,7 +81,7 @@ class MongoService {
      * @throws IOException in case writing to file operation produces an error
      */
     private void exportMongoCollectionToJson(String path, String collectionName) throws IOException {
-        def collection = dbConnection.getDatabase().getCollection(collectionName)
+        def collection = dbConnection.database.getCollection(collectionName)
 
         // Making folder tree
         new File(path).mkdirs()
@@ -113,7 +113,7 @@ class MongoService {
      * @throws IOException in case reading from file operation produces an error
      */
     private void importMongoCollectionFromJson(String path, String collectionName) throws IOException {
-        def collection = dbConnection.getDatabase().getCollection(collectionName)
+        def collection = dbConnection.database.getCollection(collectionName)
 
         // dropping collection to get clear state before import
         collection.drop()

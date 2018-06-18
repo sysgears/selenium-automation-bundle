@@ -1,14 +1,22 @@
 package com.sysgears.seleniumbundle.tests
 
 import com.sysgears.seleniumbundle.common.FunctionalTest
+import com.sysgears.seleniumbundle.core.mongodb.MongoService
 import com.sysgears.seleniumbundle.core.mongodb.dao.UserDAO
 import com.sysgears.seleniumbundle.core.mongodb.entities.User
 import com.sysgears.seleniumbundle.core.mongodb.entities.user.Address
 import org.bson.types.ObjectId
 import org.testng.Assert
+import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
 class MongoExample extends FunctionalTest {
+
+    @BeforeMethod
+    void restoreDatabase() {
+        new MongoService(conf, dbConnection).importMongoCollectionsFromJson()
+    }
+
 
     @Test
     void getUserFromMongoDb() {

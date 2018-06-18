@@ -48,7 +48,8 @@ class MongoRestoreCommand extends AbstractCommand {
     MongoRestoreCommand(Map<String, List<String>> arguments, Config conf) {
         super(arguments, conf)
         this.conf = conf
-        dbConnection = new DBConnection(conf)
+        dbConnection = new DBConnection(conf.properties.mongodb.dbName, conf.properties.mongodb.host,
+                conf.properties.mongodb.port)
     }
 
     /**
