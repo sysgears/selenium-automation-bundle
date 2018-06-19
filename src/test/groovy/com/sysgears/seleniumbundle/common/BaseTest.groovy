@@ -9,7 +9,6 @@ import com.sysgears.seleniumbundle.core.data.DataMapper
 import com.sysgears.seleniumbundle.core.selenide.commands.Click
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
 import org.testng.annotations.*
-import org.testng.xml.XmlTest
 
 import static com.codeborne.selenide.Selenide.*
 import static com.codeborne.selenide.WebDriverRunner.clearBrowserCache
@@ -53,6 +52,15 @@ class BaseTest {
         Configuration.savePageSource = false // prevents page source saving for failed tests
     }
 
+    /**
+     * Workaround for an issue with method 'click()' in Microsoft Edge. Methods replaces default Selenide command 'click'
+     * with our custom implementation.
+     */
+    @BeforeSuite(alwaysRun = true, dependsOnMethods = "initSelenideConfiguration")
+    void customizeSelenideCommands() {
+        Commands.getInstance().add("click", new Click())
+    }
+
     @BeforeClass(alwaysRun = true)
     @Parameters(["platform", "browser"])
     void setupGlobalParameters(@Optional String platform, @Optional String browser) {
@@ -70,19 +78,6 @@ class BaseTest {
                 DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser)
         driver.manage().window().maximize()
         WebDriverRunner.setWebDriver(driver)
-    }
-
-    /**
-     * Workaround for an issue with method 'click()' in Microsoft Edge. Methods replaces default Selenide command 'click'
-     * with our custom implementation.
-     */
-    @BeforeClass(alwaysRun = true, dependsOnMethods = "initSelenideWebDriverRunner")
-    void customizeSelenideCommands(XmlTest xmlTest) {
-        if (xmlTest.parallel.isParallel() || browser == "MicrosoftEdge") {
-            Commands.getInstance().add("click", new Click())
-        } else {
-            Commands.getInstance().resetDefaults()
-        }
     }
 
     @AfterClass(alwaysRun = true)
