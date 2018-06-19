@@ -9,18 +9,21 @@ import static com.codeborne.selenide.Selenide.actions
 import static com.codeborne.selenide.Selenide.executeJavaScript
 
 /**
- * Reimplementation of default Selenide command Click.
+ * Reimplementation of default Selenide command Click. Workaround for an issue with method 'click()' in Microsoft Edge.
+ * The issue occurs when an element has style 'overflow: hidden'.
  */
 class Click extends com.codeborne.selenide.commands.Click {
 
     @Override
     public Void execute(SelenideElement proxy, WebElementSource locator, Object[] args) {
         if (args == null || args.length == 0) {
+            // originally: click(locator.findAndAssertElementIsVisible())
             click(locator.getWebElement())
         } else if (args.length == 2) {
+            // originally: click(locator.findAndAssertElementIsVisible(), (int) args[0], (int) args[1])
             click(locator.getWebElement(), (int) args[0], (int) args[1])
         }
-        return null;
+        return null
     }
 
     protected void click(WebElement element) {
