@@ -2,6 +2,7 @@ package com.sysgears.seleniumbundle.core.mongodb
 
 import com.mongodb.client.MongoDatabase
 import com.sysgears.seleniumbundle.core.utils.FileHelper
+import com.sysgears.seleniumbundle.core.utils.PathHelper
 import groovy.util.logging.Slf4j
 import org.bson.Document
 import org.bson.json.JsonMode
@@ -43,7 +44,7 @@ class MongoService {
      * @throws IOException in case writing to file operation produces an error
      */
     void exportMongoCollectionsToJson(String subPath = null, List<String> collections = null) throws IOException {
-        def path = "${dumpPath}${File.separator}${subPath ?: "default"}"
+        def path = PathHelper.convertPathForPlatform("${dumpPath}/${subPath ?: "default"}")
         (collections ?: database.listCollectionNames()).each {
             exportMongoCollectionToJson(path, it)
         }
@@ -62,7 +63,7 @@ class MongoService {
     void importMongoCollectionsFromJson(String subPath = null, List<String> collections = null,
                                         boolean keepOtherCollections = false) throws IOException {
 
-        def path = "${dumpPath}${File.separator}${subPath ?: "default"}"
+        def path = "${dumpPath}/${subPath ?: "default"}"
         def dumpCollections = getCollectionsNamesFromDump(path)
 
         if (!keepOtherCollections) {
@@ -91,7 +92,7 @@ class MongoService {
         // Making folder tree
         new File(path).mkdirs()
 
-        def writer = new BufferedWriter(new FileWriter("$path${File.separator}${collectionName}.json"))
+        def writer = new BufferedWriter(new FileWriter(PathHelper.convertPathForPlatform("$path/${collectionName}.json")))
 
         try {
             log.info("Starting export process for [$collectionName] collection...")
@@ -123,7 +124,7 @@ class MongoService {
         // dropping collection to get clear state before import
         collection.drop()
 
-        def reader = new BufferedReader(new FileReader("$path${File.separator}${collectionName}.json"))
+        def reader = new BufferedReader(new FileReader(PathHelper.convertPathForPlatform("$path/${collectionName}.json")))
         try {
             log.info("Starting import process for [$collectionName] collection...")
             String json

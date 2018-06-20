@@ -29,4 +29,8 @@ class PathHelper {
     static String getRelativePath(String pathToModify, String basePath) {
         pathToModify - FilenameUtils.separatorsToSystem(basePath)
     }
+
+    static String convertPathForPlatform(String path) {
+        path.replaceAll(/[\\|\/]/, File.separator)
+    }
 }
