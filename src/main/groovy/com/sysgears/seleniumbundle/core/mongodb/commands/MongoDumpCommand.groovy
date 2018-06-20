@@ -1,5 +1,7 @@
 package com.sysgears.seleniumbundle.core.mongodb.commands
 
+import com.mongodb.client.MongoClients
+import com.mongodb.client.MongoDatabase
 import com.sysgears.seleniumbundle.core.command.AbstractCommand
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
@@ -9,14 +11,14 @@ import com.sysgears.seleniumbundle.core.mongodb.MongoService
 class MongoDumpCommand extends AbstractCommand {
 
     /**
-     * Project properties.
+     * Mongo configuration properties.
      */
-    private Config conf
+    private Map<String, ?> properties
 
     /**
-     * Connection to mongodb.
+     * Mongo database.
      */
-    private DBConnection dbConnection
+    private MongoDatabase database
 
     /**
      * Collections to back up.
@@ -31,6 +33,12 @@ class MongoDumpCommand extends AbstractCommand {
     private List<String> subPath
 
     /**
+     * Connection string parameter for initialization of Mongo Client.
+     */
+    @ImplicitInit
+    private List<String> connectionString
+
+    /**
      * Creates an instance of MongoDumpCommand.
      *
      * @param arguments map that contains command arguments
@@ -41,9 +49,26 @@ class MongoDumpCommand extends AbstractCommand {
      */
     MongoDumpCommand(Map<String, List<String>> arguments, Config conf) {
         super(arguments, conf)
-        this.conf = conf
-        dbConnection = new DBConnection(conf.properties.mongodb.dbName, conf.properties.mongodb.host,
-                conf.properties.mongodb.port)
+
+        properties = conf.properties.mongodb as Map
+        String dbName = properties.dbName,
+               host = properties.host,
+               port = properties.port,
+               username = properties.auth.username,
+               password = properties.auth.password,
+               authDb = properties.auth.authDb
+
+        DBConnection dbConnection
+
+        if (connectionString) {
+            dbConnection = new DBConnection(dbName, MongoClients.create(connectionString.first()))
+        } else if (username && password && authDb) {
+            dbConnection = new DBConnection(dbName, host, port, username, password, authDb)
+        } else {
+            dbConnection = new DBConnection(dbName, host, port)
+        }
+
+        database = dbConnection.database
     }
 
     /**
@@ -54,6 +79,7 @@ class MongoDumpCommand extends AbstractCommand {
      */
     @Override
     void execute() throws IOException {
-        new MongoService(conf).exportMongoCollectionsToJson(subPath?.first(), collections)
+        new MongoService(database, properties.dumpPath as String)
+                .exportMongoCollectionsToJson(subPath?.first(), collections)
     }
 }

@@ -1,5 +1,7 @@
 package com.sysgears.seleniumbundle.core.mongodb.commands
 
+import com.mongodb.client.MongoClients
+import com.mongodb.client.MongoDatabase
 import com.sysgears.seleniumbundle.core.command.AbstractCommand
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
@@ -9,14 +11,14 @@ import com.sysgears.seleniumbundle.core.mongodb.MongoService
 class MongoRestoreCommand extends AbstractCommand {
 
     /**
-     * Project properties.
+     * Mongo configuration properties.
      */
-    private Config conf
+    private Map <String, ?> properties
 
     /**
      * Connection to mongodb.
      */
-    private DBConnection dbConnection
+    private MongoDatabase database
 
     /**
      * Collections to restore.
@@ -37,6 +39,12 @@ class MongoRestoreCommand extends AbstractCommand {
     private List<String> dropDB
 
     /**
+     * Connection string parameter for initialization of Mongo Client.
+     */
+    @ImplicitInit
+    private List<String> connectionString
+
+    /**
      * Creates an instance of MongoDumpCommand.
      *
      * @param arguments map that contains command arguments
@@ -47,19 +55,37 @@ class MongoRestoreCommand extends AbstractCommand {
      */
     MongoRestoreCommand(Map<String, List<String>> arguments, Config conf) {
         super(arguments, conf)
-        this.conf = conf
-        dbConnection = new DBConnection(conf.properties.mongodb.dbName, conf.properties.mongodb.host,
-                conf.properties.mongodb.port)
+        properties = conf.properties.mongodb as Map
+        String dbName = properties.dbName,
+               host = properties.host,
+               port = properties.port,
+               username = properties.auth.username,
+               password = properties.auth.password,
+               authDb = properties.auth.authDb
+
+        DBConnection dbConnection
+
+        if (connectionString) {
+            dbConnection = new DBConnection(dbName, MongoClients.create(connectionString.first()))
+        } else if (username && password && authDb) {
+            dbConnection = new DBConnection(dbName, host, port, username, password, authDb)
+        } else {
+            dbConnection = new DBConnection(dbName, host, port)
+        }
+
+        database = dbConnection.database
     }
 
     /**
      * Executes restoring of given collections from dump files. Takes files by path that is configured in
      * ApplicationProperties.groovy plus sub-path that is specified for the command.
      *
-     * @throws IOException in case writing to file operation produces an error
+     * @throws IOException in case writing to file operation produces an error or in case there are no dump files
+     * to restore from
      */
     @Override
     void execute() throws IOException {
-        new MongoService(conf).importMongoCollectionsFromJson(subPath?.first(), collections, dropDB?.first() as boolean)
+        new MongoService(database, properties.dumpPath as String)
+                .importMongoCollectionsFromJson(subPath?.first(), collections, dropDB?.first() as boolean)
     }
 }

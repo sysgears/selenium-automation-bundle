@@ -54,7 +54,7 @@ class Config {
     /**
      * Project properties map.
      */
-    final Map<String, String> properties = [:]
+    final Map<String, ?> properties = [:]
 
     /**
      * Creates an instance of Config.

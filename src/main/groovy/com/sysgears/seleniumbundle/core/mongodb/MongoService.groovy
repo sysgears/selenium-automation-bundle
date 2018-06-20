@@ -1,6 +1,6 @@
 package com.sysgears.seleniumbundle.core.mongodb
 
-import com.sysgears.seleniumbundle.core.conf.Config
+import com.mongodb.client.MongoDatabase
 import com.sysgears.seleniumbundle.core.utils.FileHelper
 import groovy.util.logging.Slf4j
 import org.bson.Document
@@ -14,23 +14,24 @@ import org.bson.json.JsonWriterSettings
 class MongoService {
 
     /**
-     * Connection to database.
+     * Mongo database.
      */
-    DBConnection dbConnection
+    MongoDatabase database
 
     /**
-     * Project properties.
+     * Path to dump files location.
      */
-    private Config conf
+    private String dumpPath
 
     /**
      * Creates an instance of MongoService.
      *
-     * @param conf project properties
+     * @param database connection to mongo database
+     * @param dumpPath project properties
      */
-    MongoService(Config conf, DBConnection dbConnection) {
-        this.conf = conf
-        this.dbConnection = dbConnection
+    MongoService(MongoDatabase database, String dumpPath) {
+        this.database = database
+        this.dumpPath = dumpPath
     }
 
     /**
@@ -42,9 +43,8 @@ class MongoService {
      * @throws IOException in case writing to file operation produces an error
      */
     void exportMongoCollectionsToJson(String subPath = null, List<String> collections = null) throws IOException {
-        def path = "${conf.properties.mongodb.dumpPath}${File.separator}${subPath ?: "default"}"
-
-        (collections ?: dbConnection.database.listCollectionNames()).each {
+        def path = "${dumpPath}${File.separator}${subPath ?: "default"}"
+        (collections ?: database.listCollectionNames()).each {
             exportMongoCollectionToJson(path, it)
         }
     }
@@ -57,17 +57,22 @@ class MongoService {
      * @param collections list of mongo collections names e.g. "users", can be empty
      * @param keepOtherCollections flag that shows if database should be dropped before the import process, can be empty
      *
-     * @throws IOException  in case reading from file operation produces an error
+     * @throws IOException  in case reading from file operation produces an error or dump files are absent
      */
     void importMongoCollectionsFromJson(String subPath = null, List<String> collections = null,
                                         boolean keepOtherCollections = false) throws IOException {
+
+        def path = "${dumpPath}${File.separator}${subPath ?: "default"}"
+        def dumpCollections = getCollectionsNamesFromDump(path)
+
         if (!keepOtherCollections) {
-            dbConnection.database.drop()
+            dumpCollections ? database.drop() : {
+                log.info("You have no dump file to restore database from")
+                throw new IOException("You have no dump file to restore database from")
+            }()
         }
 
-        def path = "${conf.properties.mongodb.dumpPath}${File.separator}${subPath ?: "default"}"
-
-        (collections ?: getCollectionsNamesFromDump(path)).each {
+        (collections ?: dumpCollections).each {
             importMongoCollectionFromJson(path, it)
         }
     }
@@ -81,7 +86,7 @@ class MongoService {
      * @throws IOException in case writing to file operation produces an error
      */
     private void exportMongoCollectionToJson(String path, String collectionName) throws IOException {
-        def collection = dbConnection.database.getCollection(collectionName)
+        def collection = database.getCollection(collectionName)
 
         // Making folder tree
         new File(path).mkdirs()
@@ -113,7 +118,7 @@ class MongoService {
      * @throws IOException in case reading from file operation produces an error
      */
     private void importMongoCollectionFromJson(String path, String collectionName) throws IOException {
-        def collection = dbConnection.database.getCollection(collectionName)
+        def collection = database.getCollection(collectionName)
 
         // dropping collection to get clear state before import
         collection.drop()
