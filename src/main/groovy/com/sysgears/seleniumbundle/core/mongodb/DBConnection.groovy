@@ -37,7 +37,33 @@ class DBConnection {
      */
     DBConnection(String dbName, String host, String port) {
         databaseName = dbName
-        client = MongoClients.create(buildMongoClientSettings(host, port))
+
+        def settings = MongoClientSettings.builder()
+                .applyToClusterSettings({ builder ->
+            builder.hosts([new ServerAddress(host, port as int)])
+        })
+                .build()
+        client = MongoClients.create(settings)
+    }
+
+    /**
+     * Constructor for the database connection. Accepts configured Mongo credential.
+     *
+     * @param dbName database name
+     * @param host mongo server address or alias
+     * @param port port of mongo database
+     * @param credential user's credential that should be used for authentication
+     */
+    DBConnection(String dbName, String host, String port, MongoCredential credential) {
+        databaseName = dbName
+
+        def settings = MongoClientSettings.builder()
+                .applyToClusterSettings({ builder ->
+            builder.hosts([new ServerAddress(host, port as int)])
+        })
+                .credential(credential)
+                .build()
+        client = MongoClients.create(settings)
     }
 
     /**
@@ -51,21 +77,9 @@ class DBConnection {
      * @param authDb database that contains user record for authentication
      */
     DBConnection(String dbName, String host, String port, String userName, String password, String authDb) {
-        databaseName = dbName
-        client = MongoClients.create(buildMongoClientSettings(host, port, userName, password, authDb))
-    }
+        this(dbName, host, port, MongoCredential.createCredential(userName, authDb, password as char[]))
 
-    /**
-     * Constructor for the database connection. Accepts configured Mongo credential.
-     *
-     * @param dbName database name
-     * @param host mongo server address or alias
-     * @param port port of mongo database
-     * @param credential user's credential that should be used for authentication
-     */
-    DBConnection(String dbName, String host, String port, MongoCredential credential) {
         databaseName = dbName
-        client = MongoClients.create(buildMongoClientSettings(host, port, credential))
     }
 
     /**
@@ -90,63 +104,6 @@ class DBConnection {
             database = client.getDatabase(databaseName).withCodecRegistry(codecRegistry)
         }
         database
-    }
-
-    /**
-     * Returns Mongo client settings object for configuring mongo client.
-     *
-     * @param host mongo database server address or alias
-     * @param port port of the mongo database
-     *
-     * @return object of mongo client settings
-     */
-    private MongoClientSettings buildMongoClientSettings(String host, String port) {
-        MongoClientSettings.builder()
-                .applyToClusterSettings({ builder ->
-            builder.hosts([new ServerAddress(host, port as int)])
-        })
-                .build()
-    }
-
-    /**
-     * Returns Mongo client settings object for configuring mongo client with credentials for authentication using
-     * the SCRAM-SHA-1 or MONGODB_CR method.
-     *
-     * @param host mongo server address or alias
-     * @param port port of mongo database
-     * @param user user with access to the database
-     * @param password password
-     * @param authDb database that contains user record for authentication
-     *
-     * @return object of mongo client settings
-     */
-    private MongoClientSettings buildMongoClientSettings(String host, String port,
-                                                         String user, String password, String authDb) {
-        MongoCredential credential = MongoCredential.createCredential(user, authDb, password as char[])
-        MongoClientSettings.builder()
-                .applyToClusterSettings({ builder ->
-            builder.hosts([new ServerAddress(host, port as int)])
-        })
-                .credential(credential)
-                .build()
-    }
-
-    /**
-     * Returns Mongo client settings object for configuring mongo client, uses prepared credential object.
-     *
-     * @param host mongo server address or alias
-     * @param port port of mongo database
-     * @param credential Mongo client credential
-     *
-     * @return object of mongo client settings
-     */
-    private MongoClientSettings buildMongoClientSettings(String host, String port, MongoCredential credential) {
-        MongoClientSettings.builder()
-                .applyToClusterSettings({ builder ->
-            builder.hosts([new ServerAddress(host, port as int)])
-        })
-                .credential(credential)
-                .build()
     }
 }
 
