@@ -6,6 +6,7 @@ import com.mongodb.ServerAddress
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
+import groovy.transform.Synchronized
 import org.bson.codecs.configuration.CodecRegistry
 
 /**
@@ -98,6 +99,7 @@ class DBConnection {
      *
      * @return instance of the database
      */
+    @Synchronized
     MongoDatabase getDatabase() {
         CodecRegistry codecRegistry = new CustomCodecRegistry()
         if (!database) {
