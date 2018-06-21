@@ -15,7 +15,7 @@ class PathHelper {
      * @return converted path
      */
     static String convertToUnixLike(String path) {
-        path.replace(File.separatorChar, '/' as char)
+        path.replaceAll("\\\\", "/")
     }
 
     /**
