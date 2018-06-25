@@ -14,7 +14,7 @@ class MongoExample extends FunctionalTest {
 
     @BeforeMethod
     void restoreDatabase() {
-        new MongoService(conf, dbConnection).importMongoCollectionsFromJson()
+        new MongoService(dbConnection.database, conf.properties.mongodb.dumpPath).importMongoCollectionsFromJson()
     }
 
 
