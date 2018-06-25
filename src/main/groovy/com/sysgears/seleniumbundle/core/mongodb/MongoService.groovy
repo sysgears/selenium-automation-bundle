@@ -124,7 +124,8 @@ class MongoService {
         // dropping collection to get clear state before import
         collection.drop()
 
-        def reader = new BufferedReader(new FileReader(PathHelper.convertPathForPlatform("$path/${collectionName}.json")))
+        def file = new File(PathHelper.convertPathForPlatform("$path/${collectionName}.json"))
+        def reader = new BufferedReader(new StringReader(normalizeJSON(file)))
         try {
             log.info("Starting import process for [$collectionName] collection...")
             String json
@@ -150,5 +151,18 @@ class MongoService {
         FileHelper.getFiles(path)*.path.collect {
             (it =~ /$path\/(.*)\.json$/)[0][1]
         } as List<String>
+    }
+
+    /**
+     * Converts JSON file with tree view format into single line per record format.
+     *
+     * @param file JSON file
+     *
+     * @return JSON string with one record per line
+     */
+    private String normalizeJSON(File file) {
+
+        // removes all new lines, adds new line between records
+        file.text.replaceAll(/\n/, "").replaceAll("\\}\\{", "}\n{")
     }
 }
