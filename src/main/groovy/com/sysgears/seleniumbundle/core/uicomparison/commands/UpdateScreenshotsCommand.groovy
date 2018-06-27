@@ -62,9 +62,13 @@ class UpdateScreenshotsCommand extends AbstractCommand {
             FileHelper.deleteFile("$baselinePath${it}")
         }
 
+        log.info ("Mooving ${actualPaths.size()} screenshots...")
+
         actualPaths.each {
             FileHelper.moveFile("$actualPath${it}", "$baselinePath${it}")
         }
+
+        log.info ("Done.")
 
         new File(actualPath).deleteDir()
     }

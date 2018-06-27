@@ -3,12 +3,12 @@ package config
 // global configuration
 
 baseUrl = "https://google.co.uk"  // the URL to website under the test
-os = System.getProperty("os.name").toLowerCase() // OS identifier to configure environment
+os = System.getProperty("os.name").split(/\s/).first().toLowerCase() // OS identifier to configure environment
 remoteUrl = System.getProperty("test.remoteUrl") ?: null                     // a link to Selenium Grid
 withBrowsermobProxy = true          // adds Browsermob Proxy to drivers, can be set to false
 
 browser {
-    name = "chrome"
+    name = "chrome" // default browser to execute tests (chrome, firefox, microsoftedge, headless)
     width = "1920"
     height = "1080"
     version = ""
