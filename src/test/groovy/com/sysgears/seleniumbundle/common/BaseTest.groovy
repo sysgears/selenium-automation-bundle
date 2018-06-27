@@ -15,7 +15,8 @@ import org.testng.annotations.*
 
 import static com.codeborne.selenide.Selenide.*
 import static com.codeborne.selenide.WebDriverRunner.clearBrowserCache
-import static com.sysgears.seleniumbundle.core.webdriver.Driver.*
+import static com.sysgears.seleniumbundle.core.webdriver.Driver.HEADLESS
+import static com.sysgears.seleniumbundle.core.webdriver.Driver.getDriverType
 
 /**
  * The main configuration class for tests execution. Sets global properties, initializes WebDriver, configures Selenide,
