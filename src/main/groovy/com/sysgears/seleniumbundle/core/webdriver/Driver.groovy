@@ -19,7 +19,7 @@ enum Driver {
     CHROME{
         WebDriver createDriver(DesiredCapabilities capabilities) {
             ChromeDriverManager.getInstance().setup()
-            new ChromeDriver(capabilities)
+            new ChromeDriver(capabilities ?: new DesiredCapabilities())
         }
     },
     HEADLESS{
@@ -37,19 +37,19 @@ enum Driver {
     FIREFOX{
         WebDriver createDriver(DesiredCapabilities capabilities) {
             FirefoxDriverManager.getInstance().setup()
-            new FirefoxDriver(capabilities)
+            new FirefoxDriver(capabilities ?: new DesiredCapabilities())
         }
     },
     MICROSOFTEDGE{
         WebDriver createDriver(DesiredCapabilities capabilities) {
             EdgeDriverManager.getInstance().setup()
-            new EdgeDriver(capabilities)
+            new EdgeDriver(capabilities ?: new DesiredCapabilities())
         }
     },
     SAFARI{
         WebDriver createDriver(DesiredCapabilities capabilities) {
             // no additional driver needs to be downloaded as we included SafariDriver as dependency
-            new SafariDriver(capabilities)
+            new SafariDriver(capabilities ?: new DesiredCapabilities())
         }
     }
 
