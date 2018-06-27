@@ -3,9 +3,11 @@ package com.sysgears.seleniumbundle.common
 import com.automation.remarks.testng.VideoListener
 import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.WebDriverRunner
+import com.codeborne.selenide.commands.Commands
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.data.DataMapper
 import com.sysgears.seleniumbundle.core.proxy.BrowserProxy
+import com.sysgears.seleniumbundle.core.selenide.commands.Click
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
 import net.lightbody.bmp.BrowserMobProxyServer
 import org.openqa.selenium.Dimension
@@ -13,7 +15,8 @@ import org.testng.annotations.*
 
 import static com.codeborne.selenide.Selenide.*
 import static com.codeborne.selenide.WebDriverRunner.clearBrowserCache
-import static com.sysgears.seleniumbundle.core.webdriver.Driver.*
+import static com.sysgears.seleniumbundle.core.webdriver.Driver.HEADLESS
+import static com.sysgears.seleniumbundle.core.webdriver.Driver.getDriverType
 
 /**
  * The main configuration class for tests execution. Sets global properties, initializes WebDriver, configures Selenide,
@@ -57,6 +60,15 @@ class BaseTest {
         Configuration.baseUrl = conf.baseUrl // sets base url for the application under the test
         Configuration.screenshots = false // disables screenshot for failed tests
         Configuration.savePageSource = false // prevents page source saving for failed tests
+    }
+
+    /**
+     * Workaround for an issue with method 'click()' in Microsoft Edge. Methods replaces default Selenide command 'click'
+     * with our custom implementation.
+     */
+    @BeforeSuite(alwaysRun = true, dependsOnMethods = "initSelenideConfiguration")
+    void customizeSelenideCommands() {
+        Commands.getInstance().add("click", new Click())
     }
 
     @BeforeClass(alwaysRun = true)
