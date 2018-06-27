@@ -6,12 +6,16 @@ import com.codeborne.selenide.WebDriverRunner
 import com.codeborne.selenide.commands.Commands
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.data.DataMapper
+import com.sysgears.seleniumbundle.core.proxy.BrowserProxy
 import com.sysgears.seleniumbundle.core.selenide.commands.Click
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
+import net.lightbody.bmp.BrowserMobProxyServer
+import org.openqa.selenium.Dimension
 import org.testng.annotations.*
 
 import static com.codeborne.selenide.Selenide.*
 import static com.codeborne.selenide.WebDriverRunner.clearBrowserCache
+import static com.sysgears.seleniumbundle.core.webdriver.Driver.*
 
 /**
  * The main configuration class for tests execution. Sets global properties, initializes WebDriver, configures Selenide,
@@ -29,6 +33,11 @@ class BaseTest {
      * Test data mapper, is responsible for test data preparation for TestNG data providers.
      */
     protected DataMapper mapper = new DataMapper()
+
+    /**
+     * Instance of BrowserProxy.
+     */
+    protected BrowserProxy browserProxy
 
     /**
      *  OS that is used for test execution.
@@ -65,7 +74,7 @@ class BaseTest {
     @Parameters(["platform", "browser"])
     void setupGlobalParameters(@Optional String platform, @Optional String browser) {
         this.os = platform ?: conf.os // falls back to globally configured value
-        this.browser = browser ?: conf.browser // falls back to globally configured value
+        this.browser = browser ?: conf.browser.name // falls back to globally configured value
     }
 
     /**
@@ -73,10 +82,14 @@ class BaseTest {
      */
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setupGlobalParameters")
     void initSelenideWebDriverRunner() {
-        def driver = !conf.gridUrl ?
-                DriverInitializer.createDriver(browser) :
-                DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser)
-        driver.manage().window().maximize()
+        browserProxy = new BrowserProxy(new BrowserMobProxyServer())
+
+        def driver = !conf.remoteUrl ? DriverInitializer.createDriver(browser)
+                : DriverInitializer.createRemoteDriver(conf.remoteUrl, os, browser, browserProxy.seleniumProxy)
+
+        def size = new Dimension(conf.browser.width as Integer, conf.browser.height as Integer)
+        if (getDriverType(conf.browser.name) != HEADLESS) driver.manage().window().setSize(size)
+
         WebDriverRunner.setWebDriver(driver)
     }
 

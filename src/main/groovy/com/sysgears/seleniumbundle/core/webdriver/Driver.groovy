@@ -17,46 +17,61 @@ import org.openqa.selenium.safari.SafariDriver
  */
 enum Driver {
     CHROME{
-        WebDriver getWebDriverObject(DesiredCapabilities capabilities = null) {
+        WebDriver createDriver(DesiredCapabilities capabilities) {
             ChromeDriverManager.getInstance().setup()
-            capabilities ? new ChromeDriver(capabilities) : new ChromeDriver()
-        }
-    },
-    FIREFOX{
-        WebDriver getWebDriverObject(DesiredCapabilities capabilities = null) {
-            FirefoxDriverManager.getInstance().setup()
-            capabilities ? new FirefoxDriver(capabilities) : new FirefoxDriver()
-        }
-    },
-    SAFARI{
-        WebDriver getWebDriverObject(DesiredCapabilities capabilities = null) {
-
-            // no additional driver needs to be downloaded as we included SafariDriver as dependency
-            capabilities ? new SafariDriver(capabilities) : new SafariDriver()
-        }
-    },
-    MICROSOFTEDGE{
-        WebDriver getWebDriverObject(DesiredCapabilities capabilities = null) {
-            EdgeDriverManager.getInstance().setup()
-            capabilities ? new EdgeDriver(capabilities) : new EdgeDriver()
+            new ChromeDriver(capabilities ?: new DesiredCapabilities())
         }
     },
     HEADLESS{
-        WebDriver getWebDriverObject(DesiredCapabilities capabilities = null) {
+        WebDriver createDriver(DesiredCapabilities capabilities = null) {
             ChromeDriverManager.getInstance().setup()
-            capabilities = capabilities ?: new DesiredCapabilities()
 
-            // configures Chrome to start in headless mode
-            capabilities.setCapability(ChromeOptions.CAPABILITY, new ChromeOptions().setHeadless(true))
+            if (!capabilities) {
+                capabilities = new DesiredCapabilities()
+                capabilities.setCapability(ChromeOptions.CAPABILITY, new ChromeOptions().setHeadless(true))
+            }
+
             new ChromeDriver(capabilities)
+        }
+    },
+    FIREFOX{
+        WebDriver createDriver(DesiredCapabilities capabilities) {
+            FirefoxDriverManager.getInstance().setup()
+            new FirefoxDriver(capabilities ?: new DesiredCapabilities())
+        }
+    },
+    MICROSOFTEDGE{
+        WebDriver createDriver(DesiredCapabilities capabilities) {
+            EdgeDriverManager.getInstance().setup()
+            new EdgeDriver(capabilities ?: new DesiredCapabilities())
+        }
+    },
+    SAFARI{
+        WebDriver createDriver(DesiredCapabilities capabilities) {
+            // no additional driver needs to be downloaded as we included SafariDriver as dependency
+            new SafariDriver(capabilities ?: new DesiredCapabilities())
         }
     }
 
-    abstract WebDriver getWebDriverObject(DesiredCapabilities capabilities = null)
+    /**
+     * Instantiates WebDriver object for specific browser.
+     *
+     * @param capabilities capabilities object to start driver with, can be null
+     *
+     * @return WebDriver for specific browser
+     */
+    abstract WebDriver createDriver(DesiredCapabilities capabilities = null)
 
-    static Driver getDriver(String name) {
-        !name ? CHROME : values().find {
-            it.name().equalsIgnoreCase(name)
+    /**
+     * Returns specific enum constant by given browser name.
+     *
+     * @param browserName name of the enum constant
+     *
+     * @return specific enum instance
+     */
+    static Driver getDriverType(String browserName = null) {
+        !browserName ? CHROME : values().find {
+            it.name().equalsIgnoreCase(browserName)
         }
     }
 }
