@@ -33,10 +33,11 @@ class MongoRestoreCommand extends AbstractCommand {
     private List<String> subPath
 
     /**
-     * Sub-path to dumps directory.
+     * Flag which shows that database shouldn't be removed while restoring process. Database will be removed
+     * only in case there are dump files to restore from.
      */
     @ImplicitInit
-    private List<String> dropDB
+    private List<String> keepDB
 
     /**
      * Connection string parameter for initialization of Mongo Client.
@@ -86,6 +87,6 @@ class MongoRestoreCommand extends AbstractCommand {
     @Override
     void execute() throws IOException {
         new MongoService(database, properties.dumpPath as String)
-                .importMongoCollectionsFromJson(subPath?.first(), collections, dropDB?.first() as boolean)
+                .importMongoCollectionsFromJson(subPath?.first(), collections, keepDB?.first() as boolean)
     }
 }
