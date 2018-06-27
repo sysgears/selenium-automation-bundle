@@ -52,7 +52,7 @@ class AShotFactory {
                         safari : ShootingStrategies.simple()]
         ]
 
-        ShootingStrategy strategy = strategies?."${conf.os}"?."${conf.browser}"
+        ShootingStrategy strategy = strategies?."${conf.os}"?."${conf.browser.name}"
         strategy = strategy ?: ShootingStrategies.viewportPasting(250)
 
         new AShot().shootingStrategy(strategy)

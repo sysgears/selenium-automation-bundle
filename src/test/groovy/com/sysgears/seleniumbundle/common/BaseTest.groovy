@@ -8,10 +8,12 @@ import com.sysgears.seleniumbundle.core.data.DataMapper
 import com.sysgears.seleniumbundle.core.proxy.BrowserProxy
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
 import net.lightbody.bmp.BrowserMobProxyServer
+import org.openqa.selenium.Dimension
 import org.testng.annotations.*
 
 import static com.codeborne.selenide.Selenide.*
 import static com.codeborne.selenide.WebDriverRunner.clearBrowserCache
+import static com.sysgears.seleniumbundle.core.webdriver.Driver.*
 
 /**
  * The main configuration class for tests execution. Sets global properties, initializes WebDriver, configures Selenide,
@@ -61,7 +63,7 @@ class BaseTest {
     @Parameters(["platform", "browser"])
     void setupGlobalParameters(@Optional String platform, @Optional String browser) {
         this.os = platform ?: conf.os // falls back to globally configured value
-        this.browser = browser ?: conf.browser // falls back to globally configured value
+        this.browser = browser ?: conf.browser.name // falls back to globally configured value
     }
 
     /**
@@ -69,26 +71,14 @@ class BaseTest {
      */
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setupGlobalParameters")
     void initSelenideWebDriverRunner() {
-        def isTestFunctional = this.class.getSuperclass().getAnnotation(Test).groups().contains("functional")
-        def driver
+        browserProxy = new BrowserProxy(new BrowserMobProxyServer())
 
-        if (conf.withBrowsermobProxy && isTestFunctional && browser == "chrome") {
-            browserProxy = new BrowserProxy(new BrowserMobProxyServer())
+        def driver = !conf.remoteUrl ? DriverInitializer.createDriver(browser)
+                : DriverInitializer.createRemoteDriver(conf.remoteUrl, os, browser, browserProxy.seleniumProxy)
 
-            if (!conf.gridUrl) {
-                driver = DriverInitializer.createDriver(browser, browserProxy.seleniumProxy)
-            } else {
-                driver = DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser, browserProxy.seleniumProxy)
-            }
-        } else {
-            if (!conf.gridUrl) {
-                driver = DriverInitializer.createDriver(browser)
-            } else {
-                driver = DriverInitializer.createRemoteDriver(conf.gridUrl, os, browser)
-            }
-        }
+        def size = new Dimension(conf.browser.width as Integer, conf.browser.height as Integer)
+        if (getDriverType(conf.browser.name) != HEADLESS) driver.manage().window().setSize(size)
 
-        driver.manage().window().maximize()
         WebDriverRunner.setWebDriver(driver)
     }
 
