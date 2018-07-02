@@ -108,8 +108,8 @@ test {
             // configures testng to exclude specified groups from test run
             excludeGroups << excludedGroups
 
-            // sets testng.xml file for TestNG
-            suiteXmlFiles << new File(rootDir, "src/test/resources/testng.xml")
+            // sets TestNG configuration file
+            suiteXmlFiles << new File(rootDir, "src/test/resources/${testngConfig}.xml")
         }
     }
 }

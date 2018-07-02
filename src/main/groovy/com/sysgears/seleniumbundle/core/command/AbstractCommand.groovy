@@ -26,7 +26,7 @@ abstract class AbstractCommand implements ICommand {
      * @throws IllegalArgumentException if a value is missing for a mandatory argument or the value doesn't
      * match the validation pattern
      */
-    AbstractCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
+    AbstractCommand(Map<String, ?> arguments, Config conf) throws IllegalArgumentException {
         this.conf = conf
 
         new ParameterMapper().initParameters(this, arguments)
