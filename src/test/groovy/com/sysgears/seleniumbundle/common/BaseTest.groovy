@@ -85,7 +85,7 @@ class BaseTest {
     void initSelenideWebDriverRunner() {
         browserProxy = new BrowserProxy(new BrowserMobProxyServer())
 
-        def driver = !conf.remoteUrl ? DriverInitializer.createDriver(browser)
+        def driver = !conf.remoteUrl ? DriverInitializer.createDriver(browser, browserProxy.seleniumProxy)
                 : DriverInitializer.createRemoteDriver(conf.remoteUrl, os, browser, browserProxy.seleniumProxy)
 
         def size = new Dimension(conf.browser.width as Integer, conf.browser.height as Integer)
