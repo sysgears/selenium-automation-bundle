@@ -11,6 +11,9 @@ import org.openqa.selenium.By
 
 import static com.codeborne.selenide.Selenide.$
 
+/**
+ * Slf4j annotation is required for each page as it will be used during UI comparison.
+ */
 @Slf4j
 class GooglePage extends AbstractPage<GooglePage> {
 

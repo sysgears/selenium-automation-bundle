@@ -11,6 +11,9 @@ import org.testng.Assert
 import static com.codeborne.selenide.Selenide.$
 import static com.codeborne.selenide.Selenide.$$
 
+/**
+ * Slf4j annotation is required for each page as it will be used during UI comparison.
+ */
 @Slf4j
 class ResultsPage extends AbstractPage<ResultsPage> {
 
