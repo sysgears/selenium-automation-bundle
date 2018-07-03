@@ -13,6 +13,11 @@ import ru.yandex.qatools.ashot.shooting.ShootingStrategy
 class AShotFactory {
 
     /**
+     * Package where your page object models are stored.
+     */
+    private static final POMPACKAGE = "com.sysgears.seleniumbundle.pagemodel."
+
+    /**
      * Project properties.
      */
     private Config conf
@@ -67,8 +72,9 @@ class AShotFactory {
      * @throws FileNotFoundException if the file with ignored elements was not found
      */
     private Set<By> getSetOfIgnoredElements(Class clazz) throws FileNotFoundException {
-        def currentClass = clazz.name - "com.sysgears.seleniumbundle.pagemodel."
-        def locators = (DataLoader.readMapFromYml(conf.ui.ignoredElements) as ConfigObject)?.flatten()?.get(currentClass)
+        def data = DataLoader.readMapFromYml(conf.ui.ignoredElements)
+        def currentClass = clazz.name - POMPACKAGE
+        def locators = (data as ConfigObject)?.flatten()?.get(currentClass)
 
         locators.collect { it ->
             new By.ByCssSelector(it as String)

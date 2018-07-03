@@ -21,6 +21,11 @@ import static org.testng.Assert.assertTrue
 abstract class AbstractPage<T> implements UIComparison {
 
     /**
+     * Package where your page object models are stored.
+     */
+    private static final POMPACKAGE = "com.sysgears.seleniumbundle.pagemodel."
+
+    /**
      * Instance of Config.
      */
     protected Config conf = Config.instance
@@ -173,9 +178,9 @@ abstract class AbstractPage<T> implements UIComparison {
      *
      * @return list of elements to hide
      */
-    private List getElementsToHideFromFile(Class classOfPage) {
+    private List<SelenideElement> getElementsToHideFromFile(Class classOfPage) {
         def data = DataLoader.readMapFromYml(conf.ui.hiddenElements)
-        def className = classOfPage.name - "com.sysgears.seleniumbundle.pagemodel."
+        def className = classOfPage.name - POMPACKAGE
         def selectorsList = (data as ConfigObject).flatten()."$className"
 
         if (!selectorsList) {
