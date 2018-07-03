@@ -1,19 +1,22 @@
 package com.sysgears.seleniumbundle.core.mongodb.entities.user
 
+/**
+ * Address entity to be used with Mongo database.
+ */
 class Address {
 
     /**
-     * City
+     * City.
      */
     private String city
 
     /**
-     * Address line
+     * Address line.
      */
     private String addressLine
 
     /**
-     * Zip code
+     * Zip code.
      */
     private String zip
 

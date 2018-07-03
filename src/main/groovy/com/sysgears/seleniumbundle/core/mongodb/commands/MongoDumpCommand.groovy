@@ -8,6 +8,9 @@ import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
 import com.sysgears.seleniumbundle.core.mongodb.DBConnection
 import com.sysgears.seleniumbundle.core.mongodb.MongoService
 
+/**
+ * The command generates a dump of current state of Mongo database.
+ */
 class MongoDumpCommand extends AbstractCommand {
 
     /**

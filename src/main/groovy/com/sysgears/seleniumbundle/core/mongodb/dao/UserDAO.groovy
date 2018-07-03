@@ -6,7 +6,7 @@ import com.sysgears.seleniumbundle.core.mongodb.DBConnection
 import com.sysgears.seleniumbundle.core.mongodb.entities.User
 
 /**
- * DAO for User entity
+ * DAO for User entity.
  */
 class UserDAO {
 

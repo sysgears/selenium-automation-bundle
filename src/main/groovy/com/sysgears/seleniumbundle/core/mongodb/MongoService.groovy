@@ -9,7 +9,7 @@ import org.bson.json.JsonMode
 import org.bson.json.JsonWriterSettings
 
 /**
- * Provides methods to work with mongo database.
+ * Provides methods to work with Mongo database.
  */
 @Slf4j
 class MongoService {
@@ -27,7 +27,7 @@ class MongoService {
     /**
      * Creates an instance of MongoService.
      *
-     * @param database connection to mongo database
+     * @param database connection to Mongo database
      * @param dumpPath project properties
      */
     MongoService(MongoDatabase database, String dumpPath) {
@@ -36,10 +36,10 @@ class MongoService {
     }
 
     /**
-     * Exports multiple mongo collections to Json file.
+     * Exports multiple Mongo collections to Json file.
      *
      * @param subPath sub-path to a folder where the files should be stored, can be empty
-     * @param collections list of mongo collections names e.g. "users", can be empty
+     * @param collections list of Mongo collections names e.g. "users", can be empty
      *
      * @throws IOException in case writing to file operation produces an error
      */
@@ -51,11 +51,11 @@ class MongoService {
     }
 
     /**
-     * Imports multiple mongo collections to a JSON file. Depending on flag keepOtherCollections drops the database
+     * Imports multiple Mongo collections to a JSON file. Depending on flag keepOtherCollections drops the database
      * in order to remove collections that are not present in dump files.
      *
      * @param subPath sub-path to a dump folder that should be used for restoring, can be empty
-     * @param collections list of mongo collections names e.g. "users", can be empty
+     * @param collections list of Mongo collections names e.g. "users", can be empty
      * @param keepOtherCollections flag that shows if database should be dropped before the import process, can be empty
      *
      * @throws IOException  in case reading from file operation produces an error or dump files are absent
@@ -79,10 +79,10 @@ class MongoService {
     }
 
     /**
-     * Exports single mongo collection to a JSON file.
+     * Exports single Mongo collection to a JSON file.
      *
      * @param path path to a folder where the files should be stored
-     * @param collectionName name of a mongo collection to be stored
+     * @param collectionName name of a Mongo collection to be stored
      *
      * @throws IOException in case writing to file operation produces an error
      */
@@ -111,10 +111,10 @@ class MongoService {
     }
 
     /**
-     * Imports single mongo collection from a JSON file. Drops collection in order to get clear state before import.
+     * Imports single Mongo collection from a JSON file. Drops collection in order to get clear state before import.
      *
      * @param path path to a folder with dump file to be used for restoring
-     * @param collectionName name of a mongo collection
+     * @param collectionName name of a Mongo collection
      *
      * @throws IOException in case reading from file operation produces an error
      */
@@ -141,9 +141,9 @@ class MongoService {
     }
 
     /**
-     * Returns a list of collections names from a specific mongo dump.
+     * Returns a list of collections names from a specific Mongo dump.
      *
-     * @param path path to mongo dump
+     * @param path path to Mongo dump
      *
      * @return list of collections names
      */

@@ -8,6 +8,9 @@ import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
 import com.sysgears.seleniumbundle.core.mongodb.DBConnection
 import com.sysgears.seleniumbundle.core.mongodb.MongoService
 
+/**
+ * The command restores Mongo database from given dump.
+ */
 class MongoRestoreCommand extends AbstractCommand {
 
     /**
@@ -16,7 +19,7 @@ class MongoRestoreCommand extends AbstractCommand {
     private Map <String, ?> properties
 
     /**
-     * Connection to mongodb.
+     * Connection to Mongo.
      */
     private MongoDatabase database
 
