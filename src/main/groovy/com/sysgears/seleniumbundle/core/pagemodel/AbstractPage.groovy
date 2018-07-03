@@ -89,7 +89,7 @@ abstract class AbstractPage<T> implements UIComparison {
      */
     T hideElement(SelenideElement... elements) {
         elements.each {
-            Selenide.executeJavaScript("arguments[0].style.visibility='hidden'", elements)
+            Selenide.executeJavaScript("arguments[0].style.visibility='hidden'", it)
         }
         (T) this
     }
