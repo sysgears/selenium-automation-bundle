@@ -1,0 +1,11 @@
+GooglePage:
+  - "#selector1"
+  - ".selector2"
+
+# If you have a structure of POMs something like: src/main/groovy/com/sysgears/seleniumbundle/pagemodel/parentFolder/->
+# anotherFolder/YourPage, you have to use the structure below:
+parentFolder:
+  anotherFolder:
+    YourPage:
+      - "#selector1"
+      - "#selector2"
