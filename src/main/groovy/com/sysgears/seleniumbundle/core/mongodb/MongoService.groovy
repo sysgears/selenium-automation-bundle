@@ -28,7 +28,7 @@ class MongoService {
      * Creates an instance of MongoService.
      *
      * @param database connection to Mongo database
-     * @param dumpPath project properties
+     * @param dumpPath path to parent folder with all dumps
      */
     MongoService(MongoDatabase database, String dumpPath) {
         this.database = database
@@ -38,7 +38,8 @@ class MongoService {
     /**
      * Exports multiple Mongo collections to Json file.
      *
-     * @param subPath sub-path to a folder where the files should be stored, can be empty
+     * @param subPath sub-path to a folder where the files should be stored, if empty, files will be stored into
+     * "default" folder
      * @param collections list of Mongo collections names e.g. "users", can be empty
      *
      * @throws IOException in case writing to file operation produces an error
@@ -51,8 +52,8 @@ class MongoService {
     }
 
     /**
-     * Imports multiple Mongo collections to a JSON file. Depending on flag keepOtherCollections drops the database
-     * in order to remove collections that are not present in dump files.
+     * Imports multiple Mongo collections to a JSON file. Drops the database in order to clean database state before
+     * import.
      *
      * @param subPath sub-path to a dump folder that should be used for restoring, can be empty
      * @param collections list of Mongo collections names e.g. "users", can be empty
@@ -60,18 +61,16 @@ class MongoService {
      *
      * @throws IOException  in case reading from file operation produces an error or dump files are absent
      */
-    void importMongoCollectionsFromJson(String subPath = null, List<String> collections = null,
-                                        boolean keepOtherCollections = false) throws IOException {
-
+    void importMongoCollectionsFromJson(String subPath = null, List<String> collections = null) throws IOException {
         def path = "${dumpPath}/${subPath ?: "default"}"
         def dumpCollections = getCollectionsNamesFromDump(path)
 
-        if (!keepOtherCollections) {
-            dumpCollections ? database.drop() : {
-                log.info("You have no dump file to restore database from")
-                throw new IOException("You have no dump file to restore database from")
-            }()
+        if (!dumpCollections) {
+            log.info("You have no dump file to restore database from")
+            throw new IOException("You have no dump file to restore database from")
         }
+
+        database.drop()
 
         (collections ?: dumpCollections).each {
             importMongoCollectionFromJson(path, it)
@@ -89,7 +88,7 @@ class MongoService {
     private void exportMongoCollectionToJson(String path, String collectionName) throws IOException {
         def collection = database.getCollection(collectionName)
 
-        // Making folder tree
+        // making folder tree
         new File(path).mkdirs()
 
         def writer = new BufferedWriter(new FileWriter(PathHelper.convertPathForPlatform("$path/${collectionName}.json")))
@@ -104,10 +103,9 @@ class MongoService {
         } catch (IOException e) {
             log.info("Unable to export [$collectionName] collection")
             throw new IOException("Unable to export [$collectionName] collection", e)
-        } finally {
-            writer.close()
-            log.info("Import process for [$collectionName] collection completed")
         }
+
+        log.info("Import process for [$collectionName] collection completed")
     }
 
     /**
@@ -121,9 +119,6 @@ class MongoService {
     private void importMongoCollectionFromJson(String path, String collectionName) throws IOException {
         def collection = database.getCollection(collectionName)
 
-        // dropping collection to get clear state before import
-        collection.drop()
-
         def file = new File(PathHelper.convertPathForPlatform("$path/${collectionName}.json"))
         def reader = new BufferedReader(new StringReader(normalizeJSON(file)))
         try {
@@ -135,9 +130,9 @@ class MongoService {
         } catch (IOException e) {
             log.info("Unable to import [$collectionName] collection")
             throw new IOException("Unable to import [$collectionName] collection", e)
-        } finally {
-            log.info("Import process for [$collectionName] collection completed")
         }
+
+        log.info("Import process for [$collectionName] collection completed")
     }
 
     /**
