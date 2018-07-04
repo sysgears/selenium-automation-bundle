@@ -17,7 +17,7 @@ class DBConnection {
     /**
      * Name of the database.
      */
-    private String databaseName
+    private final String databaseName
 
     /**
      * Instance of the database.
@@ -30,6 +30,17 @@ class DBConnection {
     private MongoClient client
 
     /**
+     * Constructor for the database connection. Accepts configured Mongo client.
+     *
+     * @param client configured Mongo client instance
+     * @param dbName database name
+     */
+    DBConnection(String dbName, MongoClient client) {
+        databaseName = dbName
+        this.client = client
+    }
+
+    /**
      * Constructor for the database connection without authentication.
      *
      * @param host mongo server address or alias
@@ -37,14 +48,7 @@ class DBConnection {
      * @param dbName database name
      */
     DBConnection(String dbName, String host, String port) {
-        databaseName = dbName
-
-        def settings = MongoClientSettings.builder()
-                .applyToClusterSettings({ builder ->
-            builder.hosts([new ServerAddress(host, port as int)])
-        })
-                .build()
-        client = MongoClients.create(settings)
+        this(dbName, MongoClients.create(settingsBuilder(host, port)))
     }
 
     /**
@@ -56,15 +60,7 @@ class DBConnection {
      * @param credential user's credential that should be used for authentication
      */
     DBConnection(String dbName, String host, String port, MongoCredential credential) {
-        databaseName = dbName
-
-        def settings = MongoClientSettings.builder()
-                .applyToClusterSettings({ builder ->
-            builder.hosts([new ServerAddress(host, port as int)])
-        })
-                .credential(credential)
-                .build()
-        client = MongoClients.create(settings)
+        this(dbName, MongoClients.create(settingsBuilder(host, port, credential)))
     }
 
     /**
@@ -79,19 +75,6 @@ class DBConnection {
      */
     DBConnection(String dbName, String host, String port, String userName, String password, String authDb) {
         this(dbName, host, port, MongoCredential.createCredential(userName, authDb, password as char[]))
-
-        databaseName = dbName
-    }
-
-    /**
-     * Constructor for the database connection. Accepts configured Mongo client.
-     *
-     * @param client configured Mongo client instance
-     * @param dbName database name
-     */
-    DBConnection(String dbName, MongoClient client) {
-        databaseName = dbName
-        this.client = client
     }
 
     /**
@@ -106,6 +89,23 @@ class DBConnection {
             database = client.getDatabase(databaseName).withCodecRegistry(codecRegistry)
         }
         database
+    }
+
+    /**
+     * Prepares Mongo client settings objects
+     *
+     * @param host
+     * @param port
+     * @param credential
+     * @return
+     */
+    private MongoClientSettings settingsBuilder(String host, String port, MongoCredential credential = null) {
+        def builder = MongoClientSettings.builder()
+                .applyToClusterSettings({ builder ->
+            builder.hosts([new ServerAddress(host, port as int)])
+        })
+
+        (credential ? builder.credential(credential) : builder).build()
     }
 }
 
