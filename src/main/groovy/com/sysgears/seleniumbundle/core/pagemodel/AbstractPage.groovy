@@ -78,36 +78,6 @@ abstract class AbstractPage<T> {
     }
 
     /**
-     * Sets CSS style visibility to hidden in order to hide an element.
-     *
-     * @param elements element which has to be hidden
-     *
-     * @return page object
-     */
-    T hideElement(SelenideElement... elements) {
-        elements.each {
-            Selenide.executeJavaScript("arguments[0].style.visibility='hidden'", it)
-        }
-        (T) this
-    }
-
-    /**
-     * Sets CSS style visibility to hidden in order to hide a collection of elements.
-     *
-     * @param elementsCollections collection of elements which has to be hidden
-     *
-     * @return page object
-     */
-    T hideElement(ElementsCollection... elementsCollections) {
-        elementsCollections.each { collection ->
-            collection.each {
-                hideElement(it)
-            }
-        }
-        (T) this
-    }
-
-    /**
      * Checks if the static elements of the page object are loaded and exist in DOM.
      *
      * @return page object
@@ -136,6 +106,36 @@ abstract class AbstractPage<T> {
             }
         }
         log.info("${this.getClass().getSimpleName()} has been loaded")
+        (T) this
+    }
+
+    /**
+     * Sets CSS style visibility to hidden in order to hide an element.
+     *
+     * @param elements element which has to be hidden
+     *
+     * @return page object
+     */
+    protected T hideElement(SelenideElement... elements) {
+        elements.each {
+            Selenide.executeJavaScript("arguments[0].style.visibility='hidden'", it)
+        }
+        (T) this
+    }
+
+    /**
+     * Sets CSS style visibility to hidden in order to hide a collection of elements.
+     *
+     * @param elementsCollections collection of elements which has to be hidden
+     *
+     * @return page object
+     */
+    protected T hideElement(ElementsCollection... elementsCollections) {
+        elementsCollections.each { collection ->
+            collection.each {
+                hideElement(it)
+            }
+        }
         (T) this
     }
 }
