@@ -7,7 +7,6 @@ import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
 import groovy.transform.Synchronized
-import org.bson.codecs.configuration.CodecRegistry
 
 /**
  * Provides connection to the database.
@@ -84,9 +83,8 @@ class DBConnection {
      */
     @Synchronized
     MongoDatabase getDatabase() {
-        CodecRegistry codecRegistry = new CustomCodecRegistry()
         if (!database) {
-            database = client.getDatabase(databaseName).withCodecRegistry(codecRegistry)
+            database = client.getDatabase(databaseName).withCodecRegistry(new CustomCodecRegistry())
         }
         database
     }
