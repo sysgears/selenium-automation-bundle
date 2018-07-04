@@ -46,10 +46,10 @@ class Config {
     String os
 
     /**
-     * Browser name.
+     * Browser properties.
      */
     @ImplicitInit
-    Map<String, String> browser
+    Map<String, ?> browser
 
     /**
      * Project properties map.

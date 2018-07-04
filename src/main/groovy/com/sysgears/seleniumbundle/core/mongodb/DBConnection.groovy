@@ -9,7 +9,7 @@ import com.mongodb.client.MongoDatabase
 import groovy.transform.Synchronized
 
 /**
- * Provides connection to the database.
+ * Provides threadsafe connection to the database.
  */
 class DBConnection {
 
@@ -26,7 +26,7 @@ class DBConnection {
     /**
      * Mongo client, representation of a MongoDB cluster.
      */
-    private MongoClient client
+    private final MongoClient client
 
     /**
      * Constructor for the database connection. Accepts configured Mongo client.
