@@ -66,7 +66,16 @@ dependencies {
             ['io.qameta.allure:allure-testng:2.6.0'],
 
             // Logging
-            ['ch.qos.logback:logback-classic:1.2.3']
+            ['ch.qos.logback:logback-classic:1.2.3'],
+
+            // Google API client
+            ['com.google.api-client:google-api-client:1.23.0'],
+
+            // Google OAuth
+            ['com.google.oauth-client:google-oauth-client-jetty:1.23.0'],
+
+            // Google Drive API services
+            ['com.google.apis:google-api-services-drive:v3-rev110-1.23.0']
     )
 }
 
