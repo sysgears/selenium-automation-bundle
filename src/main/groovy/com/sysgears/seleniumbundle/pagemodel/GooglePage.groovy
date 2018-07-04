@@ -2,20 +2,15 @@ package com.sysgears.seleniumbundle.pagemodel
 
 import com.codeborne.selenide.SelenideElement
 import com.codeborne.selenide.WebDriverRunner
-import com.sysgears.seleniumbundle.core.pagemodel.AbstractPage
+import com.sysgears.seleniumbundle.core.pagemodel.AbstractPageWithUIComparison
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
 import com.sysgears.seleniumbundle.core.uicomparison.ScreenshotHandler
-import groovy.util.logging.Slf4j
 import io.qameta.allure.Step
 import org.openqa.selenium.By
 
 import static com.codeborne.selenide.Selenide.$
 
-/**
- * Slf4j annotation is required for each page as it will be used during UI comparison.
- */
-@Slf4j
-class GooglePage extends AbstractPage<GooglePage> {
+class GooglePage extends AbstractPageWithUIComparison<GooglePage> {
 
     @StaticElement
     private SelenideElement queryField = $(By.name("q"))

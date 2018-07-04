@@ -1,16 +1,14 @@
-package com.sysgears.seleniumbundle.core.uicomparison
+package com.sysgears.seleniumbundle.core.pagemodel
 
+import com.sysgears.seleniumbundle.core.uicomparison.AShotFactory
+import com.sysgears.seleniumbundle.core.uicomparison.ScreenshotHandler
+import com.sysgears.seleniumbundle.core.uicomparison.ScreenshotLoader
 import com.sysgears.seleniumbundle.core.utils.AllureHelper
-import groovy.util.logging.Slf4j
 import ru.yandex.qatools.ashot.Screenshot
 
 import java.awt.image.BufferedImage
 
-/**
- * Provides additional methods for interactions with screenshots and page layout.
- */
-@Slf4j
-trait UIComparison<T> {
+abstract class AbstractPageWithUIComparison<T> extends AbstractPage<AbstractPageWithUIComparison> {
 
     /**
      * Instance of AllureHelper.
