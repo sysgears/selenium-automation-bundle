@@ -2,7 +2,6 @@ package com.sysgears.seleniumbundle.core.pagemodel
 
 import com.codeborne.selenide.*
 import com.sysgears.seleniumbundle.core.conf.Config
-import com.sysgears.seleniumbundle.core.data.DataLoader
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
 import com.sysgears.seleniumbundle.core.uicomparison.UIComparison
 import groovy.util.logging.Slf4j
@@ -10,7 +9,6 @@ import org.openqa.selenium.Keys
 
 import java.lang.reflect.Field
 
-import static com.codeborne.selenide.Selenide.$
 import static com.codeborne.selenide.WebDriverRunner.url
 import static org.testng.Assert.assertTrue
 
@@ -19,11 +17,6 @@ import static org.testng.Assert.assertTrue
  */
 @Slf4j
 abstract class AbstractPage<T> implements UIComparison {
-
-    /**
-     * Package where your page object models are stored.
-     */
-    private static final POMPACKAGE = "com.sysgears.seleniumbundle.pagemodel."
 
     /**
      * Instance of Config.
@@ -116,30 +109,6 @@ abstract class AbstractPage<T> implements UIComparison {
     }
 
     /**
-     * Hides elements on given page for UI comparison.
-     *
-     * @param page class of a page yo hide elements on
-     *
-     * @return page object
-     */
-    T hideElementsFromFile(Class page) {
-        getElementsToHideFromFile(page).each {
-            hideElement(it)
-        }
-        (T) this
-    }
-
-    /**
-     * Hides elements of current page for UI comparison.
-     *
-     * @return page object
-     */
-    T hideElementsFromFile() {
-        hideElementsFromFile(this.class)
-        (T) this
-    }
-
-    /**
      * Checks if the static elements of the page object are loaded and exist in DOM.
      *
      * @return page object
@@ -169,25 +138,5 @@ abstract class AbstractPage<T> implements UIComparison {
         }
         log.info("${this.getClass().getSimpleName()} has been loaded")
         (T) this
-    }
-
-    /**
-     * Gets list of elements to hide on given page. Path to file with element locators saved in configuration file.
-     *
-     * @param classOfPage page on which the elements have to be hidden
-     *
-     * @return list of elements to hide
-     */
-    private List<SelenideElement> getElementsToHideFromFile(Class classOfPage) {
-        def data = DataLoader.readMapFromYml(conf.ui.hiddenElements)
-        def className = classOfPage.name - POMPACKAGE
-        def selectorsList = (data as ConfigObject).flatten()."$className"
-
-        if (!selectorsList) {
-            log.error("No elements to hide on [$className].")
-            throw new IllegalArgumentException("No elements to hide on [$className].")
-        }
-
-        selectorsList.collect { $(it as String) }
     }
 }
