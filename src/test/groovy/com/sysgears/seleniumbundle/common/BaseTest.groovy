@@ -13,7 +13,8 @@ import net.lightbody.bmp.BrowserMobProxyServer
 import org.openqa.selenium.Dimension
 import org.testng.annotations.*
 
-import static com.codeborne.selenide.Selenide.*
+import static com.codeborne.selenide.Selenide.clearBrowserCookies
+import static com.codeborne.selenide.Selenide.executeJavaScript
 import static com.codeborne.selenide.WebDriverRunner.clearBrowserCache
 import static com.sysgears.seleniumbundle.core.webdriver.Driver.HEADLESS
 import static com.sysgears.seleniumbundle.core.webdriver.Driver.getDriverType
@@ -89,7 +90,7 @@ class BaseTest {
                 : DriverInitializer.createRemoteDriver(conf.remoteUrl, os, browser, browserProxy.seleniumProxy)
 
         def size = new Dimension(conf.browser.width as Integer, conf.browser.height as Integer)
-        if (getDriverType(conf.browser.name) != HEADLESS) driver.manage().window().setSize(size)
+        if (getDriverType(conf.browser.name as String) != HEADLESS) driver.manage().window().setSize(size)
 
         WebDriverRunner.setWebDriver(driver)
     }
@@ -106,7 +107,7 @@ class BaseTest {
     void logout() {
         clearBrowserCache()
         clearBrowserCookies()
-        clearBrowserLocalStorage()
+        //clearBrowserLocalStorage()
         executeJavaScript("sessionStorage.clear();")
     }
 }

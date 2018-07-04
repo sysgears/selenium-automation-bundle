@@ -23,3 +23,16 @@ ui {
     }
     ignoredElements = "src/test/resources/ignored_elements.yml" // a list of ignored elements for page objects
 }
+
+// mongodb configuration
+mongodb {
+    dbName = "testdb"
+    host = "localhost"
+    port = "27017"
+    auth {
+        username = "enter username"
+        password = "enter user password"
+        authDb = "enter authentication database name" //database with authentication records
+    }
+    dumpPath = "src/test/resources/data/dump" // path to root dump folder
+}

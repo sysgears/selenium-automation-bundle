@@ -46,15 +46,15 @@ class Config {
     String os
 
     /**
-     * Browser name.
+     * Browser properties.
      */
     @ImplicitInit
-    Map<String, String> browser
+    Map<String, ?> browser
 
     /**
      * Project properties map.
      */
-    final Map<String, String> properties = [:]
+    final Map<String, ?> properties = [:]
 
     /**
      * Creates an instance of Config.

@@ -15,7 +15,7 @@ class PathHelper {
      * @return converted path
      */
     static String convertToUnixLike(String path) {
-        path.replace(File.separatorChar, '/' as char)
+        path.replaceAll("\\\\", "/")
     }
 
     /**
@@ -28,5 +28,9 @@ class PathHelper {
      */
     static String getRelativePath(String pathToModify, String basePath) {
         pathToModify - FilenameUtils.separatorsToSystem(basePath)
+    }
+
+    static String convertPathForPlatform(String path) {
+        path.replaceAll(/[\\|\/]/, File.separator)
     }
 }
