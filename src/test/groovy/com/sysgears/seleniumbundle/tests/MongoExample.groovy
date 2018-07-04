@@ -1,7 +1,6 @@
 package com.sysgears.seleniumbundle.tests
 
-import com.sysgears.seleniumbundle.common.FunctionalTest
-import com.sysgears.seleniumbundle.core.mongodb.MongoService
+import com.sysgears.seleniumbundle.common.FunctionalTestWithMongo
 import com.sysgears.seleniumbundle.core.mongodb.dao.UserDAO
 import com.sysgears.seleniumbundle.core.mongodb.entities.User
 import com.sysgears.seleniumbundle.core.mongodb.entities.user.Address
@@ -10,11 +9,14 @@ import org.testng.Assert
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
-class MongoExample extends FunctionalTest {
+/**
+ * Demonstrates simple use cases of Mongo module.
+ */
+class MongoExample extends FunctionalTestWithMongo {
 
     @BeforeMethod
     void restoreDatabase() {
-        new MongoService(dbConnection.database, conf.properties.mongodb.dumpPath).importMongoCollectionsFromJson()
+        mongoService.importMongoCollectionsFromJson()
     }
 
 

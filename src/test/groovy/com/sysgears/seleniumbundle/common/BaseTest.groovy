@@ -5,16 +5,17 @@ import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.WebDriverRunner
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.data.DataMapper
-import com.sysgears.seleniumbundle.core.mongodb.DBConnection
 import com.sysgears.seleniumbundle.core.proxy.BrowserProxy
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
 import net.lightbody.bmp.BrowserMobProxyServer
 import org.openqa.selenium.Dimension
 import org.testng.annotations.*
 
-import static com.codeborne.selenide.Selenide.*
+import static com.codeborne.selenide.Selenide.clearBrowserCookies
+import static com.codeborne.selenide.Selenide.executeJavaScript
 import static com.codeborne.selenide.WebDriverRunner.clearBrowserCache
-import static com.sysgears.seleniumbundle.core.webdriver.Driver.*
+import static com.sysgears.seleniumbundle.core.webdriver.Driver.HEADLESS
+import static com.sysgears.seleniumbundle.core.webdriver.Driver.getDriverType
 
 /**
  * The main configuration class for tests execution. Sets global properties, initializes WebDriver, configures Selenide,
@@ -49,11 +50,6 @@ class BaseTest {
     protected String browser
 
     /**
-     * Connection to database
-     */
-    protected DBConnection dbConnection
-
-    /**
      * Sets Selenide global configuration properties. Static configuration of Selenide is thread safe. They are set as a
      * global parameters per suite before starting parallel threads.
      */
@@ -63,17 +59,6 @@ class BaseTest {
         Configuration.baseUrl = conf.baseUrl // sets base url for the application under the test
         Configuration.screenshots = false // disables screenshot for failed tests
         Configuration.savePageSource = false // prevents page source saving for failed tests
-    }
-
-    /**
-     * Initialization of connection to mongo database.
-     */
-    @BeforeSuite(alwaysRun = true)
-    void initDBConnection() {
-        def properties = conf.properties.mongodb
-
-        dbConnection = new DBConnection(properties.dbName, properties.host, properties.port, properties.auth.username,
-        properties.auth.password, properties.auth.authDb)
     }
 
     @BeforeClass(alwaysRun = true)
@@ -94,7 +79,7 @@ class BaseTest {
                 : DriverInitializer.createRemoteDriver(conf.remoteUrl, os, browser, browserProxy.seleniumProxy)
 
         def size = new Dimension(conf.browser.width as Integer, conf.browser.height as Integer)
-        if (getDriverType(conf.browser.name) != HEADLESS) driver.manage().window().setSize(size)
+        if (getDriverType(conf.browser.name as String) != HEADLESS) driver.manage().window().setSize(size)
 
         WebDriverRunner.setWebDriver(driver)
     }
