@@ -97,7 +97,7 @@ class DBConnection {
      * @param credential
      * @return
      */
-    private MongoClientSettings settingsBuilder(String host, String port, MongoCredential credential = null) {
+    private static MongoClientSettings settingsBuilder(String host, String port, MongoCredential credential = null) {
         def builder = MongoClientSettings.builder()
                 .applyToClusterSettings({ builder ->
             builder.hosts([new ServerAddress(host, port as int)])
