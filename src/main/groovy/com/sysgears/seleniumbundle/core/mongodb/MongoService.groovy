@@ -103,6 +103,8 @@ class MongoService {
         } catch (IOException e) {
             log.info("Unable to export [$collectionName] collection")
             throw new IOException("Unable to export [$collectionName] collection", e)
+        } finally {
+            writer.close()
         }
 
         log.info("Import process for [$collectionName] collection completed")
