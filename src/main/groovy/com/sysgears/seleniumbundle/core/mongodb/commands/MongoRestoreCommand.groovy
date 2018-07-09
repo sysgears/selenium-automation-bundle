@@ -60,12 +60,12 @@ class MongoRestoreCommand extends AbstractCommand {
     MongoRestoreCommand(Map<String, List<String>> arguments, Config conf) {
         super(arguments, conf)
         properties = conf.properties.mongodb as Map
-        String dbName = properties.dbName,
-               host = properties.host,
-               port = properties.port,
-               username = properties.auth.username,
-               password = properties.auth.password,
-               authDb = properties.auth.authDb
+        def dbName = properties.dbName,
+            host = properties.host,
+            port = properties.port,
+            username = properties.auth.username,
+            password = properties.auth.password,
+            authDb = properties.auth.authDb
 
         DBConnection dbConnection
 
