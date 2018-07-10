@@ -52,7 +52,7 @@ class CommandFinder {
         }.findResult {
             def clazz = Class.forName(getClassName(it.path))
 
-            (clazz.getSuperclass() == AbstractCommand) ? clazz : null
+            (isAncestorCorrect(clazz, AbstractCommand)) ? clazz : null
         }?.newInstance(commandArgs.arguments, conf) as ICommand
 
         command ?: {
@@ -68,5 +68,23 @@ class CommandFinder {
     private String getClassName(String filePath) {
         (filePath - FilenameUtils.separatorsToSystem(GROOVY_SOURCE_PATH) - ".groovy")
                 .split(File.separator).join(".")
+    }
+
+    /**
+     * Checks if a class or any of its ancestors have a target class as superclass.
+     *
+     * @param clazz class to start the check from
+     * @param targetClass expected ancestor
+     *
+     * @return true if class has a target class as one of the ancestors, false otherwise
+     */
+    private String isAncestorCorrect(Class clazz, Class targetClass) {
+        def ancestor = clazz.getSuperclass()
+
+        if (!ancestor) {
+            return false
+        }
+
+        (ancestor == targetClass) ? true : isAncestorCorrect(ancestor, targetClass)
     }
 }

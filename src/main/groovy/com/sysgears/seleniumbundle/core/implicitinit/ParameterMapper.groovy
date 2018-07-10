@@ -3,6 +3,8 @@ package com.sysgears.seleniumbundle.core.implicitinit
 import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
 import groovy.util.logging.Slf4j
 
+import java.lang.reflect.Field
+
 /**
  * Provides methods for initializing and validating objects fields that have the {@link ImplicitInit} annotation.
  */
@@ -19,9 +21,7 @@ class ParameterMapper {
      * or the value doesn't match the validation pattern
      */
     void initParameters(Object object, Map<String, ?> arguments) throws IllegalArgumentException {
-        object.getClass().getDeclaredFields().findAll {
-            it.getAnnotation(ImplicitInit.class)
-        }.each { field ->
+        getFieldsToInitialize(object.getClass()).each { field ->
             def name = field.name
             def value = arguments.entrySet().find { it.key.equalsIgnoreCase(name) }?.value
             def annotation = field.getAnnotation(ImplicitInit.class)
@@ -78,5 +78,21 @@ class ParameterMapper {
         // Casting to ConfigObject is used to flatten the nested maps
         def values = (arguments as ConfigObject).flatten().values().toList()
         validate(values, pattern)
+    }
+
+    /**
+     * Gets all declared fields with {@link ImplicitInit} annotation of a given class and its ancestors.
+     *
+     * @param clazz class to get fields from
+     *
+     * @return list of fields of a class and all its ancestors
+     */
+    private List<Field> getFieldsToInitialize(Class clazz) {
+        def ancestor = clazz.getSuperclass()
+        def fields = clazz.getDeclaredFields().findAll {
+            it.getAnnotation(ImplicitInit.class)
+        }
+
+        ancestor ? fields += getFieldsToInitialize(ancestor) : fields
     }
 }

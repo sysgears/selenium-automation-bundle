@@ -39,7 +39,7 @@ class CommandArgs {
 
         arguments = (cliArguments =~ /-([^=]+)=(\S+)/).with { matcher ->
             matcher.find() ? matcher.collect { List<String> it ->
-                [(it[1]): it[2].contains(",") ? it[2].split(",").toList() : it[2]]
+                [(it[1]): it[2].split(",").toList()]
             }.collectEntries() : [:]
         }
     }
