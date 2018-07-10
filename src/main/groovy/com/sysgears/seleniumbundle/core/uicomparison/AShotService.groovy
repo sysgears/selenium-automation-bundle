@@ -1,34 +1,56 @@
-package com.sysgears.seleniumbundle.core.pagemodel
+package com.sysgears.seleniumbundle.core.uicomparison
 
-import com.sysgears.seleniumbundle.core.uicomparison.AShotFactory
-import com.sysgears.seleniumbundle.core.uicomparison.ScreenshotHandler
-import com.sysgears.seleniumbundle.core.uicomparison.ScreenshotLoader
+import com.codeborne.selenide.WebDriverRunner
 import com.sysgears.seleniumbundle.core.utils.AllureHelper
+import groovy.util.logging.Slf4j
 import ru.yandex.qatools.ashot.Screenshot
 
 import java.awt.image.BufferedImage
 
-abstract class AbstractPageWithUIComparison<T> extends AbstractPage<AbstractPageWithUIComparison> {
+@Slf4j
+class AShotService {
 
     /**
      * Instance of AllureHelper.
      */
-    AllureHelper allure = new AllureHelper()
+    private AllureHelper allure = new AllureHelper()
 
     /**
      * Instance of AShot factory.
      */
-    AShotFactory aShotFactory = new AShotFactory(conf)
+    private AShotFactory aShotFactory = new AShotFactory(conf)
 
     /**
      * Instance of ScreenshotHandler.
      */
-    ScreenshotHandler handler
+    private ScreenshotHandler handler = new ScreenshotHandler(aShotFactory.getAShotForPage(os, browser),
+            WebDriverRunner.getWebDriver())
 
     /**
      * Instance of ScreenshotLoader.
      */
     private ScreenshotLoader screenshotLoader = new ScreenshotLoader()
+
+    /**
+     * OS name.
+     */
+    private String os
+
+    /**
+     * Browser name.
+     */
+    private String browser
+
+    /**
+     * Creates an instance of AShotService.
+     *
+     * @param os name of the os
+     * @param browser name of the os
+     */
+    AShotService(String os, String browser) {
+        this.os = os
+        this.browser = browser
+    }
 
     /**
      * Generates paths to screenshots by a given screenshot name.
@@ -51,13 +73,11 @@ abstract class AbstractPageWithUIComparison<T> extends AbstractPage<AbstractPage
      *
      * @param screenshotName name of the screenshot
      *
-     * @return instance of the page
-     *
      * @throws IOException is thrown if there is no baseline screenshot during comparison or file with ignored
      * elements wasn't found
      * @throws AssertionError is thrown if layout of the screenshot doesn't match to the baseline screenshot.
      */
-    T compareLayout(String screenshotName) throws IOException, AssertionError {
+    void compareLayout(String screenshotName) throws IOException, AssertionError {
         def fullPaths = getPathsForScreenshot(screenshotName)
 
         Screenshot screenshot = handler.capture()
@@ -92,6 +112,5 @@ abstract class AbstractPageWithUIComparison<T> extends AbstractPage<AbstractPage
                 throw new IOException("No baseline screenshot found.", e)
             }
         }
-        (T) this
     }
 }

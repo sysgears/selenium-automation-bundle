@@ -41,8 +41,10 @@ class AShotFactory {
      *
      * @throws FileNotFoundException if the file with ignored elements was not found
      */
-    AShot getAShotForPage(String os, String browser, Class clazz) throws FileNotFoundException {
-        getAShot(os, browser).ignoredElements(getSetOfIgnoredElements(clazz))
+    AShot getAShotForPage(String os, String browser, Class clazz = null) throws FileNotFoundException {
+        def aShot = getAShot(os, browser)
+
+        clazz ? aShot.ignoredElements(getSetOfIgnoredElements(clazz)) : aShot
     }
 
     /**

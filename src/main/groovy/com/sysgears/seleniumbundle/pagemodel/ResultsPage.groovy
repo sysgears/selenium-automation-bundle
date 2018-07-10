@@ -1,16 +1,16 @@
 package com.sysgears.seleniumbundle.pagemodel
 
 import com.codeborne.selenide.*
-import com.sysgears.seleniumbundle.core.pagemodel.AbstractPageWithUIComparison
+import com.sysgears.seleniumbundle.core.pagemodel.AbstractPage
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
-import com.sysgears.seleniumbundle.core.uicomparison.ScreenshotHandler
+import com.sysgears.seleniumbundle.core.uicomparison.AShotService
 import io.qameta.allure.Step
 import org.testng.Assert
 
 import static com.codeborne.selenide.Selenide.$
 import static com.codeborne.selenide.Selenide.$$
 
-class ResultsPage extends AbstractPageWithUIComparison<ResultsPage> {
+class ResultsPage extends AbstractPage<ResultsPage> {
 
     @StaticElement
     private SelenideElement toolsButton = $("#hdtb-tls")
@@ -24,11 +24,8 @@ class ResultsPage extends AbstractPageWithUIComparison<ResultsPage> {
     ResultsPage() {
     }
 
-    ResultsPage(String os, String browser) {
-        this.os = os
-        this.browser = browser
-        handler = new ScreenshotHandler(aShotFactory.getAShotForPage(os, browser, getClass()),
-                WebDriverRunner.getWebDriver())
+    ResultsPage(AShotService aShotService) {
+        this.aShotService = aShotService
     }
 
     @Step("Select category")
