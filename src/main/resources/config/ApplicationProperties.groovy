@@ -23,3 +23,11 @@ ui {
     }
     ignoredElements = "src/test/resources/ignored_elements.yml" // a list of ignored elements for page objects
 }
+
+google {
+    drive {
+        applicationName = "Example" // name of the application, it is required by Google
+        credentials = "credentials" // path to store authorized credentials
+        clientSecret = "client_secret.json" // path to file with secret filter
+    }
+}
