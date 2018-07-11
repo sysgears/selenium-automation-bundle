@@ -75,7 +75,11 @@ dependencies {
             ['com.google.oauth-client:google-oauth-client-jetty:1.23.0'],
 
             // Google Drive API services
-            ['com.google.apis:google-api-services-drive:v3-rev110-1.23.0']
+            ['com.google.apis:google-api-services-drive:v3-rev110-1.23.0'],
+
+            // driver for connection to mongodb
+            ['org.mongodb:mongo-java-driver:3.7.1']
+
     )
 }
 
