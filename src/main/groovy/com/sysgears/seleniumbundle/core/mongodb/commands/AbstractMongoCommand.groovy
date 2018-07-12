@@ -44,23 +44,12 @@ abstract class AbstractMongoCommand extends AbstractCommand {
     AbstractMongoCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)
 
-        def properties = conf.properties.mongodb as Map
-        def dbName = properties.dbName,
-            host = properties.host,
-            port = properties.port,
-            username = properties.auth.username,
-            password = properties.auth.password,
-            authDb = properties.auth.authDb
+        def mongoConf = (conf.properties.mongodb as ConfigObject).flatten()
+        def properties = ["dbName", "host", "port", "auth.username", "auth.password", "auth.authDb"]
+                .collect { mongoConf."$it" }.findAll()
 
-        DBConnection dbConnection
-
-        if (connectionString) {
-            dbConnection = new DBConnection(dbName, MongoClients.create(connectionString.first()))
-        } else if (username as Boolean && password as Boolean && authDb as Boolean) {
-            dbConnection = new DBConnection(dbName, host, port, username, password, authDb)
-        } else {
-            dbConnection = new DBConnection("testdb", "localhost", "27017")
-        }
+        def dbConnection = !connectionString ? properties as DBConnection :
+                new DBConnection(mongoConf.dbName, MongoClients.create(connectionString.first()))
 
         database = dbConnection.database
     }
