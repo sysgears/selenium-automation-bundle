@@ -52,7 +52,8 @@ class CommandFinder {
         }.findResult {
             def clazz = Class.forName(getClassName(it.path))
 
-            (isAncestorCorrect(clazz, AbstractCommand)) ? clazz : null
+            def tmp = (hasParent(clazz, AbstractCommand)) ? clazz : null
+            tmp
         }?.newInstance(commandArgs.arguments, conf) as ICommand
 
         command ?: {
@@ -71,20 +72,16 @@ class CommandFinder {
     }
 
     /**
-     * Checks if a class or any of its ancestors have a target class as superclass.
+     * Checks if a class or any of its superclasses has a target class as parent.
      *
      * @param clazz class to start the check from
-     * @param targetClass expected ancestor
+     * @param targetClass expected parent
      *
-     * @return true if class has a target class as one of the ancestors, false otherwise
+     * @return true if class has a target class as one of the superclasses, false otherwise
      */
-    private String isAncestorCorrect(Class clazz, Class targetClass) {
-        def ancestor = clazz.getSuperclass()
+    private Boolean hasParent(Class clazz, Class targetClass) {
+        def parent = clazz.getSuperclass()
 
-        if (!ancestor) {
-            return false
-        }
-
-        (ancestor == targetClass) ? true : isAncestorCorrect(ancestor, targetClass)
+        parent ? parent == targetClass ?: hasParent(parent, targetClass) : false
     }
 }
