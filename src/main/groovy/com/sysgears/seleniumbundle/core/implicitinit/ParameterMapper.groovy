@@ -81,18 +81,16 @@ class ParameterMapper {
     }
 
     /**
-     * Gets all declared fields with {@link ImplicitInit} annotation of a given class and its ancestors.
+     * Gets all declared fields with {@link ImplicitInit} annotation of a given class and its superclasses.
      *
      * @param clazz class to get fields from
      *
-     * @return list of fields of a class and all its ancestors
+     * @return list of fields of a class and all its superclasses which are annotated with {@link ImplicitInit}
      */
     private List<Field> getFieldsToInitialize(Class clazz) {
-        def ancestor = clazz.getSuperclass()
-        def fields = clazz.getDeclaredFields().findAll {
-            it.getAnnotation(ImplicitInit.class)
-        }
+        def parent = clazz.getSuperclass()
+        def fields = clazz.getDeclaredFields().findAll { it.getAnnotation(ImplicitInit.class) }
 
-        ancestor ? fields += getFieldsToInitialize(ancestor) : fields
+        parent ? fields += getFieldsToInitialize(parent) : fields
     }
 }
