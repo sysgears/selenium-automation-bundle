@@ -1,7 +1,7 @@
 package com.sysgears.seleniumbundle.listeners
 
 import com.codeborne.selenide.Screenshots
-import com.sysgears.seleniumbundle.core.utils.MethodHelper
+import com.sysgears.seleniumbundle.core.utils.AnnotationHelper
 import com.sysgears.seleniumbundle.listeners.exceptions.AllureAttachmentException
 import groovy.util.logging.Slf4j
 import io.qameta.allure.Allure
@@ -58,7 +58,7 @@ class AllureListener implements ITestListener {
      * @return true - if the listener is applied to class, false - if not
      */
     private boolean isListenerAppliedTo(Class testClass) {
-        Listeners listenersAnnotation = (Listeners) MethodHelper.getClassAnnotation(testClass, Listeners.class)
+        Listeners listenersAnnotation = (Listeners) AnnotationHelper.getClassAnnotation(testClass, Listeners.class)
         listenersAnnotation != null && (listenersAnnotation.value()).contains(this.class)
     }
 

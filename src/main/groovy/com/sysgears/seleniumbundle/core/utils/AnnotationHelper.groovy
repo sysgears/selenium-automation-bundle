@@ -9,7 +9,7 @@ import java.lang.reflect.Method
  * Helps to get configurations for test methods.
  */
 @Slf4j
-class MethodHelper {
+class AnnotationHelper {
 
     /**
      * Gets a list of all annotations defined for the method parameters.
