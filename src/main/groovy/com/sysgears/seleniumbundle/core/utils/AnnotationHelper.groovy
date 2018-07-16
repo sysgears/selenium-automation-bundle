@@ -35,8 +35,7 @@ class AnnotationHelper {
      * @return object of a given annotation, <code>null</code> if class hasn't such annotation
      */
     static Annotation getClassAnnotation(Class clazz, Class<Annotation> annotationClass) {
-        def annotation = clazz.getAnnotation(annotationClass)
-        annotation != null ? annotation :
-                clazz.superclass != null ? getClassAnnotation(clazz.superclass, annotationClass) : null
+        clazz.getAnnotation(annotationClass) ?:
+                clazz.superclass ? getClassAnnotation(clazz.superclass, annotationClass) : null
     }
 }

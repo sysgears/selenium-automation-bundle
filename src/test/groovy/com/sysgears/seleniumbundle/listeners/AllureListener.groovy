@@ -59,7 +59,7 @@ class AllureListener implements ITestListener {
      */
     private boolean isListenerAppliedTo(Class testClass) {
         Listeners listenersAnnotation = (Listeners) AnnotationHelper.getClassAnnotation(testClass, Listeners.class)
-        listenersAnnotation != null && (listenersAnnotation.value()).contains(this.class)
+        listenersAnnotation && (listenersAnnotation.value()).contains(this.class)
     }
 
     @Override
