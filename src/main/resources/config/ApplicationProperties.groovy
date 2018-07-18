@@ -3,9 +3,16 @@ package config
 // global configuration
 
 baseUrl = "https://google.co.uk"  // the URL to website under the test
-browser = "chrome"                // default browser to execute tests (chrome, firefox, microsoftedge, headless)
 os = System.getProperty("os.name").split(/\s/).first().toLowerCase() // OS identifier to configure environment
-gridUrl = null                     // a link to Selenium Grid
+remoteUrl = System.getProperty("test.remoteUrl") ?: null                     // a link to Selenium Grid
+withBrowsermobProxy = true          // adds Browsermob Proxy to drivers, can be set to false
+
+browser {
+    name = "chrome" // default browser to execute tests (chrome, firefox, microsoftedge, headless)
+    width = "1920"
+    height = "1080"
+    version = ""
+}
 
 // ui tests configuration
 ui {
@@ -15,5 +22,17 @@ ui {
         difference = "build/reports/tests/uicomparison/difference" // diff images
     }
     ignoredElements = "src/test/resources/ignored_elements.yml" // a list of ignored elements for page objects
-    hiddenElements = "src/test/resources/hidden_elements.yml" // a list of hidden elements for page objects
+}
+
+// mongodb configuration
+mongodb {
+    dbName = "testdb"
+    host = "localhost"
+    port = "27017"
+    auth {
+        username = "enter username"
+        password = "enter user password"
+        authDb = "enter authentication database name" //database with authentication records
+    }
+    dumpPath = "src/test/resources/data/dump" // path to root dump folder
 }

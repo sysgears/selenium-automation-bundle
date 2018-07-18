@@ -48,7 +48,7 @@ class CommandFinder {
         def command = FileHelper.getFiles(ROOT_DIR, "groovy").findAll {
             it.path.matches(/^(\w*${File.separator})*commands(${File.separator}\w*)*Command\.groovy$/)
         }.findAll {
-            getCommandName(it).toLowerCase() == commandArgs.name.toLowerCase()
+            getCommandName(it).equalsIgnoreCase(commandArgs.name)
         }.findResult {
             def clazz = Class.forName(getClassName(it.path))
 

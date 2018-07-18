@@ -23,7 +23,7 @@ class ParameterMapper {
             it.getAnnotation(ImplicitInit.class)
         }.each { field ->
             def name = field.name
-            def value = arguments."$name"
+            def value = arguments.entrySet().find { it.key.equalsIgnoreCase(name) }?.value
             def annotation = field.getAnnotation(ImplicitInit.class)
             def pattern = annotation.pattern()
 

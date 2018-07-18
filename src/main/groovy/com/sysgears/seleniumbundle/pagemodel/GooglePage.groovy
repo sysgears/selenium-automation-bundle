@@ -24,7 +24,7 @@ class GooglePage extends AbstractPage<GooglePage> {
 
     @Step("Select language")
     GooglePage selectLanguage(String language = "English") {
-        def element = $("#CToSde").find(By.linkText(language))
+        def element = $(By.linkText(language))
 
         if (element.exists()) {
             element.click()

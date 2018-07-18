@@ -30,43 +30,47 @@ dependencies {
     compile(
 
             // Groovy language
-            ['org.codehaus.groovy:groovy-all:2.4.14'],
+            ['org.codehaus.groovy:groovy-all:2.4.15'],
 
             // Testing framework
-            ['org.testng:testng:6.14.2'],
+            ['org.testng:testng:6.14.3'],
 
             // TestNG uses Guice, but does not provide it by default
             [ 'com.google.inject:guice:4.2.0'],
 
             // Library to control web browser for tests
-            ['com.codeborne:selenide:4.10.01'],
+            ['com.codeborne:selenide:4.11.4'],
 
             // Web driver for browser Safari
-            ['org.seleniumhq.selenium:selenium-safari-driver:3.6.0'],
+            ['org.seleniumhq.selenium:selenium-safari-driver:3.12.0'],
 
             // HTTP client
             ['com.mashape.unirest:unirest-java:1.4.9'],
 
             // Dropbox client
-            ['com.dropbox.core:dropbox-core-sdk:3.0.6'],
+            ['com.dropbox.core:dropbox-core-sdk:3.0.7'],
 
             // CSV reader
             ['org.apache.commons:commons-csv:1.5'],
 
             // Yaml reader
-            ['org.yaml:snakeyaml:1.20'],
+            ['org.yaml:snakeyaml:1.21'],
 
             // Library to take and compare screenshots
             ['ru.yandex.qatools.ashot:ashot:1.5.4'],
 
             // Library to take video recordings of failed tests
-            ['com.automation-remarks:video-recorder-testng:1.7'],
+            ['com.automation-remarks:video-recorder-testng:1.8'],
 
             // Allure Reporting
-            ['io.qameta.allure:allure-testng:2.0-BETA21'],
+            ['io.qameta.allure:allure-testng:2.6.0'],
 
             // Logging
-            ['ch.qos.logback:logback-classic:1.2.3']
+            ['ch.qos.logback:logback-classic:1.2.3'],
+
+            // driver for connection to mongodb
+            ['org.mongodb:mongo-java-driver:3.7.1']
+
     )
 }
 
@@ -108,8 +112,8 @@ test {
             // configures testng to exclude specified groups from test run
             excludeGroups << excludedGroups
 
-            // sets testng.xml file for TestNG
-            suiteXmlFiles << new File(rootDir, "src/test/resources/testng.xml")
+            // sets TestNG configuration file
+            suiteXmlFiles << new File(rootDir, "src/test/resources/${testngConfig}.xml")
         }
     }
 }
