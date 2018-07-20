@@ -14,7 +14,7 @@ don't absolutely have to write your code in this programming language. You can s
 classes and page objects. 
 
 We'll explain what you should know about Selenium, TestNG, and other tools in 
-[the Technology Stack section](https://github.com/AndSviat/selenium_automation_guides/blob/master/overview.md#technology-stack).
+[the Technology Stack section](https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/OVERVIEW.md#core-stack).
 For now, let's discuss the ideas behind Selenium Automation Bundle. 
 
 ## Why Was Selenium Automation Bundle Created?
@@ -67,7 +67,7 @@ reports.
 
 Moreover, you can benefit from additional libraries that come together with code samples and abstractions for easier 
 use. For example, UI testing is greatly simplified thanks to _automatic_ comparison of screenshots 
-of user interface. For that, [aShot](https://github.com/AndSviat/selenium_automation_guides/blob/master/overview.md#ashot) 
+of user interface. For that, [aShot](https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/OVERVIEW.md#taking-and-comparing-screenshots) 
 was integrated into the bundle. Further below, you'll get familiar with even more abstractions and tools. 
 
 We'll also provide links to resources where you can read more about each tool.
@@ -147,5 +147,4 @@ during testing. Video Recorder provides [a simple API for TestNG](http://automat
 which you may have a look at.
 
 Now that you’re familiar with the technology stack and patterns used in Selenium Automation Bundle, you can go to the 
-[Getting Started guide](https://github.com/AndSviat/selenium_automation_guides/blob/master/getting_started_guide.md) to 
-start writing and running your first tests.
+Getting Started guide to start writing and running your first tests.
