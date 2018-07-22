@@ -5,7 +5,7 @@ import com.sysgears.seleniumbundle.core.data.annotations.Locator
 import com.sysgears.seleniumbundle.core.data.annotations.Query
 import com.sysgears.seleniumbundle.core.data.exceptions.MissingLocatorAnnotationException
 import com.sysgears.seleniumbundle.core.data.utils.MapHelper
-import com.sysgears.seleniumbundle.core.utils.MethodHelper
+import com.sysgears.seleniumbundle.core.utils.AnnotationHelper
 import groovy.util.logging.Slf4j
 
 import java.lang.reflect.Method
@@ -39,7 +39,7 @@ class DataMapper {
                 ?.collectEntries { it -> [it.name(), it.value()] }
 
         // gets all annotations from method parameters
-        List<Map> annotations = MethodHelper.getParameterAnnotations(method)
+        List<Map> annotations = AnnotationHelper.getParameterAnnotations(method)
 
         // finds and collects particular test data from data sets by specified locators for each criterion
         def dataSets = criteria ? criteria.collect { criterion ->
