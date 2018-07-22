@@ -9,7 +9,7 @@ import java.lang.reflect.Method
  * Helps to get configurations for test methods.
  */
 @Slf4j
-class MethodHelper {
+class AnnotationHelper {
 
     /**
      * Gets a list of all annotations defined for the method parameters.
@@ -35,8 +35,7 @@ class MethodHelper {
      * @return object of a given annotation, <code>null</code> if class hasn't such annotation
      */
     static Annotation getClassAnnotation(Class clazz, Class<Annotation> annotationClass) {
-        def annotation = clazz.getAnnotation(annotationClass)
-        annotation != null ? annotation :
-                clazz.superclass != null ? getClassAnnotation(clazz.superclass, annotationClass) : null
+        clazz.getAnnotation(annotationClass) ?:
+                clazz.superclass ? getClassAnnotation(clazz.superclass, annotationClass) : null
     }
 }
