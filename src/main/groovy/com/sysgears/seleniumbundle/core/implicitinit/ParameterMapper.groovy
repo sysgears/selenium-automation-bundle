@@ -44,8 +44,8 @@ class ParameterMapper {
     /**
      * Checks if the given value matches the pattern.
      *
-     * @argument argument value to verify
-     * @argument pattern validation pattern
+     * @param argument value to verify
+     * @param pattern validation pattern
      *
      * @return true if argument matches the pattern, false otherwise
      */
@@ -56,8 +56,8 @@ class ParameterMapper {
     /**
      * Checks if all the values from a given list match the pattern.
      *
-     * @arguments arguments list of values to verify
-     * @arguments pattern validation pattern
+     * @param arguments list of values to verify
+     * @param pattern validation pattern
      *
      * @return true if all arguments from the list match the pattern, false otherwise
      */
@@ -68,8 +68,8 @@ class ParameterMapper {
     /**
      * Checks if all the values from a given map match the pattern.
      *
-     * @arguments arguments map of values to verify
-     * @arguments pattern validation pattern
+     * @param arguments map of values to verify
+     * @param pattern validation pattern
      *
      * @return true if all arguments from map match the pattern, false otherwise
      */
