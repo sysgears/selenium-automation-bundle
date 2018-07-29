@@ -3,7 +3,6 @@ package com.sysgears.seleniumbundle.core.pagemodel
 import com.codeborne.selenide.*
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
-import com.sysgears.seleniumbundle.core.uicomparison.AShotService
 import groovy.util.logging.Slf4j
 import org.openqa.selenium.Keys
 
@@ -19,43 +18,14 @@ import static org.testng.Assert.assertTrue
 abstract class AbstractPage<T> {
 
     /**
-     * Instance of AShotService. Used for UI comparison.
-     */
-    protected AShotService aShotService
-
-    /**
      * Instance of Config.
      */
     protected Config conf = Config.instance
 
     /**
-     * Name of the os.
-     */
-    protected String os
-
-    /**
-     * Name of the browser.
-     */
-    protected String browser
-
-    /**
      * URL of the page.
      */
     protected String url
-
-    /**
-     * Captures screenshot and compares it with the previously captured base screenshot. In case there are differences
-     * saves the new screenshot and the image with marked discrepancies. In case there is no previously captured base
-     * screenshot, saves the new screenshot and throws AssertionError.
-     *
-     * @param screenshotName name of a screenshot
-     *
-     * @return instance of the page
-     */
-    T compareLayout(String screenshotName) {
-        aShotService.compareLayout(screenshotName)
-        (T) this
-    }
 
     /**
      * Opens web page.

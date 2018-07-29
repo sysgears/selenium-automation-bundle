@@ -6,6 +6,7 @@ import com.sysgears.seleniumbundle.core.data.annotations.Find
 import com.sysgears.seleniumbundle.core.data.annotations.Locator
 import com.sysgears.seleniumbundle.core.data.annotations.Query
 import com.sysgears.seleniumbundle.pagemodel.GooglePage
+import com.sysgears.seleniumbundle.pagemodel.ResultsPage
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
@@ -35,6 +36,8 @@ class Tools extends FunctionalTest {
             @Locator("result.url.params") Map params) {
         googlePage
                 .searchFor(query)
+        new ResultsPage()
+                .waitForPageToLoadElements()
                 .selectCategory(category)
                 .validateUrlParams(params)
     }
@@ -47,6 +50,8 @@ class Tools extends FunctionalTest {
             @Locator("result.page_elements.tools") List tools) {
         googlePage
                 .searchFor(query)
+        new ResultsPage()
+                .waitForPageToLoadElements()
                 .selectCategory(category)
                 .openToolsMenu()
                 .areToolsPresent(tools)

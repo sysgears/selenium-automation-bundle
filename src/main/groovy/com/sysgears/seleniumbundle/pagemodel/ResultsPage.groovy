@@ -3,14 +3,14 @@ package com.sysgears.seleniumbundle.pagemodel
 import com.codeborne.selenide.*
 import com.sysgears.seleniumbundle.core.pagemodel.AbstractPage
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
-import com.sysgears.seleniumbundle.core.uicomparison.AShotService
+import com.sysgears.seleniumbundle.core.uicomparison.UIComparison
 import io.qameta.allure.Step
 import org.testng.Assert
 
 import static com.codeborne.selenide.Selenide.$
 import static com.codeborne.selenide.Selenide.$$
 
-class ResultsPage extends AbstractPage<ResultsPage> {
+class ResultsPage extends AbstractPage<ResultsPage> implements UIComparison<ResultsPage> {
 
     @StaticElement
     private SelenideElement toolsButton = $("#hdtb-tls")
@@ -20,13 +20,6 @@ class ResultsPage extends AbstractPage<ResultsPage> {
                                resultCategories = $$(".hdtb-imb")
 
     private ElementsCollection tools = $$(".hdtb-mn-hd")
-
-    ResultsPage() {
-    }
-
-    ResultsPage(AShotService aShotService) {
-        this.aShotService = aShotService
-    }
 
     @Step("Select category")
     ResultsPage selectCategory(String name) {

@@ -1,7 +1,9 @@
 package com.sysgears.seleniumbundle.core.uicomparison
 
 import com.codeborne.selenide.WebDriverRunner
+import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.utils.AllureHelper
+import com.sysgears.seleniumbundle.core.utils.PathHelper
 import groovy.util.logging.Slf4j
 import ru.yandex.qatools.ashot.Screenshot
 
@@ -18,18 +20,22 @@ class AShotService {
     /**
      * Instance of AShot factory.
      */
-    private AShotFactory aShotFactory = new AShotFactory(conf)
+    private AShotFactory aShotFactory = new AShotFactory()
 
     /**
      * Instance of ScreenshotHandler.
      */
-    private ScreenshotHandler handler = new ScreenshotHandler(aShotFactory.getAShotForPage(os, browser),
-            WebDriverRunner.getWebDriver())
+    private ScreenshotHandler handler
 
     /**
      * Instance of ScreenshotLoader.
      */
     private ScreenshotLoader screenshotLoader = new ScreenshotLoader()
+
+    /**
+     * Project properties.
+     */
+    private Config conf
 
     /**
      * OS name.
@@ -47,9 +53,12 @@ class AShotService {
      * @param os name of the os
      * @param browser name of the os
      */
-    AShotService(String os, String browser) {
-        this.os = os
-        this.browser = browser
+    AShotService(Config conf, IEnvironment environment, List ignoredElements) {
+        this.conf = conf
+        this.os = environment.getOs()
+        this.browser = environment.getBrowser()
+        handler = new ScreenshotHandler(aShotFactory.getAShotForPage(os, browser, ignoredElements),
+                WebDriverRunner.getWebDriver())
     }
 
     /**
@@ -61,8 +70,7 @@ class AShotService {
      */
     Map getPathsForScreenshot(String screenshotName) {
         conf.ui.path.collectEntries {
-            [it.getKey(),
-             "${it.getValue()}${File.separator}$os${File.separator}$browser${File.separator}${screenshotName}.png"]
+            [it.key, PathHelper.convertPathForPlatform("${it.value}/$os/$browser/${screenshotName}.png")]
         } as Map<String, String>
     }
 
