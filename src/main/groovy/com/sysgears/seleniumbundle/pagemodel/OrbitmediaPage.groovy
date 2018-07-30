@@ -22,7 +22,7 @@ class OrbitmediaPage extends AbstractPage<OrbitmediaPage> implements UICompariso
         this
     }
 
-    void goToWebSitePlagiarismArticle() {
+    void goToFreePrivacyPolicySite() {
         linkToFreePrivacyPolicySite.click()
     }
 

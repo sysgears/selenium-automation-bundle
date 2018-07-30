@@ -16,14 +16,12 @@ class HideElementsExample extends FunctionalTest {
     }
 
     /**
-     * This test tries to click on the link which leads to other site, but fails because when Selenium scrolls this link
-     * to click on it appears under the fixed footer.
+     * This test tries to click on the link, which leads to another site, but fails because when Selenium scrolls to this
+     * link to click on, the link appears under the fixed footer.
      */
-    @Test(invocationCount = 5)
+    @Test(invocationCount = 2)
     void clickOnElementUnderTheFixedFooter() {
-        softAssert.catch {
-            orbitmediaPage.goToWebSitePlagiarismArticle()
-        }.assertAll()
+        orbitmediaPage.goToFreePrivacyPolicySite()
     }
 
     /**
@@ -34,8 +32,8 @@ class HideElementsExample extends FunctionalTest {
     void hideFixedFooterAndClickOnTheElement() {
         orbitmediaPage
                 .hideFixedFooter()
-                .goToWebSitePlagiarismArticle()
+                .goToFreePrivacyPolicySite()
         new FreePrivacyPolicyPage().waitForPageToLoadElements()
-                .checkTheUrl()
+                .assertUrl()
     }
 }
