@@ -64,7 +64,7 @@ trait UIComparison<T> {
      *
      * @return AShot service
      */
-    private AShotService getAshotService() {
+    AShotService getAshotService() {
         aShotService = aShotService ?: new AShotService(conf, environment, ignoredElements ?: [])
     }
 }
