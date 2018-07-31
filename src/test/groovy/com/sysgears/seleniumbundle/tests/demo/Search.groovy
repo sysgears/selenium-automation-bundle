@@ -19,6 +19,7 @@ class Search extends FunctionalTest {
     void checkSearch() {
         googlePage
                 .searchFor("SysGears")
+
         new ResultsPage()
                 .waitForPageToLoadElements()
                 .isResultSize(10)

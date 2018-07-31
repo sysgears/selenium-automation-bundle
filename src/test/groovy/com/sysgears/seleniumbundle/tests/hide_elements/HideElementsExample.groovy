@@ -25,7 +25,7 @@ class HideElementsExample extends FunctionalTest {
     }
 
     /**
-     * This test hides the fixed footer and then clicks on the link. As a final step it check the url of the new web
+     * This test hides the fixed footer and then clicks on the link. As a final step, it checks the url of the new web
      * page.
      */
     @Test(invocationCount = 2)
@@ -33,6 +33,7 @@ class HideElementsExample extends FunctionalTest {
         orbitmediaPage
                 .hideFixedFooter()
                 .goToFreePrivacyPolicySite()
+
         new FreePrivacyPolicyPage().waitForPageToLoadElements()
                 .assertUrl()
     }

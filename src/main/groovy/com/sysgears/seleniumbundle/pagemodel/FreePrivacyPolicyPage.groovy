@@ -13,10 +13,12 @@ class FreePrivacyPolicyPage extends AbstractPage<FreePrivacyPolicyPage> implemen
     @StaticElement
     private SelenideElement logoFreePrivacyPolicy = $(By.linkText("FreePrivacyPolicy.com"))
 
-    /**
-     * Creates an instance of the FreePrivacyPolicyPage sets the url.
-     */
     FreePrivacyPolicyPage() {
         this.url = "https://www.freeprivacypolicy.com/"
+    }
+
+    FreePrivacyPolicyPage checkTheUrl() {
+        assertUrl()
+        this
     }
 }

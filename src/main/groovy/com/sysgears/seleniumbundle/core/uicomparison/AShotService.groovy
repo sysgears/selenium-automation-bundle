@@ -9,6 +9,9 @@ import ru.yandex.qatools.ashot.Screenshot
 
 import java.awt.image.BufferedImage
 
+/**
+ * Provides methods to interact with aShot.
+ */
 @Slf4j
 class AShotService {
 
@@ -18,7 +21,7 @@ class AShotService {
     private AllureHelper allure = new AllureHelper()
 
     /**
-     * Instance of AShot factory.
+     * Instance of aShot factory.
      */
     private AShotFactory aShotFactory = new AShotFactory()
 
@@ -59,19 +62,6 @@ class AShotService {
         this.browser = environment.getBrowser()
         handler = new ScreenshotHandler(aShotFactory.getAShotForPage(os, browser, ignoredElements),
                 WebDriverRunner.getWebDriver())
-    }
-
-    /**
-     * Generates paths to screenshots by a given screenshot name.
-     *
-     * @param screenshotName name of the screenshot
-     *
-     * @return Map of paths to screenshots
-     */
-    Map getPathsForScreenshot(String screenshotName) {
-        conf.ui.path.collectEntries {
-            [it.key, PathHelper.convertPathForPlatform("${it.value}/$os/$browser/${screenshotName}.png")]
-        } as Map<String, String>
     }
 
     /**
@@ -120,5 +110,18 @@ class AShotService {
                 throw new IOException("No baseline screenshot found.", e)
             }
         }
+    }
+
+    /**
+     * Generates paths to screenshots by a given screenshot name.
+     *
+     * @param screenshotName name of the screenshot
+     *
+     * @return Map of paths to screenshots
+     */
+    private Map getPathsForScreenshot(String screenshotName) {
+        conf.ui.path.collectEntries {
+            [it.key, PathHelper.convertPathForPlatform("${it.value}/$os/$browser/${screenshotName}.png")]
+        } as Map<String, String>
     }
 }

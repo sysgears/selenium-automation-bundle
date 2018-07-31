@@ -36,6 +36,7 @@ class Tools extends FunctionalTest {
             @Locator("result.url.params") Map params) {
         googlePage
                 .searchFor(query)
+
         new ResultsPage()
                 .waitForPageToLoadElements()
                 .selectCategory(category)
@@ -50,6 +51,7 @@ class Tools extends FunctionalTest {
             @Locator("result.page_elements.tools") List tools) {
         googlePage
                 .searchFor(query)
+
         new ResultsPage()
                 .waitForPageToLoadElements()
                 .selectCategory(category)

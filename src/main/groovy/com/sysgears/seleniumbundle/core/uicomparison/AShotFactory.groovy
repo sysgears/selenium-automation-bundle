@@ -7,7 +7,7 @@ import ru.yandex.qatools.ashot.shooting.ShootingStrategies
 import ru.yandex.qatools.ashot.shooting.ShootingStrategy
 
 /**
- * Provides configured AShot instance for a page object.
+ * Provides configured aShot instance for a page object.
  */
 class AShotFactory {
 
@@ -15,9 +15,9 @@ class AShotFactory {
      * Returns a configured aShot instance for a particular page object type.
      * Can be configured to ignore some page elements like advertising banners etc.
      *
-     * @param clazz class of a page object.
+     * @param clazz class of a page object
      *
-     * @return configured AShot instance.
+     * @return configured AShot instance
      *
      * @throws FileNotFoundException if the file with ignored elements was not found
      */

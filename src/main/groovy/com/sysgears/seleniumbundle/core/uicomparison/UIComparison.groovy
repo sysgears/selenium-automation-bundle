@@ -1,9 +1,8 @@
 package com.sysgears.seleniumbundle.core.uicomparison
-
 /**
  * Adds methods to perform layout comparison with baseline screenshots.
  *
- * @param < T >  particular Page Object type that implements trait is required for chaining methods
+ * @param < T >    particular Page Object type that implements trait is required for chaining methods
  */
 trait UIComparison<T> {
 
@@ -18,9 +17,9 @@ trait UIComparison<T> {
     private IEnvironment environment
 
     /**
-     * List of elements that should be excluded from comparison analysis (advertisement banners, etc.).
+     * List of CSS locators for elements which should be excluded from comparison analysis.
      */
-    private List ignoredElements
+    private List<String> ignoredElements
 
     /**
      * Compares layout for web page.
@@ -30,7 +29,7 @@ trait UIComparison<T> {
      * @return page object
      */
     T compareLayout(String name) {
-        ashotService.compareLayout(name)
+        AShotService.compareLayout(name)
         this as T
     }
 
@@ -48,23 +47,23 @@ trait UIComparison<T> {
     }
 
     /**
-     * Sets elements which should be excluded from comparison analysis
+     * Sets elements which should be excluded from comparison analysis.
      *
-     * @param ignoredElements list of css locators for elements which should be excluded from comparison analysis
+     * @param ignoredElements list of CSS locators for elements which should be excluded from comparison analysis
      *
      * @return page object
      */
-    T setIgnoredElements(List ignoredElements) {
+    T setIgnoredElements(List<String> ignoredElements) {
         this.ignoredElements = ignoredElements
         this as T
     }
 
     /**
-     * Returns AShot service instance, creates if the service is null.
+     * Returns AShotService instance, creates if the service is null.
      *
      * @return AShot service
      */
-    AShotService getAshotService() {
+    AShotService getAShotService() {
         aShotService = aShotService ?: new AShotService(conf, environment, ignoredElements ?: [])
     }
 }
