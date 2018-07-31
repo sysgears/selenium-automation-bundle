@@ -19,14 +19,4 @@ class FreePrivacyPolicyPage extends AbstractPage<FreePrivacyPolicyPage> implemen
     FreePrivacyPolicyPage() {
         this.url = "https://www.freeprivacypolicy.com/"
     }
-
-    /**
-     * Waits until page will have predefined logoTermsFeed and check the url.
-     *
-     * @return FreePrivacyPolicyPage for chaining methods
-     */
-    FreePrivacyPolicyPage checkTheUrl() {
-        assertUrl()
-        this
-    }
 }

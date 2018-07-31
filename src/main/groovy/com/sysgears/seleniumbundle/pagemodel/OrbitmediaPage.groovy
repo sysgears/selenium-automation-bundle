@@ -1,6 +1,5 @@
 package com.sysgears.seleniumbundle.pagemodel
 
-import com.codeborne.selenide.Selenide
 import com.codeborne.selenide.SelenideElement
 import com.sysgears.seleniumbundle.core.pagemodel.AbstractPage
 import com.sysgears.seleniumbundle.core.uicomparison.UIComparison
@@ -12,14 +11,8 @@ class OrbitmediaPage extends AbstractPage<OrbitmediaPage> implements UICompariso
 
     private SelenideElement linkToFreePrivacyPolicySite = $(By.linkText("Free Privacy Policy Generator."))
 
-    /**
-     * Opens local version of Orbitmedia web page.
-     *
-     * @return OrbitmediaPage for chaining methods
-     */
-    OrbitmediaPage open() {
-        Selenide.open("https://www.orbitmedia.com/blog/website-footer-design-best-practices/")
-        this
+    OrbitmediaPage() {
+        this.url = "https://www.orbitmedia.com/blog/website-footer-design-best-practices/"
     }
 
     void goToFreePrivacyPolicySite() {

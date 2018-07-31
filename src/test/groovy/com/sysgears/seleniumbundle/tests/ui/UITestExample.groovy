@@ -17,7 +17,7 @@ class UITestExample extends UITest {
     /**
      * Shows that the test can fail due to dynamics on the page.
      */
-    @Test(invocationCount = 1)
+    @Test(invocationCount = 2)
     void withoutIgnoringElements() {
         shopidaiPage.compareLayout("withoutIgnoring")
     }
@@ -25,7 +25,7 @@ class UITestExample extends UITest {
     /**
      * Shows how the elements which may affect test result due to dynamic nature can be ignored.
      */
-    @Test(invocationCount = 1)
+    @Test(invocationCount = 2)
     void withIgnoringElements() {
         shopidaiPage.setIgnoredElements([".animation-1"]).compareLayout("withIgnoring")
     }
