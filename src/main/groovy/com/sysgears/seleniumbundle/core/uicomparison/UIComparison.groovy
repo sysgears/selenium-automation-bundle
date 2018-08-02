@@ -55,6 +55,7 @@ trait UIComparison<T> {
      */
     T setIgnoredElements(List<String> ignoredElements) {
         this.ignoredElements = ignoredElements
+        aShotService = null
         this as T
     }
 
