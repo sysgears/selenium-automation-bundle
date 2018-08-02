@@ -106,7 +106,7 @@ abstract class AbstractPage<T> {
      *
      * @return page object
      */
-    protected T hideElement(SelenideElement... elements) {
+    protected T hideElements(SelenideElement... elements) {
         elements.each {
             Selenide.executeJavaScript("arguments[0].style.visibility='hidden'", it)
         }
@@ -120,10 +120,10 @@ abstract class AbstractPage<T> {
      *
      * @return page object
      */
-    protected T hideElement(ElementsCollection... elementsCollections) {
+    protected T hideElements(ElementsCollection... elementsCollections) {
         elementsCollections.each { collection ->
             collection.each {
-                hideElement(it)
+                hideElements(it)
             }
         }
         (T) this

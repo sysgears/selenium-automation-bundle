@@ -20,6 +20,6 @@ class OrbitmediaPage extends AbstractPage<OrbitmediaPage> implements UICompariso
     }
 
     OrbitmediaPage hideFixedFooter() {
-        hideElement($(".StickyFooter"))
+        hideElements($(".StickyFooter"))
     }
 }
