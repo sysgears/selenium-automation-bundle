@@ -5,7 +5,12 @@ import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.utils.AllureHelper
 import com.sysgears.seleniumbundle.core.utils.PathHelper
 import groovy.util.logging.Slf4j
+import org.openqa.selenium.By
+import ru.yandex.qatools.ashot.AShot
 import ru.yandex.qatools.ashot.Screenshot
+import ru.yandex.qatools.ashot.coordinates.WebDriverCoordsProvider
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies
+import ru.yandex.qatools.ashot.shooting.ShootingStrategy
 
 import java.awt.image.BufferedImage
 
@@ -21,19 +26,14 @@ class AShotService {
     private AllureHelper allure = new AllureHelper()
 
     /**
-     * Instance of aShot factory.
+     * Instance of ScreenshotLoader.
      */
-    private AShotFactory aShotFactory = new AShotFactory()
+    private ScreenshotLoader screenshotLoader = new ScreenshotLoader()
 
     /**
      * Instance of ScreenshotHandler.
      */
     private ScreenshotHandler handler
-
-    /**
-     * Instance of ScreenshotLoader.
-     */
-    private ScreenshotLoader screenshotLoader = new ScreenshotLoader()
 
     /**
      * Project properties.
@@ -60,7 +60,7 @@ class AShotService {
         this.conf = conf
         this.os = environment.getOs()
         this.browser = environment.getBrowser()
-        handler = new ScreenshotHandler(aShotFactory.getAShotForPage(os, browser, ignoredElements),
+        handler = new ScreenshotHandler(getAShot(os, browser, ignoredElements),
                 WebDriverRunner.getWebDriver())
     }
 
@@ -110,6 +110,32 @@ class AShotService {
                 throw new IOException("No baseline screenshot found.", e)
             }
         }
+    }
+
+    /**
+     * Returns a configured aShot instance for a particular page object type.
+     * Can be configured to ignore some page elements like advertising banners etc.
+     *
+     * @param os os where the tests will be executed
+     * @param browser browser that will be used for tests launch
+     * @param ignoredElements the list of css locators for elements that should be ignored while ui comparison analysis
+     *
+     * @return configured AShot instance
+     */
+
+    private AShot getAShot(String os, String browser, List ignoredElements) {
+        def strategies = [ // TODO move aShot shooting strategies configuration to Application.properties
+                           mac: [chrome : ShootingStrategies.viewportRetina(750, 0, 0, 2),
+                                 firefox: ShootingStrategies.viewportRetina(750, 0, 0, 2),
+                                 safari : ShootingStrategies.simple()]
+        ]
+
+        ShootingStrategy strategy = strategies."$os"?."$browser" ?: ShootingStrategies.viewportPasting(750)
+
+        new AShot().shootingStrategy(strategy).coordsProvider(new WebDriverCoordsProvider())
+                .ignoredElements(ignoredElements.collect { element ->
+            new By.ByCssSelector(element as String)
+        } as Set<By>)
     }
 
     /**
