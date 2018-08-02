@@ -52,8 +52,7 @@ class CommandFinder {
         }.findResult {
             def clazz = Class.forName(getClassName(it.path))
 
-            def tmp = (hasParent(clazz, AbstractCommand)) ? clazz : null
-            tmp
+            (hasParent(clazz, AbstractCommand)) ? clazz : null
         }?.newInstance(commandArgs.arguments, conf) as ICommand
 
         command ?: {
