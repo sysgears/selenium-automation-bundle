@@ -1,211 +1,300 @@
-## Selenium Automation Bundle
+# Selenium Automation Bundle
 
-Selenium Automation Bundle is a seed project to start Selenium test automation with TestNG and Selenide.
-The bundle does not aim to solve every possible task for every new test automation project, but instead provide 
-the quality assurance community with a good starting point for configuring local test environment. It’s not obligatory 
-to use any of the tools provided in the bundle unless you find them necessary for your tasks. The bundle contains simple, 
-open and well-documented code which we encourage everyone to dig into and modify. Any suggestions and contributions 
-are most welcome!
+Selenium Automation Bundle is a seed project for Quality Assurance engineers to help them start designing, writing,
+and running automated data-driven tests with Selenide, TestNG, and Allure.
 
-##### Features
- - Automated Selenium Driver initialization for Chrome, Firefox, Edge and Safari
- - Allure Reporting for structured test execution reports with timeline and charts
- - Page Object Model based test structure with custom annotations and examples
- - Test data lookup from YAML files through custom annotations on test methods
- - Integrated Selenide for writing fluent and concise code in your POMs
- - Interface for creating custom command-line commands
- - Groovy language support for Test and POM objects
+## Features
 
-##### Technologies
+ - Automatic initialization of Selenium WebDriver for Chrome, Firefox, Edge, and Safari
+ - Structured test reports with detailed logs of test execution generated with the help of Allure
+ - Integrated Selenide for handling dynamic behavior on your pages and for writing less code in page objects
+ - Custom annotations for accessing and mapping test data stored in a tree-like structure to streamline data-driven testing
+ - A simple mechanism to add your own CLI commands for running tests or handling test data
+ - Groovy support to write concise test classes and page objects
 
-Selenium, Selenide, TestNG, Allure, aShot and Groovy
+## Technologies
 
+* Selenium
+* Selenide
+* TestNG
+* Allure
+* Groovy
+* aShot
 
-### Creating POM classes
+## What You Should Know Before Using Selenium Automation Bundle
 
-Selenium Automation Bundle does not put any restrictions on how you can write POM objects. This principle will apply to other 
-bundle functions. Instead of forcing you to follow a specific approach to creating test objects and test methods, 
-the bundle tries to provide utility methods and examples on which you can rely during test design.
+Selenium Automation Bundle is built around Selenium ecosystem, which is why you should have a basic understanding of
+Java, Selenium, and TestNG. The core modules of the bundle are actually written in Groovy, but you can still use Java to
+write test classes and page objects.
 
-For example, we added an abstract class `AbstractPage` which you can inherit from. `AbstractPage` contains a few 
-basic methods (the list is yet to be extended) for manipulating page state, and implements a mechanism for waiting 
-until all the page elements annotated with `@StaticElement` are loaded. 
+## Installing the Bundle and Running the Tests
 
-Your POM class that inherits `AbstractPage` and uses Selenide can look like the following:
+In this section, you're going to install Selenium Automation Bundle on your computer, run the tests, and view the test
+results in the browser.
 
-```groovy
-class GooglePage extends AbstractPage<GooglePage> {
+## Prerequisites
 
-    @StaticElement
-    private SelenideElement queryField = $(By.name("q"))
+### Java
 
-    GooglePage() {
-        this.url = "/"
-    }
+Install Java 8 or higher.
 
-    @Step("Perform search")
-    ResultsPage searchFor(String query) {
-        enterQuery(query)
-        submit()
-    }
+### Google Chrome
 
-    @Step("Enter query")
-    private GooglePage enterQuery(String query) {
-        queryField.val(query)
-        this
-    }
+Google Chrome is the default browser that we’re using with Selenium Automation Bundle. Make sure that you have the
+latest version of Chrome before you run the demo tests later in this guide.
 
-    @Step("Submit search")
-    private ResultsPage submit() {
-        queryField.pressEnter()
-        new ResultsPage()
-    }
-}
+### IDE
+
+You can use any favorite IDE such as Intellij IDEA, Eclipse, or NetBeans when working with the bundle.
+
+## Clone Selenium Automation Bundle
+
+Clone the repository using the following command:
+
+```bash
+git clone https://github.com/sysgears/selenium-automation-bundle.git
 ```
 
-@Step is an Allure tool annotation, and its usage will be described in the reporting section below.  
+## Run the Demo Tests
 
+There are several test examples to help you get started. To run them, change the current working directory:
 
-### Creating Functional Tests
-
-Selenium Automation Bundle relies on TestNG for test execution. Since this tool is widely used by the most part 
-of the community, the bundle does not change anything in the underlying mechanisms of TestNG. You can create test 
-methods as you regularly do, or you can inheriting `BaseTest` class to automate some of the driver initialization 
-tasks:
-
-```groovy
-@Listeners([AllureListener.class])
-@Test(groups = "functional")
-class Search extends BaseTest {
-
-    protected GooglePage googlePage
-
-    @BeforeMethod
-    void openApplication() {
-        googlePage = new GooglePage().open().waitForPageToLoadElements().selectLanguage()
-    }
-
-    @Test(description = "Checks number of results on the first page")
-    void checkSearch() {
-        googlePage
-                .searchFor("SysGears")
-                .isResultSize(10)
-    }
-}
+```bash
+cd selenium-automation-bundle
 ```
 
-As you can see, this test relies on a parent `BaseTest` class which initializes Selenide and 
-*org.openqa.selenium.WebDriver* for POM classes by interpreting testNG.xml parameters and project configuration 
-settings defined the in `ApplicationProperties.groovy` configuration file. This all done in a thread-safe way, 
-so it’s possible to run in parallel several test classes that inherit `BaseTest` if your test requirements allow it.
+And now you can run the demo tests using the command below:
 
-
-### Retrieving Test Data in Test Classes
-
-Selenium Automation Bundle adds a utility `DataMapper` class and `@Location` and `@Query` annotations which work together 
-with TestNG DataProvider and allow to lookup and map test data to a test method from a YAML file.
-
-`DataMapper` class provides `Object[][] map(List<Map> data, Method testMethod)` method which should be executed in 
-TestNG DataProvider. The method expects test data list and a reference to a test method for which the data provider 
-is used. The test method must define `@Locator` annotations on its arguments, so the `DataMapper` will know which 
-values should be mapped to which arguments:
-
-```groovy
-@DataProvider(name = 'getTestData')
-Object[][] getTestData(Method m) {
-    mapper.map(DataLoader.readListFromYml(DATAFILE), m, this)
-}
+```bash
+./gradlew
 ```
 
-YAML file "test_data.yml":
+> Note that if you're using Windows, you should execute `gradlew.bat` instead of `./gradlew`.
 
-```yaml
-- query: google
-  category: Images
-  result:
-    url:
-      params:
-        tbm: isch
-        q: google
+The [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) will
+take it from here: It will run the demo tests in Chrome and show a confirmation in the terminal that the tests were
+completed. During the execution of the demo tests, Chrome will automatically open and close several times.
 
-- query: bing
-  category: News
-  result:
-    url:
-      params:
-        tbm: nws
-        q: bing
-    page_elements:
-      tools:
-        - All news
-        - Recent
-        - Sorted by relevance
+Once the tests are completed, you can generate and serve a report to your default browser by running the following
+commands:
+
+```bash
+./gradlew downloadAllure
+./gradlew allureServe
 ```
 
-Test method:
+Congratulations, you've just started using Selenium Automation Bundle!
 
-```groovy
-@Test(dataProvider = "getTestData",
-            description = "Checks that url parameters specified in test data are changed based on chosen category")
-    void checkUrlParameterChanges(
-            @Locator("query") String query,
-            @Locator("category") String category,
-            @Locator("result.url.params") Map params) {
-        googlePage
-                .searchFor(query)
-                .selectCategory(category)
-                .validateUrlParams(params)
-    }
+## Why Was Selenium Automation Bundle Created?
+
+As a Quality Assurance specialist, you have to take several steps before you can write automated tests for a web
+application. You usually have to:
+
+* Determine what approaches and patterns should be used to write tests.
+* Find the best tools to write and run tests, handle test data, and create test reports.
+* Configure the tools and make them work together efficiently.
+* Create your own abstractions and tools to fulfill basic testing tasks.
+
+However, you can avoid all that hassle by using Selenium Automation Bundle.
+
+Selenium Automation Bundle is basically a fully prepared infrastructure that helps you to start writing automated tests
+instantly. The infrastructure is built of many classes that make it simple to create tests and page objects, interact
+with databases and REST API, handle test data, and fulfill other important tasks.
+
+You can also adapt the bundle to your specific requirements. In other words, you retain full control over the provided
+tools, and you can configure them and add your own libraries as you need.
+
+The main idea is to give you the tools and approaches to carry out most of the tasks for automated testing, so you don't
+have to make decisions every time you start a new project for your tests.
+___
+
+Having explained _why_ the bundle exists, let's discuss _what exactly_ it provides. Below, you'll find more information
+about the
+[bundle structure](https://github.com/sysgears/selenium-automation-bundle/blob/master/README.md#project-structure),
+as well as the
+[patterns](https://github.com/sysgears/selenium-automation-bundle/blob/master/README.md#patterns),
+[libraries](https://github.com/sysgears/selenium-automation-bundle/blob/master/README.md#core-stack), and
+[abstractions](https://github.com/sysgears/selenium-automation-bundle/blob/master/README.md#other-libraries-and-abstractions)
+that the bundle is built around.
+
+## Project Structure
+
+The directory structure of Selenium Automation Bundle is typical of Groovy-based projects generated with Gradle.
+Here's what the project looks like (note that several unimportant directories aren't shown in the diagram):
+
+```
+selenium-automation-bundle
+├── allure/
+├── .gradle
+├── build
+    ├── allure-results/
+    ├── reports/
+        ├── allure-report
+        └── tests/
+            └── test/
+├── gradle/
+├── src/
+    ├── main/
+        ├── groovy/com/sysgears/seleniumbundle/
+            ├── core/
+            ├── pagemodel/
+            └── Main.groovy
+        └── resources/
+            └── config/ApplicationProperties.groovy
+    └── test/
+        ├── groovy/com/sysgears/seleniumbundle/
+            ├── common/
+            ├── listeners/
+            └── tests/
+        └── resources/
+            ├── data/
+            └── testng.xml
+├── .gitignore
+├── build.gradle
+├── gradle.properties
+├── gradlew
+├── gradlew.bat
+├── LICENSE
+├── README.md
+└── settings.gradle
 ```
 
-Since the data is retrieved by `DataMapper` is passed to the DataProvider, the test method will be executed as many times 
-as there are entries in the YAML file.
+In the table below, we discuss only the directories and files that you may use when writing tests with the bundle.
 
-Additionally, you can specify `@Query` annotation on a test method to make `DataMapper` retrieve only specific entries 
-from the list defined in the YAML file:
+| Directory or File | Purpose |
+|----------|----------|
+| `build/`    | The build code and test reports are generated into this directory. |
+| `build/reports/` | The `reports` directory will contain the test reports generated by TestNG and Allure. |
+|----------|----------|
+| `src/main/` | *Bundle Code* |
+| `src/main/.../core/` | Contains the bundle code. You don't need to change anything in `core/` unless you want to add a very specific functionality for your test project. |
+| `src/main/.../pagemodel/` | Stores page objects. You can view the demo page objects and put your page objects in this directory. |
+| `src/main/resources/config/ApplicationProperties.groovy` | Stores the global application properties. You can set the base URL for your app or change the browser for running tests in this file. |
+|----------|----------|
+| `src/test/` | *Test-Related Code* |
+| `src/test/.../common/` | Contains the basic test classes such as `BaseTest` and `FunctionalTest`, which provide default configurations for your tests. You can add more methods to these test classes or create your own classes to fulfill other basic test tasks. |
+| `src/test/.../tests/` | Contains all kinds of tests for your app. You can put your functional, end-to-end, integration, and UI tests into this directory. |
+| `src/test/resources/data/` | Stores YAML files with test data easily accessible from test classes with custom annotations to help to use the data driven testing approach. |
+| `src/test/resources/testng.xml` | Provides default TestNG configurations. You may need to update `testng.xml` to change test suites or classes to run. You can also add new XML files with specific TestNG configurations next to `testng.xml`. |
+|----------|----------|
+| `build.gradle` | Stores build configurations. You can find the list of dependencies, plugins, and Gradle tasks in this file. |
+| `gradle.properties` | Contains various project properties. For example, you can change the groups of tests, which should run, in this file. |
+| `LICENSE` | License information. |
+| `README.md` | The document you are reading now. |
+<br />
 
-```groovy
-@Test(dataProvider = "getTestData", description = "Checks that specific tools are available for chosen category")
-    @Query(@Find(name = "category", value = "News"))
-    void checkOptionsForCategories(
-            @Locator("query") String query,
-            @Locator("category") String category,
-            @Locator("result.page_elements.tools") List tools) {
-        googlePage
-                .searchFor(query)
-                .selectCategory(category)
-                .openToolsMenu()
-                .areToolsPresent(tools)
-    }
-```
-In this case `DataMapper` will filter all the data sets except the one with the "News" category.
+## Patterns
 
-As you can see `DataMapper` is a very simple, non-obligatory utility which can help you create data driven scenarios 
-and easily share the same test data sets between different test methods.
+### Page Object Pattern
 
-### Reporting
+The page object pattern was first introduced by Selenium community, and it encourages
+[the reuse of code and the separation of test code from the presentation](https://www.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern).
+You can encapsulate repetitive code that works with HTML elements in page object methods and then reuse them
+in your tests. Page objects also don't contain any test code to make it simple to maintain the tests. To learn more
+about page objects, you can consult [this article](https://martinfowler.com/bliki/PageObject.html).
 
-// TODO
+### Data-Driven Testing
 
-### UI Testing
+Selenium Automation Bundle suggests using the [data-driven approach](https://www.guru99.com/data-driven-testing.html).
+for creating tests. Internally, the bundle uses TestNG in conjunction with custom annotations and classes to implement
+the Data-Driven Testing pattern. As a result, it'll be easier for you to access test data (stored in a tree-like
+structure in YAML files) and map data to test classes.
 
-// TODO
+## Technology Stack
 
-### Defining Custom Project Configuration
+The core of Selenium Automation Bundle consists of the following tools: Selenide (includes Selenium), TestNG, and
+Allure. With these tools, you can fulfill roughly 90% of testing tasks: write and run tests, and generate test reports.
 
-// TODO
+But the bundle gives you much more. For example, UI testing is greatly simplified thanks to the _automatic_ comparison
+of screenshots of the user interface. For that, we've integrated [aShot](https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/OVERVIEW.md#taking-and-comparing-screenshots)
+into the bundle.
 
-### Creating Custom Command-line Commands
+Further below, we give more details about the bundle abstractions and included tools. Naturally, if you’re familiar with
+any library that we integrated into the bundle, you may skip the section about it.
 
-// TODO
+### Core Stack
 
-### Configuring Bundle for CI
+#### Selenium
 
-// TODO
+You may consider Selenium a medium between the browser and your web application. Selenium lets you handle browsers when
+testing your app. We recommend that you refresh your memory about [Selenium WebDriver](https://www.seleniumhq.org/docs/03_webdriver.jsp).
+You can also consult [a guide](https://wiki.saucelabs.com/display/DOCS/Getting+Started+with+Selenium+for+Automated+Website+Testing)
+to learn more about the main Selenium concepts.
+
+#### Selenide
+
+Selenide is a framework built around Selenium, and it provides simple methods to find and manipulate elements on an
+HTML page, and, more importantly, to handle pages that _change dynamically_. With Selenide, you’ll write less code
+[than with Selenium](https://github.com/codeborne/selenide/wiki/Selenide-vs-Selenium).
+
+#### TestNG
+
+TestNG is a framework that manages the testing process. You should be familiar with these three aspects of TestNG: how
+to [configure TestNG](http://testng.org/doc/documentation-main.html#testng-xml), how to use
+[its annotations](http://testng.org/doc/documentation-main.html#annotations), and how to
+create [test groups](http://testng.org/doc/documentation-main.html#test-groups). Additionally,
+you may want to run through a [TestNG tutorial](https://www.guru99.com/all-about-testng-and-selenium.html).
+
+#### Allure
+
+Allure can generate HTML-based [reports](https://docs.qameta.io/allure/#_report_structure) with full logs and timeline
+to help inspect test results presented in suites or diagrams. Additionally, Allure can serve reports to your favorite
+browser and work with various Continuous Integration systems.
+
+#### Groovy
+
+Groovy is a programming language for the Java platform, and it features
+[a simpler syntax than Java](http://groovy-lang.org/differences.html). Although Selenium Automation Bundle is written in
+Groovy, you can still use Java as the main language to create page objects and test classes, or write any additional code.
+
+### Other Libraries and Abstractions
+
+#### Taking and Comparing Screenshots
+
+UI testing can be complicated, but Selenium Automation Bundle makes it easy by including the
+[aShot](https://github.com/yandex-qatools/ashot) library. Although Selenium allows you to
+take screenshots of the UI, its functionality is rather limited. aShot, on the other hand, can take screenshots of
+particular elements, viewports, or entire pages, and highlight elements. The bundle provides custom methods to
+seamlessly incorporate screenshot comparison with aShot directly into your tests.
+
+#### Communicating with REST API
+
+The bundle defines a few convenient methods, which you can use to intercept and send HTTP requests. You can easily tap
+into the network traffic between the client code and the server in order to, for example, verify if correct requests
+were sent by the client.
+
+#### Connecting to Cloud Storage
+
+Selenium Automation Bundle comes with its own methods and commands to let you move test data such as page screenshots
+and video recordings to and from cloud storage such as Dropbox.
+
+#### Working with MongoDB
+
+The bundle implements methods and commands so you can work with MongoDB directly from your tests. For example, the
+methods can be used to verify if the app state, stored in MongoDB, was changed as expected after running the tests.
+[MongoDB Java Driver](http://mongodb.github.io/mongo-java-driver/3.8/driver/getting-started/quick-start/)
+is used for this functionality.
+
+#### Debugging with Video Recorder
+
+Video Recorder is a simple library sometimes necessary to debug tests. When some of your tests fail, it can be quite
+difficult to figure out why that happened. But with Video Recorder, you can record all the dynamic changes that happen
+on the web page during testing. Video Recorder has [a simple API for TestNG](http://automation-remarks.com/video-recorder-java/#_testng)
+which you may have a look at.
+
+___
+
+## What's Next?
+
+After running the demo tests, you'll want to know _how_ they were created. You can read the
+[introduction to writing tests](https://github.com/sysgears/selenium-automation-bundle/wiki/intro_to_writing_tests.md)
+with Selenium Automation Bundle and start testing your application right away.
+
+___
 
 ## License
 
 Copyright © 2016, 2017 [SysGears INC]. This source code is licensed under the [MIT] license.
 
 [mit]: LICENSE
-[sysgears inc]: http://sysgears.com
+[sysgears inc]: https://sysgears.com
