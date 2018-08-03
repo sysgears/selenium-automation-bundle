@@ -109,12 +109,12 @@ have to make decisions every time you start a new project for your tests.
 ___
 
 Having explained _why_ the bundle exists, let's discuss _what exactly_ it provides. Below, you'll find more information
-about the
-[bundle structure](https://github.com/sysgears/selenium-automation-bundle/blob/master/README.md#project-structure),
+about the 
+[bundle structure](#project-structure),
 as well as the
-[patterns](https://github.com/sysgears/selenium-automation-bundle/blob/master/README.md#patterns),
-[libraries](https://github.com/sysgears/selenium-automation-bundle/blob/master/README.md#core-stack), and
-[abstractions](https://github.com/sysgears/selenium-automation-bundle/blob/master/README.md#other-libraries-and-abstractions)
+[patterns](#patterns),
+[libraries](#core-stack), and
+[abstractions](#other-libraries-and-abstractions)
 that the bundle is built around.
 
 ## Project Structure
@@ -206,7 +206,7 @@ The core of Selenium Automation Bundle consists of the following tools: Selenide
 Allure. With these tools, you can fulfill roughly 90% of testing tasks: write and run tests, and generate test reports.
 
 But the bundle gives you much more. For example, UI testing is greatly simplified thanks to the _automatic_ comparison
-of screenshots of the user interface. For that, we've integrated [aShot](https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/OVERVIEW.md#taking-and-comparing-screenshots)
+of screenshots of the user interface. For that, we've integrated [aShot](#taking-and-comparing-screenshots)
 into the bundle.
 
 Further below, we give more details about the bundle abstractions and included tools. Naturally, if you’re familiar with
@@ -287,7 +287,7 @@ ___
 ## What's Next?
 
 After running the demo tests, you'll want to know _how_ they were created. You can read the
-[introduction to writing tests](https://github.com/sysgears/selenium-automation-bundle/wiki/intro_to_writing_tests.md)
+[introduction to writing tests](https://github.com/sysgears/selenium-automation-bundle/wiki/Intro-to-Writing-Tests)
 with Selenium Automation Bundle and start testing your application right away.
 
 ___
