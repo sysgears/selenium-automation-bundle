@@ -27,7 +27,7 @@ ui {
 google {
     drive {
         applicationName = "Example" // name of the application, it is required by Google
-        credentials = "credentials" // path to store authorized credentials
-        clientSecret = "client_secret.json" // path to file with secret filter
+        credentials = "credentials" // path to a folder to store authorized credentials
+        clientSecret = "client_secret.json" // path to a file with client secrets, relative to "src/main/resources"
     }
 }
