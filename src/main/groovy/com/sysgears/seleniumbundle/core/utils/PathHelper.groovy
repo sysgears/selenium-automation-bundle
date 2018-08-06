@@ -30,7 +30,14 @@ class PathHelper {
         pathToModify - FilenameUtils.separatorsToSystem(basePath)
     }
 
+    /**
+     * Converts the given path to correspond with the system file separator.
+     *
+     * @param path path to be converted
+     *
+     * @return converted path as a String
+     */
     static String convertPathForPlatform(String path) {
-        path.replaceAll(/[\\|\/]/, File.separator)
+        path.replaceAll("\\\\|//", File.separator)
     }
 }
