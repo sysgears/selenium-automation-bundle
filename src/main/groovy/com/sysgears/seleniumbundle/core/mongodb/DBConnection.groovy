@@ -90,12 +90,13 @@ class DBConnection {
     }
 
     /**
-     * Prepares Mongo client settings objects
+     * Prepares Mongo client settings objects.
      *
-     * @param host
-     * @param port
-     * @param credential
-     * @return
+     * @param host mongo server address or alias
+     * @param port port of mongo database
+     * @param credential Mongo credential object
+     *
+     * @return Mongo client settings object
      */
     private static MongoClientSettings settingsBuilder(String host, String port, MongoCredential credential = null) {
         def builder = MongoClientSettings.builder()

@@ -52,7 +52,7 @@ class CommandFinder {
         }.findResult {
             def clazz = Class.forName(getClassName(it.path))
 
-            (clazz.getSuperclass() == AbstractCommand) ? clazz : null
+            (hasParent(clazz, AbstractCommand)) ? clazz : null
         }?.newInstance(commandArgs.arguments, conf) as ICommand
 
         command ?: {
@@ -68,5 +68,19 @@ class CommandFinder {
     private String getClassName(String filePath) {
         (filePath - FilenameUtils.separatorsToSystem(GROOVY_SOURCE_PATH) - ".groovy")
                 .split(File.separator).join(".")
+    }
+
+    /**
+     * Checks if a class or any of its superclasses has a target class as parent.
+     *
+     * @param clazz class to start the check from
+     * @param targetClass expected parent
+     *
+     * @return true if class has a target class as one of the superclasses, false otherwise
+     */
+    private Boolean hasParent(Class clazz, Class targetClass) {
+        def parent = clazz.getSuperclass()
+
+        parent ? parent == targetClass ?: hasParent(parent, targetClass) : false
     }
 }
