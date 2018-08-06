@@ -3,12 +3,13 @@ package com.sysgears.seleniumbundle.pagemodel
 import com.codeborne.selenide.SelenideElement
 import com.sysgears.seleniumbundle.core.pagemodel.AbstractPage
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
+import com.sysgears.seleniumbundle.core.uicomparison.UIComparison
 import io.qameta.allure.Step
 import org.openqa.selenium.By
 
 import static com.codeborne.selenide.Selenide.$
 
-class GooglePage extends AbstractPage<GooglePage> {
+class GooglePage extends AbstractPage<GooglePage> implements UIComparison<GooglePage> {
 
     @StaticElement
     private SelenideElement queryField = $(By.name("q"))
@@ -28,7 +29,7 @@ class GooglePage extends AbstractPage<GooglePage> {
     }
 
     @Step("Perform search")
-    ResultsPage searchFor(String query) {
+    void searchFor(String query) {
         enterQuery(query)
         submit()
     }
@@ -40,8 +41,7 @@ class GooglePage extends AbstractPage<GooglePage> {
     }
 
     @Step("Submit search")
-    private ResultsPage submit() {
+    private void submit() {
         queryField.pressEnter()
-        new ResultsPage()
     }
 }

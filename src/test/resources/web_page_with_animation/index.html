@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="custom.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+
+    <title>Shopidai | Main page</title>
+    <style>
+        .star {
+            animation: star 10s ease-out infinite;
+        }
+
+        .wars {
+            animation: wars 10s ease-out infinite;
+        }
+
+        .byline span {
+            animation: spin-letters 10s linear infinite;
+        }
+
+        .byline {
+            animation: move-byline 10s linear infinite;
+        }
+
+        /* Keyframes */
+        @keyframes star {
+            0% {
+                opacity: 0;
+                transform: scale(1.5) translateY(-0.75em);
+            }
+            20% {
+                opacity: 1;
+            }
+            89% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateZ(-1000em);
+            }
+        }
+
+        @keyframes wars {
+            0% {
+                opacity: 0;
+                transform: scale(1.5) translateY(0.5em);
+            }
+            20% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateZ(-1000em);
+            }
+        }
+
+        @keyframes spin-letters {
+            0%, 10% {
+                opacity: 0;
+                transform: rotateY(90deg);
+            }
+            30% {
+                opacity: 1;
+            }
+            70%, 86% {
+                transform: rotateY(0);
+                opacity: 1;
+            }
+            95%, 100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes move-byline {
+            0% {
+                transform: translateZ(5em);
+            }
+            100% {
+                transform: translateZ(0);
+            }
+        }
+
+        /* Make the 3D work on the container */
+        .starwars-demo {
+            perspective: 800px;
+            transform-style: preserve-3d;
+        }
+
+        /* General styles and layout */
+        body {
+            background: #000 url(assets/pictures/bg.jpg);
+        }
+
+        .starwars-demo {
+            height: 17em;
+            left: 50%;
+            position: relative;
+            top: 53%;
+            transform: translate(-50%, -50%);
+            width: 34em;
+        }
+
+        .byline span {
+            display: inline-block;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .star, .wars, .byline {
+            position: absolute;
+        }
+
+        .star {
+            top: -0.75em;
+        }
+
+        .wars {
+            bottom: -0.5em;
+        }
+
+        .byline {
+            left: -2em;
+            right: -2em;
+            text-align: center;
+            text-transform: uppercase;
+            top: 39%;
+        }
+
+        .byline span {
+            color: #fff;
+            font-family: "ITC Serif Gothic", Lato;
+            font-size: 1.2em;
+            letter-spacing: 0.4em;
+        }
+
+        /*** Media queries for adjusting to different screen sizes ***/
+
+        @media only screen and (max-width: 600px) {
+            .starwars-demo {
+                font-size: 10px;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .starwars-demo {
+                font-size: 7px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+
+    <a class="navbar-brand d-inline-block d-lg-none" href="#">
+        <img src="assets/pictures/logo.png" alt="logo.png">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Shop<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Shipping<span class="sr-only">(current)</span></a>
+            </li>
+            <a class="navbar-brand d-none d-lg-inline-block mx-5" href="#">
+                <img src="assets/pictures/logo.png" alt="logo.png">
+            </a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">How to<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Contact us<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid bg-dark">
+    <form class="form-inline justify-content-center my-2 my-lg-0 py-4 text-center search">
+        <input class="form-control border-0 rounded-0" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn rounded-0 my-2 my-sm-0 text-uppercase" type="submit">Search</button>
+    </form>
+</div>
+
+<!-- <div class="container-fluid p-0">
+    <img src="https://media.giphy.com/media/YrL6i2ADGf52E/giphy.gif" alt="main.jpg" class="w-100">
+</div> -->
+<div class="animation-1" style="width: 100%; height: 400px; margin: 0 auto;">
+    <div class="starwars-demo">
+        <img src="assets/pictures/star.svg" alt="Star" class="star">
+        <img src="assets/pictures/wars.svg" alt="Wars" class="wars">
+        <h2 class="byline" id="byline">The Force Awakens</h2>
+    </div>
+</div>
+
+<div class="container my-4">
+    <div class="row">
+
+        <div class="col-12">
+            <h3 class="text-uppercase border-top border-bottom text-center py-3">New Arrival</h3>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card rounded-0">
+                <img class="card-img-top rounded-0"
+                     src="assets/pictures/home/yellow-t-shirt.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Yellow T-shirt <span class="float-right">12.89$</span></h5>
+                    <p class="card-text">Fashion trends may come and go, but one thing's for sure… you can never have
+                        too many t-shirts in your wardrobe.</p>
+                    <a href="#" class="btn btn-primary">Shop now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card rounded-0">
+                <img class="card-img-top rounded-0"
+                     src="assets/pictures/home/red-jacket.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Red jacket <span class="float-right">18$</span></h5>
+                    <p class="card-text">Sweatshirt jacket with a lined drawstring hood. Zip at front, side pockets, and
+                        ribbing at cuffs and hem. Brushed inside.</p>
+                    <a href="#" class="btn btn-primary">Shop now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card rounded-0">
+                <img class="card-img-top rounded-0"
+                     src="assets/pictures/home/black-shorts.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Black shorts <span class="float-right">23.99$</span></h5>
+                    <p class="card-text">Take the lengths up and style it out this season in our range of the latest
+                        on-trend shorts.</p>
+                    <a href="#" class="btn btn-primary">Shop now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card rounded-0">
+                <img class="card-img-top rounded-0"
+                     src="assets/pictures/home/white-trousers.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">White trousers <span class="float-right">49$</span></h5>
+                    <p class="card-text">Stylish trousers for your casual and work wear.</p>
+                    <a href="#" class="btn btn-primary">Shop now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card rounded-0">
+                <img class="card-img-top rounded-0"
+                     src="assets/pictures/home/sneakers.jpeg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Black sneakers <span class="float-right">89$</span></h5>
+                    <p class="card-text">Sneakers might not be your biggest passion when it comes to fashion, but it is
+                        necessary to own a pair.</p>
+                    <a href="#" class="btn btn-primary">Shop now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card rounded-0">
+                <img class="card-img-top rounded-0"
+                     src="assets/pictures/home/blue-shirt.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Blue Shirt <span class="float-right">11.99$</span></h5>
+                    <p class="card-text">Fashion trends may come and go, but one thing's for sure… you can never have
+                        too many shirts in your wardrobe.</p>
+                    <a href="#" class="btn btn-primary">Shop now</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 text-center">
+            <button class="btn btn-lg btn-outline-dark py-3 px-5 my-4">MORE</button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid border-top">
+    <footer>
+        <p>&copy; SysGears 2018</p>
+    </footer>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+<script>
+    /* Learn how to create this and much more with this email course:
+
+https://cssanimation.rocks/courses/animation-101/
+
+MANY THANKS TO @tadywankenobi for the following JS to handle the text in the byline:
+
+The following JS takes in the byline and splits it into letters, each one wrapped in a span. We need to create the spans as nodes, we can't just add them to the HTML using innerHTML, as to do so would mean the CSS won't affect the span because it doesn't recognise the tag as existing. It's an old problem we run into time and again.
+
+*/
+
+    var byline = document.getElementById('byline');  	// Find the H2
+    bylineText = byline.innerHTML;										// Get the content of the H2
+    bylineArr = bylineText.split('');									// Split content into array
+    byline.innerHTML = '';														// Empty current content
+
+    var span;					// Create variables to create elements
+    var letter;
+
+    for (i = 0; i < bylineArr.length; i++) {									// Loop for every letter
+        span = document.createElement("span");					// Create a <span> element
+        letter = document.createTextNode(bylineArr[i]);	// Create the letter
+        if (bylineArr[i] == ' ') {												// If the letter is a space...
+            byline.appendChild(letter);					// ...Add the space without a span
+        } else {
+            span.appendChild(letter);						// Add the letter to the span
+            byline.appendChild(span); 					// Add the span to the h2
+        }
+    }
+</script>
+</body>
+</html>

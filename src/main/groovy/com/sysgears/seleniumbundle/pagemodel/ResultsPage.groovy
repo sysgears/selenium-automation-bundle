@@ -3,13 +3,14 @@ package com.sysgears.seleniumbundle.pagemodel
 import com.codeborne.selenide.*
 import com.sysgears.seleniumbundle.core.pagemodel.AbstractPage
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
+import com.sysgears.seleniumbundle.core.uicomparison.UIComparison
 import io.qameta.allure.Step
 import org.testng.Assert
 
 import static com.codeborne.selenide.Selenide.$
 import static com.codeborne.selenide.Selenide.$$
 
-class ResultsPage extends AbstractPage<ResultsPage> {
+class ResultsPage extends AbstractPage<ResultsPage> implements UIComparison<ResultsPage> {
 
     @StaticElement
     private SelenideElement toolsButton = $("#hdtb-tls")

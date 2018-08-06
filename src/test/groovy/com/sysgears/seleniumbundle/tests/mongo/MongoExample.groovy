@@ -1,4 +1,4 @@
-package com.sysgears.seleniumbundle.tests
+package com.sysgears.seleniumbundle.tests.mongo
 
 import com.sysgears.seleniumbundle.common.FunctionalTestWithMongo
 import com.sysgears.seleniumbundle.core.mongodb.dao.UserDAO
