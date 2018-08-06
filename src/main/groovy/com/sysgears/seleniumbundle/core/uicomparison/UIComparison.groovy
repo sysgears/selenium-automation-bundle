@@ -27,8 +27,13 @@ trait UIComparison<T> {
      * @param name name of a screenshot
      *
      * @return page object
+     *
+     * @throws IOException is thrown if there is no baseline screenshot during comparison or file with ignored
+     * elements wasn't found
+     * @throws AssertionError is thrown if layout of the screenshot doesn't match to the baseline screenshot
+     * @throws IllegalArgumentException is thrown if Application.properties doesn't have any of ui.path properties
      */
-    T compareLayout(String name) {
+    T compareLayout(String name) throws IOException, AssertionError, IllegalArgumentException {
         AShotService.compareLayout(name)
         this as T
     }

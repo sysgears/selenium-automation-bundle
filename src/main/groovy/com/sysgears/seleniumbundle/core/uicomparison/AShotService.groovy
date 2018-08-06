@@ -73,10 +73,11 @@ class AShotService {
      *
      * @throws IOException is thrown if there is no baseline screenshot during comparison or file with ignored
      * elements wasn't found
-     * @throws AssertionError is thrown if layout of the screenshot doesn't match to the baseline screenshot.
+     * @throws AssertionError is thrown if layout of the screenshot doesn't match to the baseline screenshot
+     * @throws IllegalArgumentException is thrown if Application.properties doesn't have any of ui.path properties
      */
-    void compareLayout(String screenshotName) throws IOException, AssertionError {
-        def fullPaths = getPathsForScreenshot(screenshotName)
+    void compareLayout(String screenshotName) throws IOException, AssertionError, IllegalArgumentException {
+        def fullPaths = getPathsForScreenshot(conf.properties.ui.path, screenshotName)
 
         Screenshot screenshot = handler.capture()
 
@@ -139,15 +140,26 @@ class AShotService {
     }
 
     /**
-     * Generates paths to screenshots by a given screenshot name.
+     * Generates paths to screenshots for single snapshot processing. Uses for path generation preconfigured in
+     * Application.properties basic paths for particular categories: "baseline", "actual", "difference"; os name;
+     * browser name and screenshot name.
      *
+     * @param paths paths which should be preconfigured in Application.properties file
      * @param screenshotName name of the screenshot
      *
-     * @return Map of paths to screenshots
+     * @return Map of paths for a single snapshot processing
+     *
+     * @throws IllegalArgumentException is thrown if Application.properties doesn't have any of ui.path properties
+     * "actual", "baseline" or "difference"
      */
-    private Map getPathsForScreenshot(String screenshotName) {
-        conf.ui.path.collectEntries {
-            [it.key, PathHelper.convertPathForPlatform("${it.value}/$os/$browser/${screenshotName}.png")]
-        } as Map<String, String>
+    Map getPathsForScreenshot(Map paths, String screenshotName) throws IllegalArgumentException {
+        ["baseline", "actual", "difference"].collectEntries { String category ->
+            [category, PathHelper.convertPathForPlatform("${paths[category]}/$os/$browser/${screenshotName}.png") ?:
+                    {
+                        throw new IllegalArgumentException("[$category] path for UI comparison is missing, check " +
+                                "Application.properties")
+                    }()
+            ]
+        }
     }
 }
