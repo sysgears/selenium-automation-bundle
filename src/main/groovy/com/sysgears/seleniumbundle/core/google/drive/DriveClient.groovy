@@ -16,14 +16,12 @@ import com.google.api.services.drive.DriveScopes
 import com.google.api.services.drive.model.File
 import com.google.common.collect.Iterables
 import com.sysgears.seleniumbundle.core.conf.Config
-import groovy.util.logging.Slf4j
 
 import javax.activation.MimetypesFileTypeMap
 
 /**
  * Provides low-level methods to work with Google Drive.
  */
-@Slf4j
 class DriveClient {
 
     /**
@@ -63,28 +61,6 @@ class DriveClient {
         this.service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(conf.google.drive.applicationName)
                 .build()
-    }
-
-    /**
-     * Creates an authorized Credential object.
-     *
-     * @param HTTP_TRANSPORT The network HTTP Transport
-     *
-     * @return An authorized Credential object
-     *
-     * @throws IOException If there is no client_secret
-     */
-    private Credential getCredentials(NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        // Load client secrets
-        InputStream inputStream = this.class.getClassLoader().getResourceAsStream(conf.google.drive.clientSecret)
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(inputStream))
-
-        // Build flow and trigger user authorization request
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(conf.google.drive.credentials as String)))
-                .setAccessType("offline")
-                .build()
-        new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user")
     }
 
     /**
@@ -200,7 +176,7 @@ class DriveClient {
     }
 
     /**
-     * Get path to a file from root folder on Drive.
+     * Get path to a file from the root folder on Drive.
      *
      * @param fileId id of a file to get path to
      *
@@ -229,19 +205,16 @@ class DriveClient {
      * Main method to download a file.
      *
      * @param fileId id of a file to be downloaded
-     * @param pathToSave path where a file has to be saved locally
+     * @param pathToSave path where the file has to be saved locally
      */
     void downloadFileById(String fileId, String pathToSave) {
 
-        // create folders for new file
         def localFile = new java.io.File(pathToSave)
         localFile.getParentFile().mkdirs()
 
-        // open streams
         FileOutputStream fos = new FileOutputStream(localFile)
         OutputStream outputStream = new ByteArrayOutputStream()
 
-        // downloading process
         service.files().get(fileId).executeMediaAndDownloadTo(outputStream)
         outputStream.writeTo(fos)
     }
@@ -249,30 +222,27 @@ class DriveClient {
     /**
      * Main method to upload a file. If parentId is not provided, the file will be saved to root folder.
      *
-     * @param pathToFile path to local file to be uploaded
+     * @param pathToFile path to a local file to be uploaded
      * @param parentId id of the parent folder to upload the file to
      */
     void uploadFileToParentFolder(String pathToFile, String parentId = null) {
         parentId = parentId ? parentId : getRootFolderId()
         def fileName = new java.io.File(pathToFile).getName()
 
-        // create File object
         File fileMetadata = new File()
         fileMetadata.setName(fileName)
         fileMetadata.setParents(Collections.singletonList(parentId))
 
-        // read local file
         FileContent mediaContent = new FileContent(new MimetypesFileTypeMap().getContentType(fileName),
                 new java.io.File(pathToFile))
 
-        // uploading process
         service.files().create(fileMetadata, mediaContent)
                 .setFields("id, parents")
                 .execute()
     }
 
     /**
-     * Deletes files by a given fileId.
+     * Deletes a file with given fileId.
      *
      * @param fileId id of a file to delete
      */
@@ -290,14 +260,11 @@ class DriveClient {
      * @return created File object
      */
     File createFolder(String name, String parentId = null) {
-
-        // create File object
         File fileMetadata = new File()
                 .setName(name)
                 .setMimeType("application/vnd.google-apps.folder")
                 .setParents([parentId ? parentId : getRootFolderId()])
 
-        // creation process
         service.files().create(fileMetadata)
                 .setFields("id")
                 .execute()
@@ -328,5 +295,27 @@ class DriveClient {
         }
 
         created
+    }
+
+    /**
+     * Creates an authorized Credential object.
+     *
+     * @param HTTP_TRANSPORT The network HTTP Transport
+     *
+     * @return An authorized Credential object
+     *
+     * @throws IOException If there is no client_secret
+     */
+    private Credential getCredentials(NetHttpTransport HTTP_TRANSPORT) throws IOException {
+        // Load client secrets
+        InputStream inputStream = this.class.getClassLoader().getResourceAsStream(conf.google.drive.clientSecret)
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(inputStream))
+
+        // Build flow and trigger user authorization request
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(conf.google.drive.credentials as String)))
+                .setAccessType("offline")
+                .build()
+        new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user")
     }
 }

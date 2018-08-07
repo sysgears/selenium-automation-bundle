@@ -22,27 +22,23 @@ class DriveService {
     /**
      * Downloads a file from Google Drive.
      *
-     * @param path path to a file to download
-     * @param pathToSave path where the file will be saved locally
+     * @param remotePath path to a file to download
+     * @param localPath path where the file will be saved locally
      */
-    void downloadFile(String path, String pathToSave) {
-
-        //get id of a file to download
-        def fileId = client.getFileByPath(path).getId()
-
-        client.downloadFileById(fileId, pathToSave)
+    void downloadFile(String remotePath, String localPath) {
+        client.downloadFileById(client.getFileByPath(remotePath).getId(), localPath)
     }
 
     /**
-     * Uploads given file to given folder on Google Drive.
+     * Uploads a file to Google Drive.
      *
      * @param localPath path to a local file to be uploaded
      * @param remotePath path to the file on Google Drive
      */
     void uploadFile(String localPath, String remotePath) {
-        def pathToRemoteDirectory = remotePath.substring(0, remotePath.lastIndexOf("/") + 1)
+        def pathToFileDirectory = new File(remotePath).getParentFile().getPath()
 
-        if (!client.createFolders(pathToRemoteDirectory)) {
+        if (!client.createFolders(pathToFileDirectory)) {
             def fileOnDrive = client.getFileByPath(remotePath)
 
             if (fileOnDrive && !fileOnDrive.getTrashed()) {
@@ -50,6 +46,6 @@ class DriveService {
             }
         }
 
-        client.uploadFileToParentFolder(localPath, client.getFolder(pathToRemoteDirectory).getId())
+        client.uploadFileToParentFolder(localPath, client.getFolder(pathToFileDirectory).getId())
     }
 }
