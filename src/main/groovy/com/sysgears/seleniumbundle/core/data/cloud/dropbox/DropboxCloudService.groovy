@@ -6,6 +6,8 @@ import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.DeleteErrorException
 import com.sysgears.seleniumbundle.core.conf.Config
+import com.sysgears.seleniumbundle.core.data.cloud.AbstractCloudService
+import com.sysgears.seleniumbundle.core.utils.FileHelper
 import com.sysgears.seleniumbundle.core.utils.PathHelper
 import groovy.util.logging.Slf4j
 
@@ -13,7 +15,7 @@ import groovy.util.logging.Slf4j
  * Client for Dropbox. Provides methods to work with Dropbox API.
  */
 @Slf4j
-class DropboxCloudService {
+class DropboxCloudService extends AbstractCloudService {
 
     /**
      * Project properties.
@@ -41,44 +43,75 @@ class DropboxCloudService {
     /**
      * Downloads a file from Dropbox.
      *
-     * @param dropboxPath path to a file on Dropbox
-     * @param downloadPath path where to download the file
+     * @param remotePath path to a file on Dropbox
+     * @param localPath path to download the file to
      *
      * @throws IOException if any error occurs while downloading file from Dropbox
      */
-    void downloadFile(String dropboxPath, String downloadPath) throws IOException {
-        File file = new File(downloadPath)
+    @Override
+    void downloadFile(String remotePath, String localPath) throws IOException {
+        File file = new File(localPath)
+
         file.getParentFile().mkdirs()
         try {
-            client.files().download(dropboxPath).download(new FileOutputStream(file))
+            client.files().download(remotePath).download(new FileOutputStream(file))
         } catch (BadRequestException e) {
-            log.error("Unable to download a file from $dropboxPath.", e)
-            throw new IOException("Unable to download a file from $dropboxPath, invalid request", e)
+            log.error("Unable to download a file from $remotePath.", e)
+            throw new IOException("Unable to download a file from $remotePath, invalid request", e)
         } catch (IOException | DbxException e) {
-            log.error("Unable to download a file from $dropboxPath.", e)
-            throw new IOException("Unable to download a file from $dropboxPath.", e)
+            log.error("Unable to download a file from $remotePath.", e)
+            throw new IOException("Unable to download a file from $remotePath.", e)
+        }
+    }
+
+    /**
+     * Downloads all files stored in remote path on Dropbox.
+     *
+     * @param remotePath path to files on Dropbox
+     * @param localPath local path to download the files to
+     */
+    @Override
+    void downloadFiles(String remotePath, String localPath) {
+
+        getDropboxPaths().each {
+            downloadFile(it, localPath + it - remotePath)
         }
     }
 
     /**
      * Uploads a file to Dropbox.
      *
-     * @param dropboxPath path for saving a file on Dropbox
-     * @param uploadPath local path to a file
+     * @param remotePath path for saving a file on Dropbox
+     * @param localPath local path to a file
      *
      * @throws IOException if any error occurs while uploading file to Dropbox
      */
-    void uploadFile(String dropboxPath, String uploadPath) throws IOException {
-        dropboxPath = PathHelper.convertToUnixLike(dropboxPath)
-        log.info("uploading $dropboxPath")
+    @Override
+    void uploadFile(String localPath, String remotePath) throws IOException {
+        remotePath = PathHelper.convertToUnixLike(remotePath)
+
         try {
-            client.files().uploadBuilder("$dropboxPath").uploadAndFinish(new FileInputStream(uploadPath))
+            client.files().uploadBuilder("$remotePath").uploadAndFinish(new FileInputStream(localPath))
         } catch (BadRequestException e) {
-            log.error("Unable to upload a file from $uploadPath.", e)
-            throw new IOException("Unable to upload a file from $uploadPath, invalid request", e)
+            log.error("Unable to upload a file from $localPath.", e)
+            throw new IOException("Unable to upload a file from $localPath, invalid request", e)
         } catch (IOException | DbxException e) {
-            log.error("Unable to upload a file from $uploadPath.", e)
-            throw new IOException("Unable to upload a file from $uploadPath.", e)
+            log.error("Unable to upload a file from $localPath.", e)
+            throw new IOException("Unable to upload a file from $localPath.", e)
+        }
+    }
+
+    /**
+     * Uploads all files stored in local path to Dropbox.
+     *
+     * @param localPath path to local directory
+     * @param remotePath path for saving files on Dropbox
+     */
+    @Override
+    void uploadFiles(String localPath, String remotePath) {
+
+        FileHelper.getFiles(localPath).each {
+            uploadFile(it.path, remotePath + it.path - localPath)
         }
     }
 
