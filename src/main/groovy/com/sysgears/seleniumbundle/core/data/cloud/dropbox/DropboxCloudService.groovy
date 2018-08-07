@@ -1,4 +1,4 @@
-package com.sysgears.seleniumbundle.core.dropbox
+package com.sysgears.seleniumbundle.core.data.cloud.dropbox
 
 import com.dropbox.core.BadRequestException
 import com.dropbox.core.DbxException
@@ -13,7 +13,7 @@ import groovy.util.logging.Slf4j
  * Client for Dropbox. Provides methods to work with Dropbox API.
  */
 @Slf4j
-class DropboxClient {
+class DropboxCloudService {
 
     /**
      * Project properties.
@@ -32,9 +32,9 @@ class DropboxClient {
     private final DbxClientV2 client
 
     /**
-     * Creates an instance of a custom DropboxClient.
+     * Creates an instance of a custom DropboxCloudService.
      */
-    DropboxClient() {
+    DropboxCloudService() {
         client = new DbxClientV2(config, conf.dropbox.accessToken as String)
     }
 

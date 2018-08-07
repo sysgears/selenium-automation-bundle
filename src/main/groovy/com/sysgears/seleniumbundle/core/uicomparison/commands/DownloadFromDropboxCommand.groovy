@@ -2,7 +2,7 @@ package com.sysgears.seleniumbundle.core.uicomparison.commands
 
 import com.sysgears.seleniumbundle.core.command.AbstractCommand
 import com.sysgears.seleniumbundle.core.conf.Config
-import com.sysgears.seleniumbundle.core.dropbox.DropboxClient
+import com.sysgears.seleniumbundle.core.data.cloud.dropbox.DropboxCloudService
 import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
 import groovy.util.logging.Slf4j
 import org.apache.commons.io.FilenameUtils
@@ -22,7 +22,7 @@ class DownloadFromDropboxCommand extends AbstractCommand {
     /**
      * Instance of Dropbox Client to be used by the command.
      */
-    private DropboxClient client = new DropboxClient()
+    private DropboxCloudService client = new DropboxCloudService()
 
     /**
      * Creates an instance of DownloadFromDropboxCommand.
