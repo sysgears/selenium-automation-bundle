@@ -12,7 +12,7 @@ import org.apache.commons.io.FilenameUtils
  * Class which provides the method to upload screenshots to Dropbox.
  */
 @Slf4j
-class UploadToDropboxCommand extends AbstractCommand {
+class UploadToCommand extends AbstractCommand {
 
     /**
      * Category of the uploaded screenshots.
@@ -26,7 +26,7 @@ class UploadToDropboxCommand extends AbstractCommand {
     private DropboxCloudService client = new DropboxCloudService()
 
     /**
-     * Creates an instance of UploadToDropboxCommand.
+     * Creates an instance of UploadToCommand.
      *
      * @param @param arguments the map with arguments of the command
      * @param conf project properties
@@ -34,14 +34,14 @@ class UploadToDropboxCommand extends AbstractCommand {
      * @throws IllegalArgumentException is thrown in case a value is missing for a mandatory parameter or
      * the value doesn't match the validation pattern
      */
-    UploadToDropboxCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
+    UploadToCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)
     }
 
     /**
      * Executes the command.
      *
-     * @throws IOException in case Dropbox client operations produce an error.
+     * @throws IOException in case Dropbox serviceInstance operations produce an error.
      */
     @Override
     void execute() throws IOException {

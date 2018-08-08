@@ -11,7 +11,7 @@ import org.apache.commons.io.FilenameUtils
  * Class which provides the method to download screenshots from Dropbox.
  */
 @Slf4j
-class DownloadFromDropboxCommand extends AbstractCommand {
+class DownloadFromCommand extends AbstractCommand {
 
     /**
      * Category of the downloaded screenshots.
@@ -25,7 +25,7 @@ class DownloadFromDropboxCommand extends AbstractCommand {
     private DropboxCloudService client = new DropboxCloudService()
 
     /**
-     * Creates an instance of DownloadFromDropboxCommand.
+     * Creates an instance of DownloadFromCommand.
      *
      * @param arguments map that contains command arguments
      * @param conf project properties
@@ -33,7 +33,7 @@ class DownloadFromDropboxCommand extends AbstractCommand {
      * @throws IllegalArgumentException is thrown in case a value is missing for a mandatory parameter or
      * the value doesn't match the validation pattern
      */
-    DownloadFromDropboxCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
+    DownloadFromCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)
     }
 
