@@ -2,16 +2,21 @@ package com.sysgears.seleniumbundle.core.uicomparison.commands
 
 import com.sysgears.seleniumbundle.core.command.AbstractCommand
 import com.sysgears.seleniumbundle.core.conf.Config
-import com.sysgears.seleniumbundle.core.data.cloud.dropbox.DropboxCloudService
+import com.sysgears.seleniumbundle.core.data.cloud.ICloudService
 import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
-import groovy.util.logging.Slf4j
+import com.sysgears.seleniumbundle.core.utils.ClassFinder
 import org.apache.commons.io.FilenameUtils
 
 /**
  * Class which provides the method to download screenshots from Dropbox.
  */
-@Slf4j
 class DownloadFromCommand extends AbstractCommand {
+
+    /**
+     * Name of cloud service to be used.
+     */
+    @ImplicitInit(pattern = "googledrive|dropbox", isRequired = true)
+    private String service
 
     /**
      * Category of the downloaded screenshots.
@@ -20,9 +25,9 @@ class DownloadFromCommand extends AbstractCommand {
     private List<String> categories
 
     /**
-     * Instance of Dropbox Client to be used by the command.
+     * Instance of Cloud Client to be used by the command.
      */
-    private DropboxCloudService client = new DropboxCloudService()
+    private ICloudService serviceInstance
 
     /**
      * Creates an instance of DownloadFromCommand.
@@ -35,31 +40,17 @@ class DownloadFromCommand extends AbstractCommand {
      */
     DownloadFromCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)
+
+        serviceInstance = ClassFinder.findCloudService(service, conf)
     }
 
     /**
      * Executes the command.
-     *
-     * @throws IOException in case Dropbox client operations produced an error
      */
     @Override
-    void execute() throws IOException {
+    void execute() {
         categories.each { category ->
-            def categoryPath = FilenameUtils.separatorsToSystem(conf.ui.path."$category")
-            def remotePaths = client.dropboxPaths.findAll {
-                it.matches(/^\/$category\/(.*).png\$/)
-            }
-
-            if (!remotePaths) {
-                log.error("No $category files found on Dropbox.")
-                throw new IOException("No $category files found on Dropbox.")
-            }
-
-            remotePaths.each { remotePath ->
-                def localPath = "${categoryPath.substring(0, categoryPath.lastIndexOf('/'))}${remotePath}"
-
-                client.downloadFile(remotePath, localPath)
-            }
+            serviceInstance.downloadFiles(category, FilenameUtils.separatorsToSystem(conf.ui.path."$category"))
         }
     }
 }
