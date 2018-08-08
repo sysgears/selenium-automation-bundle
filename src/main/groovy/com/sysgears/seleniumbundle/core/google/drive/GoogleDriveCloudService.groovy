@@ -3,7 +3,7 @@ package com.sysgears.seleniumbundle.core.google.drive
 /**
  * Provides methods to interact with files on Google Drive.
  */
-class DriveService {
+class GoogleDriveCloudService {
 
     /**
      * Instance of DriveClient.
@@ -11,11 +11,11 @@ class DriveService {
     private DriveClient client
 
     /**
-     * Creates an instance of DriveService.
+     * Creates an instance of GoogleDriveCloudService.
      *
      * @param client Google Drive Client to be used by the service
      */
-    DriveService(DriveClient client) {
+    GoogleDriveCloudService(DriveClient client) {
         this.client = client
     }
 
