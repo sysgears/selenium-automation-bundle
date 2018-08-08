@@ -81,14 +81,17 @@ class DropboxCloudService extends AbstractCloudService {
     /**
      * Uploads a file to Dropbox.
      *
-     * @param remotePath path for saving a file on Dropbox
      * @param localPath local path to a file
+     * @param remotePath path for saving a file on Dropbox
      *
      * @throws IOException if any error occurs while uploading file to Dropbox
      */
     @Override
     void uploadFile(String localPath, String remotePath) throws IOException {
         remotePath = PathHelper.convertToUnixLike(remotePath)
+
+        // delete is a workaround due to issues with "withMode(WriteMode.OVERWRITE)"
+        deleteFile(remotePath)
 
         try {
             client.files().uploadBuilder("$remotePath").uploadAndFinish(new FileInputStream(localPath))
@@ -118,22 +121,22 @@ class DropboxCloudService extends AbstractCloudService {
     /**
      * Deletes file saved in Dropbox path.
      *
-     * @param dropboxPath path to the file to be deleted
+     * @param remotePath path to the file to be deleted
      *
      * @throws IOException if any error occurs while deleting file on Dropbox
      */
-    void deleteFile(String dropboxPath) throws IOException {
-        dropboxPath = PathHelper.convertToUnixLike(dropboxPath)
+    void deleteFile(String remotePath) throws IOException {
+        remotePath = PathHelper.convertToUnixLike(remotePath)
         try {
-            client.files().deleteV2("$dropboxPath")
+            client.files().deleteV2("$remotePath")
         } catch (DeleteErrorException ignored) {
             // exception is thrown if there is no file of given path
         } catch (BadRequestException e) {
-            log.error("Unable to delete a file from $dropboxPath.", e)
-            throw new IOException("Unable to delete a file from $dropboxPath, invalid request", e)
+            log.error("Unable to delete a file from $remotePath.", e)
+            throw new IOException("Unable to delete a file from $remotePath, invalid request", e)
         } catch (DbxException e) {
-            log.error("Unable to delete a file from $dropboxPath.", e)
-            throw new IOException("Unable to delete a file from $dropboxPath.", e)
+            log.error("Unable to delete a file from $remotePath.", e)
+            throw new IOException("Unable to delete a file from $remotePath.", e)
         }
     }
 
