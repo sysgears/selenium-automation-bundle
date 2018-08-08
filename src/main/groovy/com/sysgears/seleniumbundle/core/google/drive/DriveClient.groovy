@@ -16,6 +16,7 @@ import com.google.api.services.drive.DriveScopes
 import com.google.api.services.drive.model.File
 import com.google.common.collect.Iterables
 import com.sysgears.seleniumbundle.core.conf.Config
+import org.apache.commons.io.FilenameUtils
 
 import javax.activation.MimetypesFileTypeMap
 
@@ -91,10 +92,8 @@ class DriveClient {
      * @return File object
      */
     File getFileByPath(String path) {
-        def folderId = getFolder(path.substring(0, path.lastIndexOf("/"))).getId()
-
-        getFilesInFolder(folderId).find {
-            it.getName() == new java.io.File(path).getName()
+        getFilesInFolder(getFolder(FilenameUtils.getPath(path)).getId()).find {
+            it.getName() == FilenameUtils.getName(path)
         }
     }
 
