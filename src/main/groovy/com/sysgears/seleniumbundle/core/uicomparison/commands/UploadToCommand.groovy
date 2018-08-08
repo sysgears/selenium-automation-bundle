@@ -2,17 +2,21 @@ package com.sysgears.seleniumbundle.core.uicomparison.commands
 
 import com.sysgears.seleniumbundle.core.command.AbstractCommand
 import com.sysgears.seleniumbundle.core.conf.Config
-import com.sysgears.seleniumbundle.core.data.cloud.dropbox.DropboxCloudService
+import com.sysgears.seleniumbundle.core.data.cloud.ICloudService
 import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
-import com.sysgears.seleniumbundle.core.utils.FileHelper
-import groovy.util.logging.Slf4j
+import com.sysgears.seleniumbundle.core.utils.ClassFinder
 import org.apache.commons.io.FilenameUtils
 
 /**
  * Class which provides the method to upload screenshots to Dropbox.
  */
-@Slf4j
 class UploadToCommand extends AbstractCommand {
+
+    /**
+     * Name of cloud service to be used.
+     */
+    @ImplicitInit(pattern = "googledrive|dropbox", isRequired = true)
+    String service
 
     /**
      * Category of the uploaded screenshots.
@@ -21,9 +25,9 @@ class UploadToCommand extends AbstractCommand {
     private List<String> categories
 
     /**
-     * Instance of Dropbox Client to be used by the command.
+     * Instance of Cloud Client to be used by the command.
      */
-    private DropboxCloudService client = new DropboxCloudService()
+    private ICloudService serviceInstance
 
     /**
      * Creates an instance of UploadToCommand.
@@ -36,31 +40,18 @@ class UploadToCommand extends AbstractCommand {
      */
     UploadToCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)
+
+        serviceInstance = ClassFinder.findCloudService(service, conf)
     }
 
     /**
      * Executes the command.
-     *
-     * @throws IOException in case Dropbox serviceInstance operations produce an error.
      */
     @Override
     void execute() throws IOException {
         categories.each { category ->
-            def categoryPath = FilenameUtils.separatorsToSystem(conf.ui.path."$category")
-            def localPaths = FileHelper.getFiles(categoryPath).collect { it.path }
 
-            if (!localPaths) {
-                log.error("No $category files found.")
-                throw new IOException("No $category files found.")
-            }
-
-            localPaths.each { localPath ->
-                def remotePath = localPath - categoryPath.substring(0, categoryPath.lastIndexOf(File.separator))
-
-                // delete is a workaround due to issues with "withMode(WriteMode.OVERWRITE)"
-                client.deleteFile(remotePath)
-                client.uploadFile(remotePath, localPath)
-            }
+            serviceInstance.uploadFiles(category, FilenameUtils.separatorsToSystem(conf.ui.path."$category"))
         }
     }
 }
