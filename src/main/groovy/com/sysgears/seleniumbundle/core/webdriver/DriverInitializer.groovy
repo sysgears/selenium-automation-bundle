@@ -34,21 +34,16 @@ class DriverInitializer {
      * @param browser browser, chrome
      * @param proxy proxy for capturing network traffic
      *
-     * @return WebDriver instance if browser is chrome, otherwise throws IllegalArgumentException
-     *
-     * @throws IllegalArgumentException if browser is not chrome
+     * @return WebDriver instance
      */
-    static WebDriver createDriver(String browser, Proxy proxy) throws IllegalArgumentException {
+    static WebDriver createDriver(String browser, Proxy proxy) {
+        def capabilities = new DesiredCapabilities()
 
-        if (browser != "chrome") {
-            log.error("Wrong browser to start with proxy.")
-            throw new IllegalArgumentException("Please use Chrome as a browser to work via proxy.")
+        if (browser == "chrome") {
+            capabilities.setCapability(CapabilityType.PROXY, proxy)
         }
 
-        def capabilities = new DesiredCapabilities()
-        capabilities.setCapability(CapabilityType.PROXY, proxy)
-
-        Driver.CHROME.createDriver(capabilities)
+        Driver.getDriverType(browser).createDriver(capabilities)
     }
 
     /**
