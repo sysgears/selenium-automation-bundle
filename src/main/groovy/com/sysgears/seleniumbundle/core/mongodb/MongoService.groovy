@@ -2,8 +2,8 @@ package com.sysgears.seleniumbundle.core.mongodb
 
 import com.mongodb.client.MongoDatabase
 import com.sysgears.seleniumbundle.core.utils.FileHelper
-import com.sysgears.seleniumbundle.core.utils.PathHelper
 import groovy.util.logging.Slf4j
+import org.apache.commons.io.FilenameUtils
 import org.bson.Document
 import org.bson.json.JsonMode
 import org.bson.json.JsonWriterSettings
@@ -45,7 +45,7 @@ class MongoService {
      * @throws IOException in case writing to file operation produces an error
      */
     void exportMongoCollectionsToJson(String subPath = null, List<String> collections = null) throws IOException {
-        def path = PathHelper.convertPathForPlatform("${dumpPath}/${subPath ?: "default"}")
+        def path = FilenameUtils.separatorsToSystem("${dumpPath}/${subPath ?: "default"}")
         (collections ?: database.listCollectionNames()).each {
             exportMongoCollectionToJson(path, it)
         }
@@ -91,7 +91,7 @@ class MongoService {
         // making folder tree
         new File(path).mkdirs()
 
-        def writer = new BufferedWriter(new FileWriter(PathHelper.convertPathForPlatform("$path/${collectionName}.json")))
+        def writer = new BufferedWriter(new FileWriter(FilenameUtils.separatorsToSystem("$path/${collectionName}.json")))
 
         try {
             log.info("Starting export process for [$collectionName] collection...")
@@ -121,7 +121,7 @@ class MongoService {
     private void importMongoCollectionFromJson(String path, String collectionName) throws IOException {
         def collection = database.getCollection(collectionName)
 
-        def file = new File(PathHelper.convertPathForPlatform("$path/${collectionName}.json"))
+        def file = new File(FilenameUtils.separatorsToSystem("$path/${collectionName}.json"))
         def reader = new BufferedReader(new StringReader(normalizeJSON(file)))
         try {
             log.info("Starting import process for [$collectionName] collection...")
