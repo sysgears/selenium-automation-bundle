@@ -24,7 +24,7 @@ import javax.activation.MimetypesFileTypeMap
 /**
  * Provides low-level methods to work with Google Drive.
  */
-class DriveClient {
+class GoogleDriveCloudClient {
 
     /**
      * Instance of JsonFactory to be used by Google Drive API.
@@ -57,9 +57,9 @@ class DriveClient {
     private final Config conf = Config.instance
 
     /**
-     * Creates an instance of DriveClient.
+     * Creates an instance of GoogleDriveCloudClient.
      */
-    DriveClient() {
+    GoogleDriveCloudClient() {
         this.service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(conf.google.drive.applicationName)
                 .build()

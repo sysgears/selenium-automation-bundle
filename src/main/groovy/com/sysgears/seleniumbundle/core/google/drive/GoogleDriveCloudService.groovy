@@ -8,9 +8,9 @@ import com.sysgears.seleniumbundle.core.utils.FileHelper
 class GoogleDriveCloudService {
 
     /**
-     * Instance of DriveClient.
+     * Instance of GoogleDriveCloudClient.
      */
-    private DriveClient client = new DriveClient()
+    private GoogleDriveCloudClient client = new GoogleDriveCloudClient()
 
     /**
      * Downloads a file from Google Drive.
