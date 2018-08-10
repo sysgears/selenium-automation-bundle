@@ -17,6 +17,7 @@ import com.google.api.services.drive.model.File
 import com.google.common.collect.Iterables
 import com.sysgears.seleniumbundle.core.conf.Config
 import org.apache.commons.io.FilenameUtils
+import org.apache.commons.lang3.StringUtils
 
 import javax.activation.MimetypesFileTypeMap
 
@@ -65,26 +66,6 @@ class DriveClient {
     }
 
     /**
-     * Gets id of root folder of the Drive.
-     *
-     * @return id of the root folder
-     */
-    String getRootFolderId() {
-        service.files().get("root").execute().getId()
-    }
-
-    /**
-     * Gets File object for given fileId.
-     *
-     * @param fileId id of a file to get
-     *
-     * @return File object
-     */
-    File getFileById(String fileId) {
-        service.files().get(fileId).set("fields", "parents, id, name, kind, mimeType, trashed").execute()
-    }
-
-    /**
      * Gets File object for a file which is stored by a given path.
      *
      * @param path path to a file on Google Drive
@@ -95,34 +76,6 @@ class DriveClient {
         getFilesInFolder(getFolder(FilenameUtils.getPath(path)).getId()).find {
             it.getName() == FilenameUtils.getName(path)
         }
-    }
-
-    /**
-     * Gets list of files which have the given parentId.
-     *
-     * @param parentId id of a parent file
-     *
-     * @return List of Files
-     */
-    List<File> getFilesByParent(String parentId) {
-        service.files().list().setQ("'" + parentId + "' in parents").set("fields", "files(kind, trashed, parents, " +
-                "id, name, mimeType)").execute().getFiles().findAll {
-            !it.getTrashed()
-        }
-    }
-
-    /**
-     * Gets parent of a file with given fileId.
-     *
-     * @param fileId id of a file to find a parent for
-     *
-     * @return File object which represents parent for given file
-     */
-    File getParentFor(String fileId) {
-        def parents = getFileById(fileId).getParents()
-        def parentId = Iterables.getOnlyElement(parents)
-
-        getFileById(parentId)
     }
 
     /**
@@ -145,33 +98,15 @@ class DriveClient {
      *
      * @return File object of the last folder in the given path
      */
-    File getFolder(String path) {
-        def paths = path.split("/").toList().reverse()
-        def parentId = getRootFolderId()
+    File getFolder(String path, String parentId = getRootFolderId()) {
+        def currentFolderName = StringUtils.substringBefore(path, java.io.File.separator)
+        def remainingPath = StringUtils.substringAfter(path, java.io.File.separator)
 
-        while (paths) {
-            def currentFolderName = paths.pop()
-
-            parentId = getFilesByParent(parentId).find {
-                it.getName() == currentFolderName
-            }.getId()
+        def currentFolder = getFilesByParent(parentId).find {
+            it.getName() == currentFolderName
         }
 
-        getFileById(parentId)
-    }
-
-    /**
-     * Gets File instance of a folder by folder name and its parent id.
-     *
-     * @param name name of a folder
-     * @param parentId id of a parent file
-     *
-     * @return File object of the folder
-     */
-    File getFolderByParent(String name, String parentId) {
-        getFilesByParent(parentId).find {
-            it.getName() == name && it.getMimeType() == FOLDER_MIME_TYPE && !it.getTrashed()
-        }
+        remainingPath ? getFolder(remainingPath, currentFolder.getId()) : currentFolder
     }
 
     /**
@@ -250,26 +185,6 @@ class DriveClient {
     }
 
     /**
-     * Main method to create a folder.
-     *
-     * @param name name of a folder
-     * @param parentId name of a parent folder, if parent id is not specified, the folder will be created relatively
-     * to root folder
-     *
-     * @return created File object
-     */
-    File createFolder(String name, String parentId = null) {
-        File fileMetadata = new File()
-                .setName(name)
-                .setMimeType("application/vnd.google-apps.folder")
-                .setParents([parentId ? parentId : getRootFolderId()])
-
-        service.files().create(fileMetadata)
-                .setFields("id")
-                .execute()
-    }
-
-    /**
      * Creates folders if they are not created yet.
      *
      * @param path hierarchy of folders which has to be created
@@ -297,6 +212,88 @@ class DriveClient {
     }
 
     /**
+     * Gets id of root folder of the Drive.
+     *
+     * @return id of the root folder
+     */
+    private String getRootFolderId() {
+        service.files().get("root").execute().getId()
+    }
+
+    /**
+     * Gets File object for given fileId.
+     *
+     * @param fileId id of a file to get
+     *
+     * @return File object
+     */
+    private File getFileById(String fileId) {
+        service.files().get(fileId).set("fields", "parents, id, name, kind, mimeType, trashed").execute()
+    }
+
+    /**
+     * Gets list of files which have the given parentId.
+     *
+     * @param parentId id of a parent file
+     *
+     * @return List of Files
+     */
+    private List<File> getFilesByParent(String parentId) {
+        service.files().list().setQ("'$parentId' in parents").set("fields", "files(kind, trashed, parents, " +
+                "id, name, mimeType)").execute().getFiles().findAll {
+            !it.getTrashed()
+        }
+    }
+
+    /**
+     * Gets parent of a file with given fileId.
+     *
+     * @param fileId id of a file to find a parent for
+     *
+     * @return File object which represents parent for given file
+     */
+    private File getParentFor(String fileId) {
+        def parents = getFileById(fileId).getParents()
+        def parentId = Iterables.getOnlyElement(parents)
+
+        getFileById(parentId)
+    }
+
+    /**
+     * Gets File instance of a folder by folder name and its parent id.
+     *
+     * @param name name of a folder
+     * @param parentId id of a parent file
+     *
+     * @return File object of the folder
+     */
+    private File getFolderByParent(String name, String parentId) {
+        getFilesByParent(parentId).find {
+            it.getName() == name && it.getMimeType() == FOLDER_MIME_TYPE && !it.getTrashed()
+        }
+    }
+
+    /**
+     * Main method to create a folder.
+     *
+     * @param name name of a folder
+     * @param parentId name of a parent folder, if parent id is not specified, the folder will be created relatively
+     * to root folder
+     *
+     * @return created File object
+     */
+    private File createFolder(String name, String parentId = null) {
+        File fileMetadata = new File()
+                .setName(name)
+                .setMimeType(FOLDER_MIME_TYPE)
+                .setParents([parentId ? parentId : getRootFolderId()])
+
+        service.files().create(fileMetadata)
+                .setFields("id")
+                .execute()
+    }
+
+    /**
      * Creates an authorized Credential object.
      *
      * @param HTTP_TRANSPORT The network HTTP Transport
@@ -311,7 +308,8 @@ class DriveClient {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(inputStream))
 
         // Build flow and trigger user authorization request
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
+                clientSecrets, SCOPES)
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(conf.google.drive.credentials as String)))
                 .setAccessType("offline")
                 .build()
