@@ -105,6 +105,8 @@ class BaseTest implements IEnvironment {
      */
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setupGlobalParameters")
     void initSelenideWebDriverRunner() {
+
+        // works only with Chrome, if used with any browser except the Chrome it will be ignored
         browserProxy = new BrowserProxy(new BrowserMobProxyServer())
 
         def driver = !conf.remoteUrl ? DriverInitializer.createDriver(browser, browserProxy.seleniumProxy)

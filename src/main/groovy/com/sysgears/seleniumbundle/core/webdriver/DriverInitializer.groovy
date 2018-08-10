@@ -65,28 +65,22 @@ class DriverInitializer {
     }
 
     /**
-     * Configures and instantiates WebDriver with a given proxy for remote test execution. Currently, proxy can be set
-     * only for Chrome browser.
+     * Configures and instantiates WebDriver with a given proxy for remote test execution. Currently, only Chrome
+     * browser works with proxy.
      *
      * @param remoteUrl url of Selenium-Grid hub or remote Selenium server
      * @param platform platform on which tests should be run, e.g. linux, windows
      * @param browser browser, e.g. chrome, firefox, microsoftedge, headless for headless chrome
-     * @param proxy instance of proxy
+     * @param proxy instance of proxy, only for Chrome browser
      *
      * @return WebDriver instance
-     *
-     * @throws IllegalArgumentException if browser is not Chrome
      */
     static WebDriver createRemoteDriver(String remoteUrl, String platform, String browser, Proxy proxy = null,
-                                        String browserVersion = "") throws IllegalArgumentException {
+                                        String browserVersion = "") {
         def capabilities = new DesiredCapabilities(browser, browserVersion, Platform.fromString(platform))
 
-        if (proxy) {
-            browser == "chrome" ? capabilities.setCapability(CapabilityType.PROXY, proxy)
-                    : {
-                log.error("Wrong browser to start with proxy.")
-                throw new IllegalArgumentException("Please use Chrome as a browser to work via proxy")
-            }()
+        if (proxy && browser == "chrome") {
+            capabilities.setCapability(CapabilityType.PROXY, proxy)
         }
 
         new RemoteWebDriver(URI.create(remoteUrl).toURL(), capabilities)
