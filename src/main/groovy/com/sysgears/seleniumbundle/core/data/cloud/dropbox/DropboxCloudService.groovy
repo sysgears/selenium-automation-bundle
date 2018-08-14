@@ -72,7 +72,6 @@ class DropboxCloudService extends AbstractCloudService {
      */
     @Override
     void downloadFiles(String remotePath, String localPath) {
-
         getDropboxPaths().each {
             downloadFile(it, localPath + it - remotePath)
         }
@@ -94,7 +93,7 @@ class DropboxCloudService extends AbstractCloudService {
         deleteFile(remotePath)
 
         try {
-            client.files().uploadBuilder("$remotePath").uploadAndFinish(new FileInputStream(localPath))
+            client.files().uploadBuilder("/$remotePath").uploadAndFinish(new FileInputStream(localPath))
         } catch (BadRequestException e) {
             log.error("Unable to upload a file from $localPath.", e)
             throw new IOException("Unable to upload a file from $localPath, invalid request", e)
@@ -127,8 +126,9 @@ class DropboxCloudService extends AbstractCloudService {
      */
     void deleteFile(String remotePath) throws IOException {
         remotePath = PathHelper.convertToUnixLike(remotePath)
+
         try {
-            client.files().deleteV2("$remotePath")
+            client.files().deleteV2("/$remotePath")
         } catch (DeleteErrorException ignored) {
             // exception is thrown if there is no file of given path
         } catch (BadRequestException e) {
@@ -148,6 +148,7 @@ class DropboxCloudService extends AbstractCloudService {
      * @throws IOException if any error occurs while getting Dropbox paths
      */
     List<String> getDropboxPaths() throws IOException {
+
         try {
             client.files().listFolderBuilder("").withRecursive(true).start().getEntries().collect {
                 it.getPathLower()
