@@ -1,6 +1,7 @@
 package com.sysgears.seleniumbundle.core.google.drive
 
 import com.sysgears.seleniumbundle.core.utils.FileHelper
+import org.apache.commons.io.FilenameUtils
 
 /**
  * Provides methods to interact with files on Google Drive.
@@ -19,13 +20,13 @@ class GoogleDriveCloudService {
      * @param localPath path where the file will be saved locally
      */
     void downloadFile(String remotePath, String localPath) {
-        client.downloadFileById(client.getFileByPath(remotePath).getId(), localPath)
+        client.downloadFileById(client.getFileByPath(remotePath).getId(), FilenameUtils.separatorsToSystem(localPath))
     }
 
     /**
      * Downloads all files stored in remote path on Google Drive.
      *
-     * @param remotePath path to files on Google Drive
+     * @param remotePath path to a folder on Google Drive
      * @param localPath local path to download the files to
      */
     void downloadFiles(String remotePath, String localPath) {
@@ -34,7 +35,8 @@ class GoogleDriveCloudService {
         client.getFilesInFolder(folderId).each {
             def pathOnRemote = client.getPathFromRootFolderFor(it.getId())
 
-            client.downloadFileById(it.getId(), localPath + (pathOnRemote - remotePath))
+            client.downloadFileById(it.getId(),
+                    FilenameUtils.separatorsToSystem(localPath) + (pathOnRemote - remotePath))
         }
     }
 
@@ -45,7 +47,7 @@ class GoogleDriveCloudService {
      * @param remotePath path to the file on Google Drive
      */
     void uploadFile(String localPath, String remotePath) {
-        def pathToFileDirectory = new File(remotePath).getParentFile().getPath()
+        def pathToFileDirectory = FilenameUtils.getPath(remotePath)
 
         if (!client.createFolders(pathToFileDirectory)) {
             def fileOnDrive = client.getFileByPath(remotePath)
@@ -55,18 +57,19 @@ class GoogleDriveCloudService {
             }
         }
 
-        client.uploadFileToParentFolder(localPath, client.getFolder(pathToFileDirectory).getId())
+        client.uploadFileToParentFolder(FilenameUtils.separatorsToSystem(localPath),
+                client.getFolder(pathToFileDirectory).getId())
     }
 
     /**
      * Uploads all files stored in local path to Google Drive.
      *
-     * @param localPath
-     * @param remotePath
+     * @param localPath path to a local folder to be uploaded
+     * @param remotePath path to the remote folder on Google Drive
      */
     void uploadFiles(String localPath, String remotePath) {
 
-        FileHelper.getFiles(localPath).each {
+        FileHelper.getFiles(FilenameUtils.separatorsToSystem(localPath)).each {
             uploadFiles(it.path, remotePath + (it.path - localPath))
         }
     }
