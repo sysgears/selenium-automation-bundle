@@ -305,3 +305,4 @@ Copyright © 2016, 2017 [SysGears INC]. This source code is licensed under the [
 
 [mit]: LICENSE
 [sysgears inc]: https://sysgears.com
+[wiki section]: https://github.com/sysgears/selenium-automation-bundle/wiki
