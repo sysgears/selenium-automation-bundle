@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="custom.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+
+    <title>Shopidai | Search results</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+
+    <a class="navbar-brand d-inline-block d-lg-none" href="#">
+        <img src="assets/pictures/logo.png" alt="logo.png">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Shop<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Shipping<span class="sr-only">(current)</span></a>
+            </li>
+            <a class="navbar-brand d-none d-lg-inline-block mx-5" href="#">
+                <img src="assets/pictures/logo.png" alt="logo.png">
+            </a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">How to<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Contact us<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid bg-dark">
+    <form class="form-inline justify-content-center my-2 my-lg-0 py-4 text-center search">
+        <input class="form-control border-0 rounded-0" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn rounded-0 my-2 my-sm-0 text-uppercase" type="submit">Search</button>
+    </form>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h5 class="pt-5 pb-4"><em>You are looking for <strong>'dress'.</strong> We found 4 items.</em></h4>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-3 py-4 px-4 filters">
+
+            <form class="form-horizontal" role="form">
+
+                <div class="form-group">
+                    <h6>Category</h6>
+                    <select class="form-control">
+                        <option value="catalogue">Whole catalogue</option>
+                        <option value="modal">Modal</option>
+                        <option value="price">Price</option>
+                        <option value="popular" selected>Most Popular</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <h6>Size</h6>
+                    <select class="form-control">
+                        <option value="catalogue" selected>XS</option>
+                        <option value="xl">XL</option>
+                        <option value="m">M</option>
+                        <option value="s">S</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <h6>Brand</h6>
+                    <input class="form-control" type="text"/>
+                </div>
+
+                <div class="form-group">
+                    <h6>Price Range</h6>
+                    <input type="text" class="form-control d-inline-block" id="max-price" placeholder="Max">
+                    <span>&mdash;</span>
+                    <input type="text" class="form-control d-inline-block" id="min-price" placeholder="Min">
+                    <span>USD</span>
+            </form>
+            </br>
+            <button type="submit" class="btn btn-outline-dark float-right my-4">Filter</button>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card rounded-0">
+                    <img class="card-img-top rounded-0"
+                         src="assets/pictures/results/pink-dress.jpg"
+                         alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Pink dress <span class="float-right">15.99$</span></h5>
+                        <p class="card-text">
+                        <ul class="list-unstyled">
+                            <li>Polka-dot print</li>
+                            <li>Hits the spot</li>
+                            <li>V-neck</li>
+                            <li>Crochet inserts</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Shop now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card rounded-0">
+                    <img class="card-img-top rounded-0"
+                         src="assets/pictures/results/red-dress.jpg"
+                         alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Red dress <span class="float-right">28$</span></h5>
+                        <p class="card-text">
+                        <ul class="list-unstyled">
+                            <li>Scoop neck</li>
+                            <li>It's all in the details</li>
+                            <li>Cross-over back</li>
+                            <li>Regular cut</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Shop now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card rounded-0">
+                    <img class="card-img-top rounded-0"
+                         src="assets/pictures/results/black-dress.jpg"
+                         alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Black dress <span class="float-right">12.89$</span></h5>
+                        <p class="card-text">
+                        <ul class="list-unstyled">
+                            <li>Floral print</li>
+                            <li>For patterns as bold as you are</li>
+                            <li>Cowl neck</li>
+                            <li>Adjustable straps</li>
+                            <li>Side-split design</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Shop now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card rounded-0">
+                    <img class="card-img-top rounded-0"
+                         src="assets/pictures/results/white-dress.jpg"
+                         alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">White dress <span class="float-right">40.99$</span></h5>
+                        <p class="card-text">
+                        <ul class="list-unstyled">
+                            <li>Embroidered design</li>
+                            <li>Hey, fancy pants</li>
+                            <li>V-neck</li>
+                            <li>Zip fastening</li>
+                            <li>Regular cut</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Shop now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </p>
+    </div>
+</div>
+</div>
+
+<div class="container-fluid border-top">
+    <footer>
+        <p>&copy; SysGears 2018</p>
+    </footer>
+</div>
+
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -95,7 +95,7 @@ run {
  */
 test {
 
-    ignoreFailures = true
+    ignoreFailures = false
 
     // adds all system properties with the "test." prefix to system properties of application
     systemProperties(System.properties.findAll { (it.key.contains("test.")) })

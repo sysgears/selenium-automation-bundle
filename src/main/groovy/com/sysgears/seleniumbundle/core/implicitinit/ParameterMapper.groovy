@@ -3,6 +3,8 @@ package com.sysgears.seleniumbundle.core.implicitinit
 import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
 import groovy.util.logging.Slf4j
 
+import java.lang.reflect.Field
+
 /**
  * Provides methods for initializing and validating objects fields that have the {@link ImplicitInit} annotation.
  */
@@ -19,9 +21,7 @@ class ParameterMapper {
      * or the value doesn't match the validation pattern
      */
     void initParameters(Object object, Map<String, ?> arguments) throws IllegalArgumentException {
-        object.getClass().getDeclaredFields().findAll {
-            it.getAnnotation(ImplicitInit.class)
-        }.each { field ->
+        getFieldsToInitialize(object.getClass()).each { field ->
             def name = field.name
             def value = arguments.entrySet().find { it.key.equalsIgnoreCase(name) }?.value
             def annotation = field.getAnnotation(ImplicitInit.class)
@@ -44,8 +44,8 @@ class ParameterMapper {
     /**
      * Checks if the given value matches the pattern.
      *
-     * @argument argument value to verify
-     * @argument pattern validation pattern
+     * @param argument value to verify
+     * @param pattern validation pattern
      *
      * @return true if argument matches the pattern, false otherwise
      */
@@ -56,8 +56,8 @@ class ParameterMapper {
     /**
      * Checks if all the values from a given list match the pattern.
      *
-     * @arguments arguments list of values to verify
-     * @arguments pattern validation pattern
+     * @param arguments list of values to verify
+     * @param pattern validation pattern
      *
      * @return true if all arguments from the list match the pattern, false otherwise
      */
@@ -68,8 +68,8 @@ class ParameterMapper {
     /**
      * Checks if all the values from a given map match the pattern.
      *
-     * @arguments arguments map of values to verify
-     * @arguments pattern validation pattern
+     * @param arguments map of values to verify
+     * @param pattern validation pattern
      *
      * @return true if all arguments from map match the pattern, false otherwise
      */
@@ -78,5 +78,19 @@ class ParameterMapper {
         // Casting to ConfigObject is used to flatten the nested maps
         def values = (arguments as ConfigObject).flatten().values().toList()
         validate(values, pattern)
+    }
+
+    /**
+     * Gets all declared fields with {@link ImplicitInit} annotation of a given class and its superclasses.
+     *
+     * @param clazz class to get fields from
+     *
+     * @return list of fields of a class and all its superclasses which are annotated with {@link ImplicitInit}
+     */
+    private List<Field> getFieldsToInitialize(Class clazz) {
+        def parent = clazz.getSuperclass()
+        def fields = clazz.getDeclaredFields().findAll { it.getAnnotation(ImplicitInit.class) }
+
+        parent ? fields += getFieldsToInitialize(parent) : fields
     }
 }

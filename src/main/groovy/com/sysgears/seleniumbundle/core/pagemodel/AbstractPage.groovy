@@ -1,6 +1,7 @@
 package com.sysgears.seleniumbundle.core.pagemodel
 
 import com.codeborne.selenide.*
+import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.pagemodel.annotations.StaticElement
 import groovy.util.logging.Slf4j
 import org.openqa.selenium.Keys
@@ -15,6 +16,11 @@ import static org.testng.Assert.assertTrue
  */
 @Slf4j
 abstract class AbstractPage<T> {
+
+    /**
+     * Instance of Config.
+     */
+    protected Config conf = Config.instance
 
     /**
      * URL of the page.
@@ -90,6 +96,36 @@ abstract class AbstractPage<T> {
             }
         }
         log.info("${this.getClass().getSimpleName()} has been loaded")
+        (T) this
+    }
+
+    /**
+     * Sets CSS style visibility to hidden in order to hide an element.
+     *
+     * @param elements element which has to be hidden
+     *
+     * @return page object
+     */
+    protected T hideElements(SelenideElement... elements) {
+        elements.each {
+            Selenide.executeJavaScript("arguments[0].style.visibility='hidden'", it)
+        }
+        (T) this
+    }
+
+    /**
+     * Sets CSS style visibility to hidden in order to hide a collection of elements.
+     *
+     * @param elementsCollections collection of elements which has to be hidden
+     *
+     * @return page object
+     */
+    protected T hideElements(ElementsCollection... elementsCollections) {
+        elementsCollections.each { collection ->
+            collection.each {
+                hideElements(it)
+            }
+        }
         (T) this
     }
 }

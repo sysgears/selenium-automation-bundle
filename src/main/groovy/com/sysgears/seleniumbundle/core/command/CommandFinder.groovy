@@ -46,13 +46,13 @@ class CommandFinder {
      */
     ICommand find(CommandArgs commandArgs) throws IllegalArgumentException {
         def command = FileHelper.getFiles(ROOT_DIR, "groovy").findAll {
-            it.path.matches(/^(\w*${File.separator})*commands(${File.separator}\w*)*Command\.groovy$/)
+            it.path.matches(/^(\w*\${File.separator})*commands(\${File.separator}\w*)*Command\.groovy$/)
         }.findAll {
             getCommandName(it).equalsIgnoreCase(commandArgs.name)
         }.findResult {
             def clazz = Class.forName(getClassName(it.path))
 
-            (clazz.getSuperclass() == AbstractCommand) ? clazz : null
+            (hasParent(clazz, AbstractCommand)) ? clazz : null
         }?.newInstance(commandArgs.arguments, conf) as ICommand
 
         command ?: {
@@ -62,11 +62,25 @@ class CommandFinder {
     }
 
     private String getCommandName(File command) {
-        (command.path - "Command.groovy").split(File.separator).last()
+        (command.path - "Command.groovy").split(/\${File.separator}/).last()
     }
 
     private String getClassName(String filePath) {
         (filePath - FilenameUtils.separatorsToSystem(GROOVY_SOURCE_PATH) - ".groovy")
-                .split(File.separator).join(".")
+                .split(/\${File.separator}/).join(".")
+    }
+
+    /**
+     * Checks if a class or any of its superclasses has a target class as parent.
+     *
+     * @param clazz class to start the check from
+     * @param targetClass expected parent
+     *
+     * @return true if class has a target class as one of the superclasses, false otherwise
+     */
+    private Boolean hasParent(Class clazz, Class targetClass) {
+        def parent = clazz.getSuperclass()
+
+        parent ? parent == targetClass ?: hasParent(parent, targetClass) : false
     }
 }

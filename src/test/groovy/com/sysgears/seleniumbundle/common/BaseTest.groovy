@@ -8,6 +8,7 @@ import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.data.DataMapper
 import com.sysgears.seleniumbundle.core.proxy.BrowserProxy
 import com.sysgears.seleniumbundle.core.selenide.commands.Click
+import com.sysgears.seleniumbundle.core.uicomparison.IEnvironment
 import com.sysgears.seleniumbundle.core.webdriver.DriverInitializer
 import net.lightbody.bmp.BrowserMobProxyServer
 import org.openqa.selenium.Dimension
@@ -24,7 +25,7 @@ import static com.sysgears.seleniumbundle.core.webdriver.Driver.getDriverType
  * handles common pre-/post-conditions.
  */
 @Listeners([VideoListener.class])
-class BaseTest {
+class BaseTest implements IEnvironment {
 
     /**
      * Project properties.
@@ -50,6 +51,26 @@ class BaseTest {
      * Browser name.
      */
     protected String browser
+
+    /**
+     * Implementation of {@link IEnvironment} interface.
+     *
+     * @return os property
+     */
+    @Override
+    String getOs() {
+        os
+    }
+
+    /**
+     * Implementation of {@link IEnvironment} interface.
+     *
+     * @return browser property.
+     */
+    @Override
+    String getBrowser() {
+        browser
+    }
 
     /**
      * Sets Selenide global configuration properties. Static configuration of Selenide is thread safe. They are set as a
@@ -84,6 +105,8 @@ class BaseTest {
      */
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setupGlobalParameters")
     void initSelenideWebDriverRunner() {
+
+        // works only with Chrome, if used with any browser except Chrome it will be ignored
         browserProxy = new BrowserProxy(new BrowserMobProxyServer())
 
         def driver = !conf.remoteUrl ? DriverInitializer.createDriver(browser, browserProxy.seleniumProxy)
