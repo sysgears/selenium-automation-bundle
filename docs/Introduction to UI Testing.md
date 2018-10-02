@@ -1,42 +1,41 @@
 # Introduction to User Interface (Layout) Testing with Selenium Automation Bundle
 
-## Testing the User Interface by Comparing Screenshots
+Selenium Automation Bundle provides a simple way to test applications' user interface. You only need to take screenshots
+of the initial layout that was tested and looks fine. After that, when the UI changes, you need to run the same UI tests
+again.
 
-Selenium Automation Bundle provides a simple way to test application layouts. Using the bundle, you can take screenshots
-of the initial, tested layout that looks fine. After that, when the UI changes, you can run the same UI tests again,
-generate a report and simply view where the changes were made. The bundle will take new screenshots, find the
-differences, create new images with highlighted differences between the original and updated layouts, and attach them to
-the report. Your only task is to validate what has changed, and report bugs if any.
+When running your UI tests, the bundle will take new screenshots of applications' layouts, find the differences, create
+new images with highlighted differences, and attach them to the report. Finally, your task is to generate a report and
+visually validate what has changed, and report bugs if any.
 
-You can also consult the [advanced guide] on UI testing, where we explain in great details how test the UI using our
-bundle.
+You can also consult the [advanced guide] for more details about testing the user interface. In this short guide, you'll
+go through the basic steps of testing the UI.
 
 ## Table of Contents
 
 * [Demo Test Classes and Page Objects](#demo-ui-test)
 * [Steps for Testing the User Interface](#steps-for-testing-the-user-inteface)
-* [Creating Baseline Screenshots](#creating-baseline-screenshots)
 * [Page Object Demo for UI Testing](#page-object-demo-for-ui-testing)
-* [UI Test Class Demo](#ui-test-class-demo)
+* [Demo UI Test](#demo-ui-test)
+* [Creating Baseline Screenshots](#creating-baseline-screenshots)
 * [Conclusions](#conclusions)
 
 ## Demo UI Test
 
-Selenium Automation Bundle comes with a basic example of UI test. Here are two files we're going to look at in this
-guide:
+Selenium Automation Bundle comes with a basic example of a UI test. Here are the two files we're going to look at:
 
 * The `ShopidaiPage` page object, located at `src/main/.../seleniumbundle/pagemodel/` .
 * The `UITestExample` test class for `ShopidaiPage`, located at `test/.../tests/ui/`.
 
-> To learn more about page objects and test classes, consult the [page object] and [test classes] sections in the
-general guide to testing with the bundle.
+> To learn more about page objects and test classes, consult the [page object] and [test classes] sections in our
+general guide to testing.
 
 ## Steps for Testing the User Interface
 
 Let's review the steps for writing a UI test with Selenium Automation Bundle.
 
-> **NOTE**: Before you write the first UI tests, test the application manually to ensure that there are no issues with
-the layout.
+> **NOTE**: Before you write your first UI tests, test the initial (basic) application layout manually to ensure that
+there are no issues.
 
 > **NOTE**: You may also want to familiarize yourself with the general approach to writing tests with Selenium
 Automation Bundle. Check out the [introduction] or the [advanced guide] to writing tests.
@@ -47,25 +46,12 @@ Here's a list of steps when testing the UI with Selenium Automation Bundle:
 2. Create a test class and make sure it inherits the `UITest`.
 3. Create baseline screenshots in baseline mode.
 4. Wait until the layout is redesigned or updated.
-5. Run the tests with the baseline mode set to `false` (this mode defaults to `false`).
-6. [Generate a report] and review the attached screenshots with compared layouts.
-7. Report bugs if layouts are broken or changes weren't correct (optional).
+5. Run the tests with the baseline mode set to `false` (this mode is `false` by default).
+6. [Generate a report] and review the attached screenshots with highlighted differences.
+7. Report bugs if layouts are broken or changes weren't correct.
 8. Replace the baseline screenshots.
 
-### Creating Baseline Screenshots
-
-Run the UI tests with the `baselineMode` set to `true`:
-
-```bash
-./gradlew -Dtest.baselineMode=true
-```
-
-By default, this mode is set to `false`.
-
-The baseline screenshots will be saved under the directory `test/resources/uicomparison/baseline/`. Consult the
-[baseline screenshots] section in the advanced guide to UI testing for more information.
-
-### Page Object Demo for UI Testing
+### Demo Page Object for UI Testing
 
 When you create new page objects for UI tests, make sure that your page objects:
 
@@ -92,13 +78,13 @@ class ShopidaiPage extends AbstractPage<ShopidaiPage> implements UIComparison<Sh
 }
 ```
 
-### UI Test Class Demo
+### Demo UI Test
 
 When writing your test classes for testing the UI, we recommend that you do the following:
 
-* Set TestNG `invocationCount` to 5-10 calls to make the tests more stable.
-* Call the `compareLayout()` method on the page object with a string description of the test. `compareLayout()`
-determines when a screenshot of a layout is taken.
+* Set invocation count in `@Test` to 5-10 calls to make the tests more stable.
+* Call the `compareLayout()` method on the page object instance to determine when a screenshot is taken. Optionally, you
+can pass a string description to the method.
 
 The following UI test class is written for the [`ShopidaiPage` page object](#page-object-demo-for-ui-testing):
 
@@ -138,34 +124,48 @@ class UITestExample extends UITest {
 ```
 
 Notice that you can ignore the HTML elements using the `setIgnoredElements()`  method. This method is available through
-the `UIComparison` trait and is useful when you're testing a web page with animation.
+the `UIComparison` trait and can be useful when you're testing a web page with animations.
 
-With `ShopidaiPage` and `UITestExample` in place, run the UI test and generate a report:
+With `ShopidaiPage` and `UITestExample` in place, run this UI test. To run only the `UIComparison` test, change the path
+to the test in `testng.xml`:
+
+ ```xml
+ <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+ <suite name="Suite">
+     <test name="UITest">
+         <packages>
+             <package name="com.sysgears.seleniumbundle.tests.ui.*"/>
+         </packages>
+     </test>
+ </suite>
+ ```
+
+Now just run the following command:
 
 ```bash
 ./gradlew clean test allureServe
 ```
 
-To run only the `UIComparison` test, change the path to the test in `testng.xml`:
-
-```xml
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-
-<suite name="Suite">
-    <test name="UITest">
-        <packages>
-            <package name="com.sysgears.seleniumbundle.tests.ui.*"/>
-        </packages>
-    </test>
-</suite>
-```
-
-Once the report is generated, you'll see that the test with the method `withoutIgnoringElements()` failed, and the
-test `withIgnoringElements()` successfully passes.
+`allureServe` will generate a report, and you'll see that the test with the method `withoutIgnoringElements()` has
+failed, and the test `withIgnoringElements()` has successfully passed.
 
 <p align="center">
     <img src="./img/ui-testing-failed-tests.jpg" />
 </p>
+
+### Creating Baseline Screenshots
+
+Run the UI tests with the `baselineMode` set to `true`:
+
+```bash
+./gradlew -Dtest.baselineMode=true
+```
+
+By default, this mode is set to `false`.
+
+The baseline screenshots will be saved under the directory `test/resources/uicomparison/baseline/`. Consult the
+[baseline screenshots] section in the advanced guide to UI testing for more information.
 
 ## Conclusions
 
