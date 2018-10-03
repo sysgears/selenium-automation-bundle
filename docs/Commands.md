@@ -120,5 +120,5 @@ Uploading screenshots to Dropbox looks almost exactly the same:
 
 Similarly to `downloadFromDropbox`, you can pass up to three arguments to `category`.
 
-[creating commands.md]:
+[creating commands.md]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/advanced/Creating%20Commands.md
 [connection string parameters]: https://docs.mongodb.com/manual/reference/connection-string/
