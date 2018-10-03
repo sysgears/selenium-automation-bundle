@@ -21,6 +21,13 @@ and running automated data-driven tests with Selenide, TestNG, and Allure.
 * Groovy
 * aShot
 
+## Wiki
+
+You can consult the [Wiki section] to know more about writing tests and using the bundle:
+
+* [Introduction to writing tests with Selenium Automation Bundle](https://github.com/sysgears/selenium-automation-bundle/wiki/Intro-to-Writing-Tests)
+* [Detailed guide to writing tests with Selenium Automation Bundle](https://github.com/sysgears/selenium-automation-bundle/wiki/Guide-to-Writing-Tests)
+
 ## What You Should Know Before Using Selenium Automation Bundle
 
 Selenium Automation Bundle is built around Selenium ecosystem, which is why you should have a basic understanding of
@@ -298,3 +305,4 @@ Copyright © 2016, 2017 [SysGears INC]. This source code is licensed under the [
 
 [mit]: LICENSE
 [sysgears inc]: https://sysgears.com
+[wiki section]: https://github.com/sysgears/selenium-automation-bundle/wiki

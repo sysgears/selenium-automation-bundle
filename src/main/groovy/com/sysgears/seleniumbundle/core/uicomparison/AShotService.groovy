@@ -3,8 +3,8 @@ package com.sysgears.seleniumbundle.core.uicomparison
 import com.codeborne.selenide.WebDriverRunner
 import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.utils.AllureHelper
-import com.sysgears.seleniumbundle.core.utils.PathHelper
 import groovy.util.logging.Slf4j
+import org.apache.commons.io.FilenameUtils
 import org.openqa.selenium.By
 import ru.yandex.qatools.ashot.AShot
 import ru.yandex.qatools.ashot.Screenshot
@@ -154,7 +154,7 @@ class AShotService {
      */
     Map getPathsForScreenshot(Map paths, String screenshotName) throws IllegalArgumentException {
         ["baseline", "actual", "difference"].collectEntries { String category ->
-            [category, PathHelper.convertPathForPlatform("${paths[category]}/$os/$browser/${screenshotName}.png") ?:
+            [category, FilenameUtils.separatorsToSystem("${paths[category]}/$os/$browser/${screenshotName}.png") ?:
                     {
                         throw new IllegalArgumentException("[$category] path for UI comparison is missing, check " +
                                 "Application.properties")
