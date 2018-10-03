@@ -7,7 +7,8 @@ You're going to write a test for a [TodoMVC application](http://todomvc.com/exam
 
 ## STEP 1. Set the URL for the Web Page Under Test
 
-Change the base URL in the global application properties to the URL of the website that you're going to test. You need to update the `ApplicationProperties.groovy` file, which is located in the `./src/main/resources/config/` directory.
+Change the base URL in the global application properties to the URL of the website that you're going to test. You need
+to update the `ApplicationProperties.groovy` file, which is located in the `./src/main/resources/config/` directory.
 
 Set the URL to `"http://todomvc.com/"` as shown in the example below:
 
@@ -24,9 +25,11 @@ You don't need to change any other properties in `ApplicationProperties.groovy`.
 
 ## STEP 2. Create a Page Object
 
-To work with the web pages under test, you need to create page objects for them. Page objects are used to access and modify HTML elements on a web page.
+To work with the web pages under test, you need to create page objects for them. Page objects are used to access and
+modify HTML elements on a web page.
 
-Create a new page object class called `TodoListPage` and save it to the `./src/main/.../pagemodel` directory. Then, add this code into the file:
+Create a new page object class called `TodoListPage` and save it to the `./src/main/.../pagemodel` directory. Then, add
+this code into the file:
 
 ```groovy
 package com.sysgears.seleniumbundle.pagemodel
@@ -73,13 +76,16 @@ class TodoListPage extends AbstractPage<TodoListPage> {
 
 The page object that handles your entire HTML page under test should inherit the `AbstractPage` class.
 
-You need to set `this.url` in the constructor to the relative URL of the web page you're going to test. In the code snippet above, `examples/vanilla-es6` will be concatenated with the base URL `http://todomvc.com/`.
+You need to set `this.url` in the constructor to the relative URL of the web page you're going to test. In the code
+snippet above, `examples/vanilla-es6` will be concatenated with the base URL `http://todomvc.com/`.
 
 ## STEP 3. Create a Test for Page Object
 
-After creating a page object, you can write a test for it. Your test will use page object methods to access an HTML element, modify it, and check the results.
+After creating a page object, you can write a test for it. Your test will use page object methods to access an HTML
+element, modify it, and check the results.
 
-Create a new file `TodoListPageTest.groovy` and save it to the directory `./src/test/.../tests/todo_list/`. Add the following code into the file:
+Create a new file `TodoListPageTest.groovy` and save it to the directory `./src/test/.../tests/todo_list/`. Add the
+following code into the file:
 
 ```groovy
 package com.sysgears.seleniumbundle.tests.todo_list

@@ -474,5 +474,5 @@ the browser. And if you need to inspect the results of new or updated tests, you
 This command will clean up the build folder, run the tests, generate a _new_ report, and open it in your default
 browser.
 
-[simple guide]: https://github.com/sysgears/selenium-automation-bundle/docs/Introduction to Writing Tests.md
+[simple guide]: https://github.com/sysgears/selenium-automation-bundle/docs/Introduction%20%to%20%Writing%20%Tests.md
 [page objects]: https://martinfowler.com/bliki/PageObject.html
