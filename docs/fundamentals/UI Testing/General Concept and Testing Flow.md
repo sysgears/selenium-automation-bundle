@@ -139,12 +139,10 @@ You can find more information about the custom classes and commands available in
 ## Demo Test Classes and Page Objects
 
 Selenium Automation Bundle comes with several page objects and test classes to demonstrate how you can write UI
-tests. The [introduction to writing UI testing] discussed a very basic UI test.
+tests. The [introduction to writing UI testing] discussed only a very basic UI test.
 
-You can follow to the dedicated guides that discuss more advanced aspects of UI testing such as hiding and ignoring
-elements:
+You can follow to the dedicated guide that talks about more advanced aspects of UI testing such as ignoring elements:
 
-* [Hiding Elements in UI Tests]
 * [Ignoring Elements in UI Tests]
 
 ## General Considerations for Writing Page Models for UI Tests
