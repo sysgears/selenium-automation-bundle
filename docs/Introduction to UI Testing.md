@@ -8,7 +8,7 @@ When running your UI tests, the bundle will take new screenshots of applications
 new images with highlighted differences, and attach them to the report. Finally, your task is to generate a report and
 visually validate what has changed, and report bugs if any.
 
-You can also consult the [advanced guide] for more details about testing the user interface. In this short guide, you'll
+You can also consult the [fundamentals guide] for more details about testing the user interface. In this short guide, you'll
 go through the basic steps of testing the UI.
 
 ## Table of Contents
@@ -38,7 +38,7 @@ Let's review the steps for writing a UI test with Selenium Automation Bundle.
 there are no issues.
 
 > **NOTE**: You may also want to familiarize yourself with the general approach to writing tests with Selenium
-Automation Bundle. Check out the [introduction] or the [advanced guide] to writing tests.
+Automation Bundle. Check out the [introduction] or the [fundamentals guide] to writing tests.
 
 Here's a list of steps when testing the UI with Selenium Automation Bundle:
 
@@ -165,18 +165,18 @@ Run the UI tests with the `baselineMode` set to `true`:
 By default, this mode is set to `false`.
 
 The baseline screenshots will be saved under the directory `test/resources/uicomparison/baseline/`. Consult the
-[baseline screenshots] section in the advanced guide to UI testing for more information.
+[baseline screenshots] section in the fundamentals guide to UI testing for more information.
 
 ## Conclusions
 
 Selenium Automation Bundle provides great possibilities for testing the user interface (application layouts). If you
-want to know more about UI testing with our bundle, consult the [advanced guide] to writing and running the UI tests.
+want to know more about UI testing with our bundle, consult the [detailed guide] to writing and running the UI tests.
 
-[advanced guide]: https://github.com/sysgears/selenium-automation-bundle/docs/advanced/Advanced-Guide-to-UI-Testing
-[baseline screenshots]: https://github.com/sysgears/selenium-automation-bundle/docs/advanced/Advanced-Guide-to-UI-Testing#creating-baseline-screenshots
+[fundamentals guide]: https://github.com/sysgears/selenium-automation-bundle/docs/fundamentals/Advanced-Guide-to-UI-Testing
+[baseline screenshots]: https://github.com/sysgears/selenium-automation-bundle/docs/fundamentals/Advanced-Guide-to-UI-Testing#creating-baseline-screenshots
 [page object]: https://github.com/sysgears/selenium-automation-bundle/wiki/Guide-to-Writing-Tests#why-use-page-objects
 [test classes]: https://github.com/sysgears/selenium-automation-bundle/wiki/Guide-to-Writing-Tests#creating-a-test
 [introduction]: https://github.com/sysgears/selenium-automation-bundle/wiki/Intro-to-Writing-Tests
-[advanced guide]: https://github.com/sysgears/selenium-automation-bundle/wiki/Guide-to-Writing-Tests
+[detailed guide]: https://github.com/sysgears/selenium-automation-bundle/wiki/Guide-to-Writing-Tests
 [generate a report]: https://github.com/sysgears/selenium-automation-bundle/wiki/Intro-to-Writing-Tests#step-5-run-the-test
 [ashot]: https://github.com/yandex-qatools/ashot

@@ -18,7 +18,7 @@ The command `generateTestNG` can accept three parameters:
 | parallel     | List<String> | List of MongoDB connection string parameters      |
 | configName   | List<String> | Name for the created TestNG configuration file    |
 
-### Environments
+### Test Environments
 
 You can pass the following arguments for the `environments` parameter:
 
@@ -27,20 +27,36 @@ You can pass the following arguments for the `environments` parameter:
 
 **NOTE**: All browsers but Microsoft Edge are written in lowercase letters.
 
-The following example will generate a TestNG configuration file for running tests on MacOS in Safari and Chrome, and on
-Windows in Microsoft Edge:
+The following example will generate a TestNG configuration file for running tests on Windows in Microsoft Edge and
+Mozilla Firefox:
 
 ```bash
-./gradlew run -Pcommand="generateTestNG -environments=mac:safari,mac:chrome,windows:firefox,windows:MicrosoftEdge"
+./gradlew run -Pcommand="generateTestNG -environments=windows:firefox,windows:MicrosoftEdge"
 ```
 
-### Devices
+### Test Devices
 
 You can pass a list of devices as arguments to `devices`, for example:
 
 ```bash
 ./gradlew run -Pcommand="generateTestNG -devices=iphone5"
 ```
+
+### Parallel Execution
+
+You can run the tests using Selenium Grid in several browsers, and it's also possible to run the test methods for the
+same class in parallel (in several windows at the same time). Selenium Automation Bundle allows you to create TestNG
+configuration file that handles such cases. You won't need to set up Selenium Grid to launch several browsers: Our
+bundle does that automatically.
+
+For example, to enable parallel execution of test classes, generate a TestNG configuration with the following command:
+
+```bash
+./gradlew run -Pcommand="generateTestNG -environments=linux:firefox,linux:chrome -parallel=classes"
+```
+
+To learn more about the parallel execution of TestNG suites, consult the [parallelism and timeouts section] in TestNG
+documentation.
 
 ## MongoDB Commands
 
@@ -120,5 +136,6 @@ Uploading screenshots to Dropbox looks almost exactly the same:
 
 Similarly to `downloadFromDropbox`, you can pass up to three arguments to `category`.
 
-[creating commands.md]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/advanced/Creating%20Commands.md
+[creating commands.md]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Creating%20Commands.md
 [connection string parameters]: https://docs.mongodb.com/manual/reference/connection-string/
+[parallelism and timeouts section]: https://testng.org/doc/documentation-main.html#parallel-running
