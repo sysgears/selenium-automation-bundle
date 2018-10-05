@@ -12,15 +12,16 @@ The demo files:
 
 ### General Considerations for Creating Test Classes for DDT
 
-Your test classes that are be used for Data Driven Testing will need to import several classes provided by the bundle:
+Your test classes that are be used for Data Driven Testing will need several classes provided by the bundle:
 
+* `FunctionalTest`, a test class that provides a `DataMapper` instance.
 * `DataLoader`, a class that let's you load test data from the files.
 * `Find`, `Locator`, and `Query` annotations to use before the method definitions in test class.
 
 ### Demo Test Class for Data Driven Testing
 
 The demo test class `Tools` uses two demo page objects located in the `src/main/groovy/.../seleniumbundle/pagemodel/`
-directory. `Tools` is written according to the general recommendations on [creating test classes] for functional
+directory. `Tools` is created according to the general recommendations on [creating test classes] for functional
 testing.
 
 Here are a few considerations for writing test classes that are used in Data Driven Testing scenarios:
