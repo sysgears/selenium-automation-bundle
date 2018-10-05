@@ -2,8 +2,11 @@
 
 <suite name="Suite">
     <test name="Demo">
-        <packages>
+        <!--<packages>
             <package name="com.sysgears.seleniumbundle.tests.demo.*"/>
-        </packages>
+        </packages>-->
+        <classes>
+            <class name="com.sysgears.seleniumbundle.tests.ui.UITestExample"/>
+        </classes>
     </test>
 </suite>
