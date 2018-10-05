@@ -7,7 +7,7 @@ import org.testng.annotations.Test
 
 class UITestIgnoringElementsExample extends UITest {
 
-    protected ShopidaiPage shopidaiPage
+    private ShopidaiPage shopidaiPage
 
     @BeforeMethod
     void openApplication() {
