@@ -8,7 +8,7 @@ class ShopidaiPage extends AbstractPage<ShopidaiPage> implements UIComparison<Sh
 
     ShopidaiPage open() {
         Selenide.open("file://${System.getProperty("user.dir")}/src/test/resources/" +
-                "web_page_with_animation/index.html")
+                "web/pages/animation/index.html")
         this
     }
 }
