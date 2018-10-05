@@ -7,7 +7,7 @@ import org.testng.annotations.Test
 
 class UITestExample extends UITest {
 
-    protected GooglePage googlePage
+    private GooglePage googlePage
 
     @BeforeMethod
     void openApplication() {

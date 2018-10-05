@@ -15,7 +15,7 @@ class GooglePage extends AbstractPage<GooglePage> implements UIComparison<Google
 
     @StaticElement
     private SelenideElement queryField = $(By.name("q")),
-                            logoImg = $(By.id("hplogo"))
+                            logoImg = $("#hplogo")
 
     GooglePage() {
         this.url = "/"
