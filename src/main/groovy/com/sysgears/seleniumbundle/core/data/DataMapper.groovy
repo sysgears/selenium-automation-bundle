@@ -11,25 +11,25 @@ import groovy.util.logging.Slf4j
 import java.lang.reflect.Method
 
 /**
- * Is designed to be used together with TestNJ Data Provider methods. Is responsible for test data processing, finding
- * required data entries from the test data set and converting them into an Object[][].
+ * Designed to be used with the TestNG Data Provider methods. Responsible for processing test data, finding requested
+ * entries from the data set and converting them into Object[][].
  */
 @Slf4j
 class DataMapper {
 
     /**
-     * Finds sub sets of test data required for a test method execution from the given test data collection by using
-     * {@link Query}, {@link Find} annotations defined on the method, identifies specific data entries in the sub
-     * sets by {@link Locator}. Returns selected data entries as an Object[][].
+     * Finds subsets of the test data required for test method execution from the given test data collection by using
+     * the {@link Query} and {@link Find} annotations defined on the method, identifies specific data entries in the
+     * subsets by {@link Locator}. Returns selected data entries as Object[][].
      *
      * @param data structured test data
      * @param method method which uses TestNG Data Provider
      *
      * @return Object[][]
      *
-     * @throws MissingLocatorAnnotationException if method parameter lacks locator annotation
-     * @throws RuntimeException if while getting the value from data set any of the non-terminal steps into nested map
-     * return non-map instance
+     * @throws MissingLocatorAnnotationException if method parameter lacks the locator annotation
+     * @throws RuntimeException if any of the non-terminal steps in the nested map return a non-map instance while
+     * getting the value from a data set
      */
     Object[][] map(List<Map> data, Method method, Object testClass)
             throws MissingLocatorAnnotationException, RuntimeException {

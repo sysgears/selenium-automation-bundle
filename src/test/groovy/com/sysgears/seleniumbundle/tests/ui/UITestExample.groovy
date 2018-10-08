@@ -16,7 +16,9 @@ class UITestExample extends UITest {
                 .open()
                 .waitForPageToLoadElements()
 
-        // is used to remove instability related to cursor blinking and shadow changes under the query field.
+        /** setIgnoredElements() is necessary to remove instability caused by the blinking of the cursor
+         *  and CSS shadow property changes under the Google query field.
+         */
                 .setIgnoredElements(["#tsf"])
     }
 
@@ -34,7 +36,11 @@ class UITestExample extends UITest {
     @Test
     void checkWithChangesInLayout() {
 
-        // the block below changes the default Google logo to custom one if we don't run the tests in the baseline mode
+        /**
+         * Checks if the test runs in baseline mode.
+         * If the baselineMode is true, then the Google logo will be replaced and the UI
+         * test will fail.
+         */
         if (!conf.baselineMode) {
             googlePage.replaceLogo()
         }

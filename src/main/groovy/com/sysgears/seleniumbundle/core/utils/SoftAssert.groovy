@@ -3,7 +3,7 @@ package com.sysgears.seleniumbundle.core.utils
 import groovy.util.logging.Slf4j
 
 /**
- * Enables soft assertion in test methods with multiple assertion points.
+ * Enables soft assertions in test methods with multiple assertion points.
  */
 @Slf4j
 class SoftAssert {
@@ -11,7 +11,7 @@ class SoftAssert {
     private failedAssertions = []
 
     /**
-     * Sums up all stored assertion errors and generates new AssertionError.
+     * Joins all stored assertion errors and generates new AssertionError.
      *
      * @throws AssertionError if at least one assertion error has been stored.
      */
@@ -25,7 +25,7 @@ class SoftAssert {
     /**
      * Executes the closure code and catches any assertion errors.
      *
-     * @param closure that has test logic which should be softly asserted
+     * @param closure that has the test logic, which should be softly asserted
      * @return SoftAssert instance for chaining methods
      */
     SoftAssert 'catch'(Closure closure) {
@@ -39,7 +39,7 @@ class SoftAssert {
     }
 
     /**
-     * Cleans a list of failed assertions.
+     * Cleans the list of failed assertions.
      */
     void clean() {
         failedAssertions.clear()

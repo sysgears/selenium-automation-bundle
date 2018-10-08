@@ -4,7 +4,7 @@ import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.mongodb.MongoService
 
 /**
- * The command restores Mongo database from given dump.
+ * The command restores a Mongo database from a given dump.
  */
 class MongoRestoreCommand extends AbstractMongoCommand {
 
@@ -14,18 +14,18 @@ class MongoRestoreCommand extends AbstractMongoCommand {
      * @param arguments map that contains command arguments
      * @param conf project properties
      *
-     * @throws IllegalArgumentException is thrown in case a value is missing for a mandatory parameter or
-     * the value doesn't match the validation pattern
+     * @throws IllegalArgumentException is thrown if a value is missing for a mandatory parameter or
+     * the value does not match the validation pattern
      */
     MongoRestoreCommand(Map<String, List<String>> arguments, Config conf) {
         super(arguments, conf)
     }
 
     /**
-     * Executes restoring of given collections from dump files. Takes files by path that is configured in
-     * ApplicationProperties.groovy plus sub-path that is specified for the command.
+     * Restores the given collections from the dump files. Takes files by path (configured in
+     * ApplicationProperties.groovy) and sub-path (specified for the command).
      *
-     * @throws IOException in case writing to file operation produces an error or in case there are no dump files
+     * @throws IOException if writing to a file produces an error or if there are no dump files
      * to restore from
      */
     @Override

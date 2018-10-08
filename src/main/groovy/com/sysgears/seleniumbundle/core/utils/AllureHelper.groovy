@@ -13,9 +13,9 @@ import java.awt.image.BufferedImage
 class AllureHelper {
 
     /**
-     * Attaches given image with given name to Allure.
+     * Attaches a given image with a name to an Allure report.
      *
-     * @param name name of the image to be shown in report
+     * @param name name of the image to be shown in the report
      * @param image image to be attached
      */
     void attach(String name, BufferedImage image) {
@@ -23,13 +23,13 @@ class AllureHelper {
     }
 
     /**
-     * Converts BufferedImage to input stream.
+     * Converts BufferedImage into the input stream.
      *
      * @param bufferedImage image to be converted
      *
      * @return input stream
      *
-     * @throws IOException if file write operation has failed due to I/O error
+     * @throws IOException if writing to a file failed due to I/O error
      */
     private InputStream imageToInputStream(BufferedImage bufferedImage) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream()

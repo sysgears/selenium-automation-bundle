@@ -6,7 +6,7 @@ import com.sysgears.seleniumbundle.core.implicitinit.annotations.ImplicitInit
 import groovy.util.logging.Slf4j
 
 /**
- * Abstract class to be extended by the classes that provide implementations for the bundle commands.
+ * The abstract class to be extended by the classes that provide implementations for the bundle commands.
  */
 @Slf4j
 abstract class AbstractCommand implements ICommand {
@@ -23,7 +23,7 @@ abstract class AbstractCommand implements ICommand {
      * @param arguments map that contains command arguments
      * @param conf project properties
      *
-     * @throws IllegalArgumentException if a value is missing for a mandatory argument or the value doesn't
+     * @throws IllegalArgumentException if a value is missing for a mandatory argument or the value does not
      * match the validation pattern
      */
     AbstractCommand(Map<String, ?> arguments, Config conf) throws IllegalArgumentException {

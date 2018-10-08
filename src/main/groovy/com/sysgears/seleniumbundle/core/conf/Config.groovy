@@ -7,52 +7,52 @@ import groovy.util.logging.Slf4j
 import org.apache.commons.io.FilenameUtils
 
 /**
- * Provides access to project properties which can be configured via ApplicationProperties.groovy configuration file.
+ * Provides access to the project properties that can be configured in the ApplicationProperties.groovy file.
  */
 @Slf4j
 class Config {
 
     /**
-     * The path to main module resources.
+     * The path to the main module resources.
      */
     private static final String RESOURCES_PATH = "src/main/resources/config/"
 
     /**
-     * Name of the file with project properties.
+     * The name of the file with project properties.
      */
     private static final String PROJECT_PROPERTIES_FILENAME = "ApplicationProperties"
 
     /**
-     * The path to project configuration file.
+     * The path to the project configuration file.
      */
     private static final String CONF_FILE = "${RESOURCES_PATH}${PROJECT_PROPERTIES_FILENAME}.groovy"
 
     /**
-     * Base URL of the application under test.
+     * The base URL of the web application under test.
      */
     @ImplicitInit(isRequired = true, pattern = "^http.*")
     String baseUrl
 
     /**
-     * URL of Selenium Grid.
+     * The URL of Selenium Grid.
      */
     @ImplicitInit
     String remoteUrl
 
     /**
-     * Code name of an operating system e.g. "linux", "windows".
+     * The code name of the operating system such as "linux", "windows", or "mac".
      */
     @ImplicitInit
     String os
 
     /**
-     * Browser properties.
+     * The browser properties.
      */
     @ImplicitInit
     Map<String, ?> browser
 
     /**
-     * Project properties map.
+     * The project properties map.
      */
     final Map<String, ?> properties = [:]
 
@@ -61,7 +61,7 @@ class Config {
      *
      * @throws IllegalArgumentException if a value is missing for a mandatory parameter
      * or the value doesn't match the validation pattern
-     * @throws IOException if an I/O error occurs while getting the properties files
+     * @throws IOException if an I/O error occurs while getting the files with properties
      */
     private Config() throws IllegalArgumentException, IOException {
         def configSlurper = new ConfigSlurper()
@@ -69,10 +69,10 @@ class Config {
 
         def rootDirectory = FilenameUtils.separatorsToSystem(RESOURCES_PATH)
 
-        // reads application properties
+        // reads the application properties
         properties << configSlurper.parse(new File(CONF_FILE).toURI().toURL())
 
-        // reads all the other property files (they can override properties in the application.properties file)
+        // reads all the other files with properties; they may override properties in ApplicationProperties.groovy
         properties << FileHelper.getFiles(rootDirectory, "groovy").findAll {
             it.name.toLowerCase().contains("properties") &&
                     !it.name.toLowerCase().contains(PROJECT_PROPERTIES_FILENAME.toLowerCase())
@@ -80,7 +80,7 @@ class Config {
             configSlurper.parse(new File(it.path).toURI().toURL())
         }
 
-        // overrides property values from the system properties passed from command-line
+        // overrides property values from the system properties passed via the command line
         properties << System.properties.findAll { it.key.contains("test.") }
                 .collectEntries { [it.key - "test.", it.value] }
 
@@ -88,7 +88,7 @@ class Config {
     }
 
     /**
-     * Instantiates Config only when getInstance method of outer class is called.
+     * Instantiates Config only when the getInstance method of the outer class is called.
      * Bill Pugh's singleton pattern.
      */
     private static class ConfigHolder {
@@ -96,7 +96,7 @@ class Config {
     }
 
     /**
-     * Returns Config instance.
+     * Returns the Config instance.
      *
      * @return thread-safe instance of the application Config
      */
@@ -105,7 +105,7 @@ class Config {
     }
 
     /**
-     * Returns any extra property from the configuration file which wasn't specified in the Config class.
+     * Returns any extra property from the configuration file that was not specified in the Config class.
      *
      * @param path to property value
      *

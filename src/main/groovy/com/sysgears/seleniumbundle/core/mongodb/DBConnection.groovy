@@ -9,7 +9,7 @@ import com.mongodb.client.MongoDatabase
 import groovy.transform.Synchronized
 
 /**
- * Provides threadsafe connection to the database.
+ * Provides a threadsafe connection to the database.
  */
 class DBConnection {
 
@@ -29,7 +29,7 @@ class DBConnection {
     private final MongoClient client
 
     /**
-     * Constructor for the database connection. Accepts configured Mongo client.
+     * Constructor for the database connection. Accepts a configured Mongo client.
      *
      * @param client configured Mongo client instance
      * @param dbName database name
@@ -51,23 +51,23 @@ class DBConnection {
     }
 
     /**
-     * Constructor for the database connection. Accepts configured Mongo credential.
+     * Constructor for the database connection. Accepts configured Mongo credentials.
      *
      * @param dbName database name
-     * @param host mongo server address or alias
-     * @param port port of mongo database
-     * @param credential user's credential that should be used for authentication
+     * @param host Mongo server address or alias
+     * @param port port of the Mongo database
+     * @param credential user's credential that are used for authentication
      */
     DBConnection(String dbName, String host, String port, MongoCredential credential) {
         this(dbName, MongoClients.create(settingsBuilder(host, port, credential)))
     }
 
     /**
-     * Constructor for the database connection. Use for SCRAM-SHA-1 or MONGODB_CR authentication mechanism.
+     * Constructor for the database connection. Use for the SCRAM-SHA-1 or MONGODB_CR authentication mechanism.
      *
      * @param dbName database name
      * @param host mongo server address or alias
-     * @param port port of mongo database
+     * @param port port of Mongo database
      * @param userName name of a user with access to the database
      * @param password password
      * @param authDb database that contains user record for authentication
@@ -90,13 +90,13 @@ class DBConnection {
     }
 
     /**
-     * Prepares Mongo client settings objects.
+     * Prepares the settings objects for the Mongo client.
      *
-     * @param host mongo server address or alias
-     * @param port port of mongo database
+     * @param host Mongo server address or alias
+     * @param port port of the Mongo database
      * @param credential Mongo credential object
      *
-     * @return Mongo client settings object
+     * @return settings object for the Mongo client
      */
     private static MongoClientSettings settingsBuilder(String host, String port, MongoCredential credential = null) {
         def builder = MongoClientSettings.builder()

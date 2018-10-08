@@ -21,25 +21,25 @@ abstract class AbstractMongoCommand extends AbstractCommand {
     protected List<String> collections
 
     /**
-     * Sub-path to dumps directory.
+     * Subpath to the directory with dumps.
      */
     @ImplicitInit
     protected List<String> subPath
 
     /**
-     * Connection string parameter for initialization of Mongo Client.
+     * Connection string for initializing MongoClient.
      */
     @ImplicitInit
     protected List<String> connectionString
 
     /**
-     * Creates an instance of MongoCommand initializes database property
+     * Creates an instance of MongoCommand initializes database property.
      *
      * @param arguments map that contains command arguments
      * @param conf project properties
      *
-     * @throws IllegalArgumentException is thrown in case a value is missing for a mandatory parameter or
-     * the value doesn't match the validation pattern
+     * @throws IllegalArgumentException is thrown if a value is missing for a mandatory parameter or
+     * the value does not match the validation pattern
      */
     AbstractMongoCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)

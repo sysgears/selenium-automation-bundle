@@ -5,22 +5,23 @@ import com.sysgears.seleniumbundle.core.mongodb.MongoService
 import org.testng.annotations.BeforeSuite
 
 /**
- * Middle layer class for functional tests which use MongoService. Initializes a connection to a database.
+ * The middle layer class for functional tests that use MongoService.
+ * Initializes a connection to a MongoDB database.
  */
 class FunctionalTestWithMongo extends FunctionalTest {
 
     /**
-     * Connection to a database.
+     * Connection to the database.
      */
     protected DBConnection dbConnection
 
     /**
-     * Mongo service instance.
+     * Instance of Mongo service.
      */
     protected MongoService mongoService
 
     /**
-     * Initialization of the connection to the Mongo database.
+     * Initialization of a connection to a MongoDB database.
      */
     @BeforeSuite(alwaysRun = true)
     void initMongoConnection() {
@@ -31,7 +32,7 @@ class FunctionalTestWithMongo extends FunctionalTest {
     }
 
     /**
-     * Initialization of Mongo service.
+     * Initialization of MongoDB service.
      */
     @BeforeSuite(alwaysRun = true, dependsOnMethods = "initMongoConnection")
     void initMongoService() {

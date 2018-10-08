@@ -1,7 +1,7 @@
 package com.sysgears.seleniumbundle.core.uicomparison
 
 /**
- * Interface that represents test environment and provides information about operation system and browser.
+ * The interface that represents a test environment and provides information about the operation system and the browser.
  */
 interface IEnvironment {
 
