@@ -166,7 +166,8 @@ When you create test classes for UI testing with Selenium Automation Bundle, you
 
 * Inherit `UITest`.
 
-Thanks to `UITest`, your test class can use the [soft assertions] mechanism.
+Thanks to `UITest`, your UI tests not only handle the basic configurations, but also can benefit from using the [soft
+assertions] mechanism.
 
 [updateScreenshots]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/Commands.md
 [baseline mode]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/advanced/Baseline-Mode.md
