@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation
 import java.lang.reflect.Method
 
 /**
- * Helps to get configurations for test methods.
+ * Helps to get configurations for the test methods.
  */
 @Slf4j
 class AnnotationHelper {
@@ -32,7 +32,7 @@ class AnnotationHelper {
      * @param clazz class to get annotation for
      * @param annotationClass class of annotation
      *
-     * @return object of a given annotation, <code>null</code> if class hasn't such annotation
+     * @return object of a given annotation, <code>null</code> if class does not have such annotation
      */
     static Annotation getClassAnnotation(Class clazz, Class<Annotation> annotationClass) {
         clazz.getAnnotation(annotationClass) ?:

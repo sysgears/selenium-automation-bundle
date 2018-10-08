@@ -10,15 +10,15 @@ import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 
 /**
- * Provides driver instance.
+ * Provides a driver instance.
  */
 @Slf4j
 class DriverInitializer {
 
     /**
-     * Configures and instantiates WebDriver with given desired capabilities for local test execution.
+     * Configures and instantiates WebDriver with required capabilities for local test execution.
      *
-     * @param browser browser, e.g. chrome, firefox, microsoftedge, headless for headless chrome
+     * @param browser browser, for example, "chrome", "firefox", "MicrosoftEdge", or "headless" for headless Chrome
      * @param capabilities capabilities to start browser with, can be empty
      *
      * @return WebDriver instance
@@ -28,11 +28,11 @@ class DriverInitializer {
     }
 
     /**
-     * Configures and instantiates WebDriver with given proxy for local test execution. Currently, proxy works only with
-     * Chrome browser.
+     * Configures and instantiates WebDriver with a given proxy for local test execution. Currently, the proxy only
+     * works with Chrome.
      *
      * @param browser browser, chrome
-     * @param proxy proxy for capturing network traffic
+     * @param proxy proxy for capturing the network traffic
      *
      * @return WebDriver instance
      */
@@ -49,7 +49,7 @@ class DriverInitializer {
     /**
      * Configures and instantiates WebDriver with given desired capabilities for remote test execution.
      *
-     * @param remoteUrl url of Selenium-Grid hub or remote Selenium server
+     * @param remoteUrl URL of the Selenium-Grid hub or a remote Selenium server
      * @param capabilities capabilities to start browser with
      *
      * @return WebDriver instance
@@ -59,19 +59,19 @@ class DriverInitializer {
     static WebDriver createRemoteDriver(String remoteUrl, DesiredCapabilities capabilities)
             throws IllegalArgumentException {
         capabilities ? new RemoteWebDriver(URI.create(remoteUrl).toURL(), capabilities) : {
-            log.error("No capabilities were provided to create remote driver.")
-            throw new IllegalArgumentException("Please provide capabilities object.")
+            log.error("No capabilities were provided to create a remote driver.")
+            throw new IllegalArgumentException("Please provide the capabilities object.")
         }()
     }
 
     /**
      * Configures and instantiates WebDriver with a given proxy for remote test execution. Currently, only Chrome
-     * browser works with proxy.
+     * works with proxy.
      *
-     * @param remoteUrl url of Selenium-Grid hub or remote Selenium server
-     * @param platform platform on which tests should be run, e.g. linux, windows
-     * @param browser browser, e.g. chrome, firefox, microsoftedge, headless for headless chrome
-     * @param proxy instance of proxy, only for Chrome browser
+     * @param remoteUrl URL of the Selenium-Grid hub or a remote Selenium server
+     * @param platform platform on which tests should run, for example, "linux", "windows", or "mac"
+     * @param browser browser, for example, "chrome", "firefox", "MicrosoftEdge", or "headless" for headless Chrome
+     * @param proxy instance of proxy, only for Chrome
      *
      * @return WebDriver instance
      */
@@ -89,9 +89,9 @@ class DriverInitializer {
     /**
      * Configures and instantiates WebDriver for Chrome mobile emulation mode.
      *
-     * @param device name of the mobile device w/o spaces, e.g. IPHONE6, IPAD
+     * @param device name of the mobile device w/o spaces, for example, IPHONE6, IPAD
      *
-     * @return WebDriver instance configured to start Chrome browser in mobile emulation mode
+     * @return WebDriver instance configured to start Chrome in mobile emulation mode
      */
     static WebDriver createMobileDriver(String device) {
         def capabilities = new DesiredCapabilities()
@@ -100,10 +100,11 @@ class DriverInitializer {
     }
 
     /**
-     * Returns capabilities object to configure WebDriver with additional parameters e.g. platform, browser, etc.
+     * Returns the capabilities object to configure WebDriver with additional parameters such as the platform, browser,
+     * and others.
      *
-     * @param platform platform on which the tests should be run, e.g. linux, windows
-     * @param browser browser, e.g. chrome, firefox, microsoftedge, headless for headless chrome
+     * @param platform platform on which tests should run, for example, "linux", "windows", or "mac"
+     * @param browser browser, for example, "chrome", "firefox", "MicrosoftEdge", or "headless" for headless Chrome
      * @param browserVersion browser browserVersion
      *
      * @return capabilities object
@@ -113,13 +114,13 @@ class DriverInitializer {
     }
 
     /**
-     * Returns capabilities object to configure ChromeDriver with additional parameters e.g. platform, proxy etc.
-     * Sets arguments for running Chrome browser in special mode e.g. size or headless mode.
+     * Returns the capabilities object to configure ChromeDriver with additional parameters such as the platform, proxy
+     * and others. Sets the arguments for running Chrome in special mode such as size or headless mode.
      *
-     * @param platform platform name such as mac, linux , windows
-     * @param proxy selenium proxy to capture network traffic
+     * @param platform platform name such as "mac", "linux", or "windows"
+     * @param proxy Selenium proxy to capture the network traffic
      * @param browserVersion browser version
-     * @param arguments arguments to run browser with, like "--disable-gpu"
+     * @param arguments arguments to run browser with, for example, "--disable-gpu"
      *
      * @return capabilities object
      */

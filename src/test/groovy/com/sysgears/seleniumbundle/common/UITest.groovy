@@ -6,14 +6,14 @@ import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
 /**
- * Specific configuration class for UI tests.
+ * A specific configuration class for UI tests.
  */
 @Slf4j
 @Test(groups = "ui")
 class UITest extends BaseTest {
 
     /**
-     * Allows not to interrupt test method execution until the last assertion will be done.
+     * Allows not to interrupt test method execution until the last assertion is run.
      */
     protected SoftAssert softAssert = new SoftAssert()
 

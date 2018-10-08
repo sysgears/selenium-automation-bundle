@@ -6,7 +6,7 @@ import groovy.util.logging.Slf4j
 import org.apache.http.HttpException
 
 /**
- * Provides methods to send Http requests
+ * Provides the methods to send HTTP requests.
  */
 @Slf4j
 class RestClient {
@@ -33,48 +33,52 @@ class RestClient {
     }
 
     /**
-     * Sends GET HTTP request on the given url with specified authorization credentials.
+     * Sends the GET request on the given URL with the specified authorization credentials.
      *
-     * @param url url of the API
+     * @param url URL of the API
      *
      * @return response as a map
      *
-     * @throws HttpException if any HTTP errors occurred or the request status is not equal to 200
+     * @throws HttpException if any HTTP errors occurred or if the request status is not "200"
      */
     Map get(String url) throws HttpException {
         try {
             def response = Unirest.get(url).basicAuth(username, password).asJson()
 
             if (response.status != 200) {
-                log.error("Wrong status of GET request to $url, status code: ${response.status}, response body: ${response.body}")
-                throw new HttpException("Wrong status of GET request to $url, status code: ${response.status}, response body: ${response.body}")
+                log.error("Wrong status of the GET request to $url, status code: ${response.status}, response body: " +
+                        "${response.body}")
+                throw new HttpException("Wrong status of the GET request to $url, status code: ${response.status}, " +
+                        "response body: ${response.body}")
             }
 
             response.body.object.toMap()
         } catch (UnirestException e) {
-            log.error("Error in GET request to $url has occurred", e)
-            throw new HttpException("Error in GET request to $url has occurred", e)
+            log.error("Error in the GET request to $url has occurred", e)
+            throw new HttpException("Error in the GET request to $url has occurred", e)
         }
     }
 
     /**
-     * Sends DELETE HTTP request on the given url with specified authorization credentials.
+     * Sends the DELETE request on the given URL with the specified authorization credentials.
      *
-     * @param url url of the API
+     * @param url URL of the API
      *
-     * @throws HttpException if any HTTP errors occurred or the request status is not equal to 204
+     * @throws HttpException if any HTTP errors occurred or the request status is not "204"
      */
     void delete(String url) throws HttpException {
         try {
             def response = Unirest.delete(url).basicAuth(username, password).asJson()
 
             if (response.status != 204) {
-                log.error("Wrong status of DELETE request to $url, status code: ${response.status}, response body: ${response.body}")
-                throw new HttpException("Wrong status of DELETE request to $url, status code: ${response.status}, response body: ${response.body}")
+                log.error("Wrong status of the DELETE request to $url, status code: ${response.status}, response " +
+                        "body: ${response.body}")
+                throw new HttpException("Wrong status of the DELETE request to $url, status code: ${response.status}," +
+                        " response body: ${response.body}")
             }
         } catch (UnirestException e) {
-            log.error("Error in DELETE request to $url has occurred", e)
-            throw new HttpException("Error in DELETE request to $url has occurred", e)
+            log.error("Error in the DELETE request to $url has occurred", e)
+            throw new HttpException("Error in the DELETE request to $url has occurred", e)
         }
     }
 }

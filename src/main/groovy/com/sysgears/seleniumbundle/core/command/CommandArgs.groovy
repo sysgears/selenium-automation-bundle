@@ -14,12 +14,12 @@ class CommandArgs {
     final String name
 
     /**
-     * Command arguments map.
+     * Map of the command arguments.
      */
     final Map<String, ?> arguments
 
     /**
-     * Constructs a new instance of CommandArgs object.
+     * Constructs a new instance of the CommandArgs object.
      *
      * @param args array that contains command arguments provided for bundle execution
      *

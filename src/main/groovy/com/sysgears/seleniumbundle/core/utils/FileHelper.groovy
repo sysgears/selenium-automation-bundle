@@ -7,7 +7,7 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 /**
- * Utility class that provides methods to work with the file system.
+ * The utility class that provides methods to work with the file system.
  */
 @Slf4j
 class FileHelper {
@@ -29,10 +29,10 @@ class FileHelper {
     }
 
     /**
-     * Moves the file, to the new given path.
+     * Moves the file to the new given path.
      *
      * @param from current file location
-     * @param to where to move a file
+     * @param to the path where the file will be moved
      * @param copyOption option to be used, default is REPLACE_EXISTING
      *
      * @throws IOException if an I/O error occurs
@@ -71,7 +71,7 @@ class FileHelper {
     /**
      * Finds all files with a given file extension in a given folder.
      *
-     * @param rootDirectory path to root directory to start the search from
+     * @param rootDirectory path to the root directory to start the search from
      * @param extension filename extension
      *
      * @return list of files
@@ -85,9 +85,9 @@ class FileHelper {
     }
 
     /**
-     * Returns a list of subdirectories in a given directory recursively.
+     * Returns recursively a list of subdirectories in a given directory.
      *
-     * @param directory path to directory from where subdirectories will be taken
+     * @param directory path to the directory from where the subdirectories will be taken
      *
      * @return list of files
      *

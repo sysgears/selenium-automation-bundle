@@ -41,20 +41,20 @@ class AShotService {
     private Config conf
 
     /**
-     * OS name.
+     * Operating system.
      */
     private String os
 
     /**
-     * Browser name.
+     * Browser.
      */
     private String browser
 
     /**
      * Creates an instance of AShotService.
      *
-     * @param os name of the os
-     * @param browser name of the os
+     * @param os name of the operating system
+     * @param browser name of the browser
      */
     AShotService(Config conf, IEnvironment environment, List ignoredElements) {
         this.conf = conf
@@ -65,16 +65,17 @@ class AShotService {
     }
 
     /**
-     * Captures screenshot and compares it with the previously captured base screenshot. In case there are differences
-     * saves the new screenshot and the image with marked discrepancies. In case there is no previously captured base
-     * screenshot, saves the new screenshot and throws AssertionError.
+     * Captures a screenshot and compares it with the previously captured baseline screenshot. If there are
+     * differences, the method saves the new screenshot and the image with marked differences. If there is no
+     * baseline screenshot to compare with, the method saves the new screenshot and throws AssertionError.
      *
      * @param screenshotName name of the screenshot
      *
-     * @throws IOException is thrown if there is no baseline screenshot during comparison or file with ignored
-     * elements wasn't found
-     * @throws AssertionError is thrown if layout of the screenshot doesn't match to the baseline screenshot
-     * @throws IllegalArgumentException is thrown if Application.properties doesn't have any of ui.path properties
+     * @throws IOException if there is no baseline screenshot during comparison or file with ignored
+     * elements was not found
+     * @throws AssertionError if the current layout does not match to the baseline screenshot
+     * @throws IllegalArgumentException if ApplicationProperties.groovy does not have any ui.path property
+     * that must lead to the screenshots
      */
     void compareLayout(String screenshotName) throws IOException, AssertionError, IllegalArgumentException {
         def fullPaths = getPathsForScreenshot(conf.properties.ui.path, screenshotName)
@@ -100,14 +101,15 @@ class AShotService {
                     allure.attach("Marked screenshot for: $screenshotName", markedImage)
                     allure.attach("Actual screenshot for: $screenshotName", screenshot.getImage())
 
-                    log.info("Layout for: $screenshotName doesn't match to the base screenshot.")
-                    throw new AssertionError("Layout for: $screenshotName doesn't match to the base screenshot.")
+                    log.info("Layout for $screenshotName doesn't match to the baseline screenshot.")
+                    throw new AssertionError("Layout for: $screenshotName doesn't match to the " +
+                            "baseline screenshot.")
                 } else {
                     log.info("Layout is identical for ${fullPaths.baseline}")
                 }
             } catch (IOException e) {
                 screenshotLoader.save(screenshot.getImage(), fullPaths.actual)
-                log.info("New candidate screenshot has been made successfully: ${fullPaths.actual}", e)
+                log.info("New candidate screenshot was successfully taken: ${fullPaths.actual}", e)
                 throw new IOException("No baseline screenshot found.", e)
             }
         }
@@ -115,11 +117,11 @@ class AShotService {
 
     /**
      * Returns a configured aShot instance for a particular page object type.
-     * Can be configured to ignore some page elements like advertising banners etc.
+     * Can be configured to ignore banners, animations, and other elements on the page.
      *
-     * @param os os where the tests will be executed
+     * @param os operating system where the tests will be executed
      * @param browser browser that will be used for tests launch
-     * @param ignoredElements the list of css locators for elements that should be ignored while ui comparison analysis
+     * @param ignoredElements the list of CSS locators for elements that should be ignored while UI is being compared
      *
      * @return configured AShot instance
      */
@@ -140,11 +142,11 @@ class AShotService {
     }
 
     /**
-     * Generates paths to screenshots for single snapshot processing. Uses for path generation preconfigured in
-     * Application.properties basic paths for particular categories: "baseline", "actual", "difference"; os name;
-     * browser name and screenshot name.
+     * Generates paths to the screenshots for single snapshot processing. Uses for path generation preconfigured in
+     * ApplicationProperties basic paths for particular categories: "baseline", "actual", "difference", OS name,
+     * browser name, and screenshot name.
      *
-     * @param paths paths which should be preconfigured in Application.properties file
+     * @param paths paths that should be preconfigured in the ApplicationProperties.groovy
      * @param screenshotName name of the screenshot
      *
      * @return Map of paths for a single snapshot processing

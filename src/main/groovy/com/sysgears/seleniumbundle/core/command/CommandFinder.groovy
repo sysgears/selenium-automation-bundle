@@ -6,13 +6,13 @@ import groovy.util.logging.Slf4j
 import org.apache.commons.io.FilenameUtils
 
 /**
- * Finds the the command to be executed by the application.
+ * Finds the command to be executed by the application.
  */
 @Slf4j
 class CommandFinder {
 
     /**
-     * The path to main sources.
+     * The path to the main sources.
      */
     private final static String GROOVY_SOURCE_PATH = "src/main/groovy/"
 
@@ -36,13 +36,13 @@ class CommandFinder {
     }
 
     /**
-     * Finds a command by a given command name. The command has to extend abstract class {@link AbstractCommand}.
+     * Finds a command by the given name. The command must extend the abstract class {@link AbstractCommand}.
      *
-     * @param commandArgs command arguments objects that contains a name and arguments of the command
+     * @param commandArgs object that contains the command name and arguments
      *
-     * @return a command instance object, that has been found, initialized with the given arguments
+     * @return a command instance object that has been found and initialized with the given arguments
      *
-     * @throws IllegalArgumentException if command has not been found
+     * @throws IllegalArgumentException if command was not found
      */
     ICommand find(CommandArgs commandArgs) throws IllegalArgumentException {
         def command = FileHelper.getFiles(ROOT_DIR, "groovy").findAll {

@@ -15,7 +15,7 @@ class UITestIgnoringElementsExample extends UITest {
     }
 
     /**
-     * Shows that the test can fail due to dynamics on the page.
+     * Shows that the test can fail because of dynamic changes on the page.
      */
     @Test(invocationCount = 2)
     void withoutIgnoringElements() {
@@ -23,7 +23,7 @@ class UITestIgnoringElementsExample extends UITest {
     }
 
     /**
-     * Shows how the elements which may affect test result due to dynamic nature can be ignored.
+     * Shows how the elements can be ignored if they may affect test result because of their dynamic nature.
      */
     @Test(invocationCount = 2)
     void withIgnoringElements() {

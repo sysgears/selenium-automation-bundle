@@ -7,8 +7,9 @@ import java.lang.annotation.Target
 
 
 /**
- * Indicates a static element on a page. A static element is the element which is added to the page DOM right after
- * the page was opened, contrary to dynamic elements which are added later as a reaction to user actions.
+ * Indicates a static element on a page. A static element is the element that is added to the Document Object Model
+ * of a page right after the page was opened contrasting to dynamic elements that are added only as a reaction to
+ * user actions.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

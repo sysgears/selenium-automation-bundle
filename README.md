@@ -116,7 +116,7 @@ have to make decisions every time you start a new project for your tests.
 ___
 
 Having explained _why_ the bundle exists, let's discuss _what exactly_ it provides. Below, you'll find more information
-about the 
+about the
 [bundle structure](#project-structure),
 as well as the
 [patterns](#patterns),
