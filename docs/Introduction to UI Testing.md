@@ -26,10 +26,8 @@ You'll run your first UI test. The demo files for UI testing are the following:
 
 ### Change TestNG Configuration File to Run UI Test
 
-You need to first change the settings in the `testng.xml` configuration file to run just the demo UI test. Open the
-`src/test/resources/testng.xml` file and change the package you're going to run.
-
-Just replace `demo` with `ui`. You may also want to set `<test>` name to something like `First UI Test`:
+You need to change the settings in the `testng.xml` configuration file to run just the demo UI test. Open the
+`src/test/resources/testng.xml` file and replace the default configuration with the one below:
 
 ```xml
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
