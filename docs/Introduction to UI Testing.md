@@ -71,7 +71,7 @@ command `./gradlew downloadAllure allureServe`. You can learn more about report 
 An Allure report with the UI tests:
 
 <p align="center">
-    <img src="./images/selenium-automation-bundle-failed-demo-ui-test-baseline-mode.png"
+    <img src="./images/selenium-automation-bundle-demo-ui-test-baseline-mode.png"
          alt="Selenium Automation Bundle - report with screenshots after running first UI test in baseline mode" />
 </p>
 
@@ -134,7 +134,7 @@ You default browser will open with the report. You can open the Suites tab and n
 Selenium Automation Bundle provides great possibilities for testing the user interface (read: the application layouts).
 If you want to know more about UI testing with our bundle, consult the [detailed UI testing guide].
 
-[detailed UI testing guide]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/UI%20Testing/General%20Concept%20and%20Testing%20Flow.md
+[detailed guide]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/UI%20Testing/General%20Concept%20and%20Testing%20Flow.md
 [introduction]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/Introduction%20to%20Writing%20Tests.md
 [general guide]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Writing%20Tests.md
 [page object]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Writing%20Tests.md#creating-a-page-object
