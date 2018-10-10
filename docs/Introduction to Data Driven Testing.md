@@ -98,3 +98,6 @@ You can have a look at a Yaml file with the test data that was used in the run. 
 ```
 
 You can save your data in a similar fashion.
+
+In a real application, when your application uses complex objects, it's easy to reflect the object structure in a Yaml
+file and retrieve various object properties.
