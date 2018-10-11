@@ -30,16 +30,17 @@ them to the baseline screenshots.
     `No baseline screenshot found`.
     * If there's a difference between the actual and baseline screenshots, the test will also fail. The method will
     attach three screenshots to the report for each failed test: the baseline, actual, and difference screenshots.
-    * If there are no differences between the actual and baseline screenshots, the test will pass successfully.
+    * If there are no differences between the actual and baseline screenshots, the test will pass successfully; the
+    actual screenshot won't be saved in the project.
 
 ## AShotService
 
-`AShotService` is a class that implements the [`compareLayout()` method](#comparelayout-method) and creates instances of
-aShot.
+`AShotService` is a class with an actual implementation of the [`compareLayout()` method](#comparelayout-method).
+`AShotService` is also necessary to create instances of aShot.
 
 [aShot] is the core library that the UI module in the bundle is built on. aShot can take screenshots of each application
 page, compare them, and highlight the changed element(s). This library uses Selenium under the hood to take screenshots
-for comparison. But, more importantly, aShot also _highlights_ the elements or components that differ between the
+for comparison. But, more importantly, aShot also _highlights_ the elements and components that differ between the
 original and new layouts.
 
 aShot has many configurations, the most notable ones are different shooting strategies that you can define for each
@@ -56,3 +57,4 @@ You can find all the information about the UI Comparison module commands in a de
 * [Commands]
 
 [commands]: https://github.com/sysgears/selenium-automation-bundle/blob/master/docs/Commands.md
+[ashot]: https://github.com/yandex-qatools/ashot
