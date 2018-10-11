@@ -1,6 +1,6 @@
 # Soft Assertions
 
-This section of UI Testing discusses the soft assertions mechanism, a feature that makes testing complicated test
+This section of UI Testing discusses the soft assertions mechanism, a functionality that makes testing complicated test
 scenarios simpler.
 
 In complex test scenarios that include several steps of interaction with the user interface, you can use the soft
@@ -25,5 +25,4 @@ You can write only one test to avoid repeating the code, and then you make sever
 also creates a problem: When any assertion fails, the other assertions won't even run.
 
 To solve this problem, we offer to use soft assertions in your UI tests. Thanks to soft asserts, when only one assertion
-fails, the other _will run_ and may pass successfully. And in the test report, you'll see that the screenshots were
-attached only for the failed assertion.
+fails, the other _will run_ and may pass successfully.
