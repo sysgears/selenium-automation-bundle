@@ -1,4 +1,4 @@
-# Hiding Elements in UI Testing
+# Hiding Elements When Testing with Selenium Automation Bundle
 
 In this section, we'll review the demo example of a UI test with hiding elements.
 
