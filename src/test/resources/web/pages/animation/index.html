@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -26,12 +26,12 @@
             animation: wars 10s ease-out infinite;
         }
 
-        .byline span {
+        .slogan span {
             animation: spin-letters 10s linear infinite;
         }
 
-        .byline {
-            animation: move-byline 10s linear infinite;
+        .slogan {
+            animation: move-slogan 10s linear infinite;
         }
 
         /* Keyframes */
@@ -88,7 +88,7 @@
             }
         }
 
-        @keyframes move-byline {
+        @keyframes move-slogan {
             0% {
                 transform: translateZ(5em);
             }
@@ -97,18 +97,16 @@
             }
         }
 
-        /* Make the 3D work on the container */
-        .starwars-demo {
+        .starwars {
             perspective: 800px;
             transform-style: preserve-3d;
         }
 
-        /* General styles and layout */
         body {
             background: #000 url(assets/pictures/bg.jpg);
         }
 
-        .starwars-demo {
+        .starwars {
             height: 17em;
             left: 50%;
             position: relative;
@@ -117,7 +115,7 @@
             width: 34em;
         }
 
-        .byline span {
+        .slogan span {
             display: inline-block;
         }
 
@@ -125,7 +123,7 @@
             width: 100%;
         }
 
-        .star, .wars, .byline {
+        .star, .wars, .slogan {
             position: absolute;
         }
 
@@ -137,7 +135,7 @@
             bottom: -0.5em;
         }
 
-        .byline {
+        .slogan {
             left: -2em;
             right: -2.45em;
             text-align: center;
@@ -145,23 +143,20 @@
             top: 39%;
         }
 
-        .byline span {
+        .slogan span {
             color: #fff;
-            font-family: "ITC Serif Gothic", Lato;
-            font-size: 1.2em;
+            font: 1.2em "ITC Serif Gothic", Lato,serif;
             letter-spacing: 0.4em;
         }
 
-        /*** Media queries for adjusting to different screen sizes ***/
-
         @media only screen and (max-width: 600px) {
-            .starwars-demo {
+            .starwars {
                 font-size: 10px;
             }
         }
 
         @media only screen and (max-width: 480px) {
-            .starwars-demo {
+            .starwars {
                 font-size: 7px;
             }
         }
@@ -189,9 +184,11 @@
             <li class="nav-item active">
                 <a class="nav-link" href="#">Shipping<span class="sr-only">(current)</span></a>
             </li>
-            <a class="navbar-brand d-none d-lg-inline-block mx-5" href="#">
-                <img src="assets/pictures/logo.png" alt="logo.png">
-            </a>
+            <li>
+                <a class="navbar-brand d-none d-lg-inline-block mx-5" href="#">
+                    <img src="assets/pictures/logo.png" alt="logo.png">
+                </a>
+            </li>
             <li class="nav-item active">
                 <a class="nav-link" href="#">How to<span class="sr-only">(current)</span></a>
             </li>
@@ -209,14 +206,11 @@
     </form>
 </div>
 
-<!-- <div class="container-fluid p-0">
-    <img src="https://media.giphy.com/media/YrL6i2ADGf52E/giphy.gif" alt="main.jpg" class="w-100">
-</div> -->
-<div class="animation-1" style="width: 100%; height: 400px; margin: 0 auto;">
-    <div class="starwars-demo">
+<div class="starwars-animation" style="width: 100%; height: 400px; margin: 0 auto">
+    <div class="starwars">
         <img src="assets/pictures/star.svg" alt="Star" class="star">
         <img src="assets/pictures/wars.svg" alt="Wars" class="wars">
-        <h2 class="byline" id="byline">The Force Awakens</h2>
+        <h2 class="slogan" id="slogan">The Force Awakens</h2>
     </div>
 </div>
 
@@ -224,7 +218,7 @@
     <div class="row">
 
         <div class="col-12">
-            <h3 class="text-uppercase border-top border-bottom text-center py-3">New Arrival</h3>
+            <h3 class="text-uppercase border-top border-bottom text-center py-3">New Items</h3>
         </div>
 
         <div class="col-md-4">
@@ -319,10 +313,6 @@
     </footer>
 </div>
 
-
-<!-- Bootstrap core JavaScript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -333,34 +323,22 @@
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
 <script>
-    /* Learn how to create this and much more with this email course:
+    const slogan = document.getElementById('slogan');
+    sloganText = slogan.innerHTML;
+    sloganArray = sloganText.split('');
+    slogan.innerHTML = '';
 
-https://cssanimation.rocks/courses/animation-101/
+    sloganArray.forEach(character => {
+      const span = document.createElement('span');
+      const letter = document.createTextNode(character);
 
-MANY THANKS TO @tadywankenobi for the following JS to handle the text in the byline:
-
-The following JS takes in the byline and splits it into letters, each one wrapped in a span. We need to create the spans as nodes, we can't just add them to the HTML using innerHTML, as to do so would mean the CSS won't affect the span because it doesn't recognise the tag as existing. It's an old problem we run into time and again.
-
-*/
-
-    var byline = document.getElementById('byline');  	// Find the H2
-    bylineText = byline.innerHTML;										// Get the content of the H2
-    bylineArr = bylineText.split('');									// Split content into array
-    byline.innerHTML = '';														// Empty current content
-
-    var span;					// Create variables to create elements
-    var letter;
-
-    for (i = 0; i < bylineArr.length; i++) {									// Loop for every letter
-        span = document.createElement("span");					// Create a <span> element
-        letter = document.createTextNode(bylineArr[i]);	// Create the letter
-        if (bylineArr[i] == ' ') {												// If the letter is a space...
-            byline.appendChild(letter);					// ...Add the space without a span
-        } else {
-            span.appendChild(letter);						// Add the letter to the span
-            byline.appendChild(span); 					// Add the span to the h2
-        }
-    }
+      if (character === ' ') {
+        slogan.appendChild(letter);
+      } else {
+        span.appendChild(letter);
+        slogan.appendChild(span);
+      }
+    });
 </script>
 </body>
 </html>
