@@ -23,10 +23,11 @@ class UITestIgnoringElementsExample extends UITest {
     }
 
     /**
-     * Shows how the elements can be ignored if they may affect test result because of their dynamic nature.
+     * Shows that an element (such as an animation) can be ignored if they may affect test result
+     * because of their dynamic nature.
      */
     @Test(invocationCount = 2)
     void withIgnoringElements() {
-        shopidaiPage.setIgnoredElements([".animation-1"]).compareLayout("withIgnoring")
+        shopidaiPage.setIgnoredElements([".starwars-animation"]).compareLayout("withIgnoring")
     }
 }

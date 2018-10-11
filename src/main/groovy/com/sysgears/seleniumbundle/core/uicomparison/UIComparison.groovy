@@ -17,7 +17,7 @@ trait UIComparison<T> {
     private IEnvironment environment
 
     /**
-     * List of CSS locators for elements which should be excluded from comparison.
+     * List of CSS locators for the elements to be excluded from comparison.
      */
     private List<String> ignoredElements
 
@@ -28,7 +28,7 @@ trait UIComparison<T> {
      *
      * @return page object
      *
-     * @throws IOException if there is no baseline screenshot during comparison or a file with ignored
+     * @throws IOException if there is no baseline screenshot for comparison or a file with ignored
      * elements was not found
      * @throws AssertionError if the layout of the new screenshot does not match the baseline screenshot
      * @throws IllegalArgumentException if ApplicationProperties.groovy has no "ui.path" properties with
