@@ -1,33 +1,32 @@
 # Introduction to User Interface (Layout) Testing with Selenium Automation Bundle
 
-Selenium Automation Bundle provides a simple way to test a web application's user interface. You only need to take
-screenshots of the initial layout after it was tested (read: you need to verify that the basic application's layouts
-looks fine and functions correctly). After that, when the UI changes, you need to run the same UI tests again.
+Selenium Automation Bundle provides a simple way to test a web application's user interface (UI). To test the UI, your
+first step is to take screenshots of the initial application layout (the initial layout must function properly and look
+fine). The second step would be to run the same UI tests again _after_ the UI has changes (for example, the front-end
+developers modified the CSS rules).
 
-When running your UI tests after the layouts were modified, the bundle will take new screenshots of the application's
-layouts, compare the old and new screenshots, create new images with highlighted differences between them, and attach
-them to the report. Finally, your task is to generate a report and visually validate what has changed, and report bugs
-if any.
+When running your UI tests after the layout modifications, the bundle will take _new_ screenshots, compare the
+_initial_ and _new_ screenshots, and create new images with highlighted differences between them. Finally, your task is
+to view the report with attached screenshots, visually validate what has changed, and report bugs if any.
 
-You can also consult the [detailed guide] for more details about testing the user interface. In this short guide,
-you'll run the demo UI test to get the feeling how it works with the bundle.
+You can also consult the [UI Testing Concept] guide for more information about the general approach to testing the user
+interface. In this guide, you'll run the demo UI test to get the feeling how UI testing is done with the bundle.
 
 ## Demo User Interface Test
 
-> You may want to first read the [introduction] to writing tests or the [general guide].
+> You may want to first read the [introduction] or the [general guide] to writing tests with Selenium Automation Bundle.
 
-> To learn more about creating page objects and test classes, consult the [page object] and [test classes] sections in
-our general guide on testing.
-
-You'll run your first UI test. The demo files for UI testing are the following:
+You'll run the demo UI tests. The respective files for the demo UI tests are the following:
 
 * `UITestExample`, a test class located in `src/test/.../tests/ui/`;
 * `GooglePage`, a page object located in `src/main/.../seleniumbundle/pagemodel/`.
 
+If you want to learn in more details how the demo UI test class works, consult the [detailed UI testing guide].
+
 ### Change TestNG Configuration File to Run UI Test
 
 You need to change the settings in the `testng.xml` configuration file to run just the demo UI test. Open the
-`src/test/resources/testng.xml` file and replace the default configuration with the one below:
+`src/test/resources/testng.xml` file and replace the default configuration with the configuration below:
 
 ```xml
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
@@ -50,23 +49,24 @@ be used for comparison:
 ./gradlew -Dtest.baselineMode=true
 ```
 
-You can learn more about `baselineMode` in the [Baseline Mode] section.
+You can learn more about the baseline mode &ndash; the `test.baselineMode` property &ndash; in the [Baseline Mode]
+section.
 
-The bundle will run `UITestExample`. At this point, no comparison is made: in fact, the bundle only takes screenshots of
-the current layout of the Google page.
+The bundle will run `UITestExample`. At this point, no comparison is made: the bundle only takes screenshots of the
+current layout of the Google search page.
 
-Once the test execution is completed, you can find the screenshots created under the `src/test/resources/uicomparison/your_os/chrome`
-directory (instead of `your_os/`, the bundle will create a directory `linux/`, `windows/`, or `mac/` depending on the
-operating system you're using).
+Once the test execution is completed, you can find the taken screenshots in `src/test/resources/uicomparison/your_os/chrome`
+(instead of `your_os/`, the bundle will create a directory `linux/`, `windows/`, or `mac/` depending on the operating
+system you're using).
 
-You can also generate an Allure report to view the screenshots:
+You can also generate an Allure report with attached baseline screenshots:
 
 ```bash
 ./gradlew allureServe
 ```
 
-> **NOTE**: If you see any error related to report generation, download Allure and then generate the report with the
-command `./gradlew downloadAllure allureServe`. You can learn more about report generation in the [Reports] guide.
+**NOTE**: If you see the error `Cannot find allure commandline`, you need to download Allure and generate the report
+with the command `./gradlew downloadAllure allureServe`. Learn more about report generation in the [Reports] guide.
 
 An Allure report with the UI tests:
 
@@ -77,8 +77,9 @@ An Allure report with the UI tests:
 
 ### Run the UI Test with UI Comparison
 
-After you've created the baseline screenshots, the bundle can take screenshots of the application and compare them to
-the baseline screenshots. Just run the UI test with the following command:
+After you've created the baseline screenshots, it's time to actually execute the test to find the differences between
+the layouts. As we've already mentioned, the bundle can take screenshots of the application and automatically compare
+them to the baseline screenshots. Just run the UI test with the following command:
 
 ```bash
 ./gradlew
@@ -119,7 +120,7 @@ BUILD FAILED in 24s
 You can now generate a report to view the screenshots of the test. Run:
 
 ```bash
-./gradlew downloadAllure allureServe
+./gradlew allureServe
 ```
 
 You default browser will open with the report. You can open the Suites tab and navigate to the test that failed:
@@ -129,12 +130,10 @@ You default browser will open with the report. You can open the Suites tab and n
          alt="Selenium Automation Bundle - Failed UI test, screenshots don't match" />
 </p>
 
-## Conclusions
+Again, if you want to see the demo UI test code with an explanation how UI testing works, consult the [detailed UI
+testing guide].
 
-Selenium Automation Bundle provides great possibilities for testing the user interface (read: the application layouts).
-If you want to know more about UI testing with our bundle, consult the [detailed UI testing guide].
-
-[detailed guide]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/UI%20Testing/UI%20Testing%20Concept.md
+[detailed UI testing guide]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/UI%20Testing/Detailed%20Guide%20on%20UI%20Testing.md
 [introduction]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/Introduction%20to%20Writing%20Tests.md
 [general guide]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Writing%20Tests.md
 [page object]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Writing%20Tests.md#creating-a-page-object
