@@ -9,7 +9,7 @@ When running your UI tests after the layout modifications, the bundle will take 
 _initial_ and _new_ screenshots, and create new images with highlighted differences between them. Finally, your task is
 to view the report with attached screenshots, visually validate what has changed, and report bugs if any.
 
-You can also consult the [UI Testing Concept] guide for more information about the general approach to testing the user
+You can also consult the [UI Testing Concept] guide for more information about our approach to testing the user
 interface. In this guide, you'll run the demo UI test to get the feeling how UI testing is done with the bundle.
 
 ## Demo User Interface Test
@@ -133,10 +133,9 @@ You default browser will open with the report. You can open the Suites tab and n
 Again, if you want to see the demo UI test code with an explanation how UI testing works, consult the [detailed UI
 testing guide].
 
-[detailed UI testing guide]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/UI%20Testing/Detailed%20Guide%20on%20UI%20Testing.md
+[ui testing concept]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/UI%20Testing/UI%20Testing%20Concept.md
 [introduction]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/Introduction%20to%20Writing%20Tests.md
 [general guide]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Writing%20Tests.md
-[page object]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Writing%20Tests.md#creating-a-page-object
-[test classes]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Writing%20Tests.md#creating-a-test
 [baseline mode]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/UI%20Testing/Baseline%20Mode.md
 [reports]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Reporting.md
+[detailed UI testing guide]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/UI%20Testing/Detailed%20Guide%20on%20UI%20Testing.md
