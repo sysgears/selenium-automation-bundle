@@ -1,13 +1,12 @@
 # Introduction to User Interface (Layout) Testing with Selenium Automation Bundle
 
-Selenium Automation Bundle provides a simple way to test a web application's user interface (UI). To test the UI, your
-first step is to take screenshots of the initial application layout (the initial layout must function properly and look
-fine). The second step would be to run the same UI tests again _after_ the UI has changes (for example, the front-end
-developers modified the CSS rules).
+Selenium Automation Bundle provides a simple way to test a web application's user interface (UI). You only need to take
+screenshots of the initial layout after it was manually tested (read: you need to verify that the basic application's
+layouts look fine and function correctly). After that, when the UI changes, you need to run the same UI tests again.
 
-When running your UI tests after the layout modifications, the bundle will take _new_ screenshots, compare the
-_initial_ and _new_ screenshots, and create new images with highlighted differences between them. Finally, your task is
-to view the report with attached screenshots, visually validate what has changed, and report bugs if any.
+When running your UI tests after the layout was modified, the bundle will take _new_ screenshots, compare the _old_ and
+_new_ screenshots, and create new images with highlighted differences between them. Finally, your task is to view the
+report with attached screenshots, visually validate what has changed, and report bugs if any.
 
 You can also consult the [UI Testing Concept] guide for more information about our approach to testing the user
 interface. In this guide, you'll run the demo UI test to get the feeling how UI testing is done with the bundle.
