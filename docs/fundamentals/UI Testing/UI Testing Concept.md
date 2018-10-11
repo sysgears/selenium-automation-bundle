@@ -25,9 +25,9 @@ application screens for different media queries and in the mobile version of the
 To cut long story short, UI testing takes too much time and efforts of a QA specialist. With Selenium Automation Bundle,
 however, testing the user interface is made simple (or so we think).
 
-But how can we automate UI testing and make regression testing a breeze? AI, although developing at a fast pace, still
-can't be helpful for regression testing. AI won't be able to decide whether the layout changes are valid or not, and
-whether the application's _Look & Feel_ is positive.
+But how can we automate UI testing and make regression testing a breeze? Artificial Intelligence (AI), although
+developing at a fast pace, still can't be helpful for regression testing. AI won't be able to decide whether the layout
+changes are valid or not, and whether the application's _Look & Feel_ is positive.
 
 There are ways to improve the workflow when testing the user interface. One approach is to write specifications using a
 dedicated framework. But we don't think that it's really efficient and convenient to support yet another codebase.
@@ -70,7 +70,7 @@ the changes were valid, and you can replace the 15 base (original) screenshots w
 because the latter have the newer layout. (Screenshot replacement is done with a simple command [updateScreenshots].)
 
 You may have noticed that one bizarre aspect of UI testing with our bundle: How can a test run be considered successful
-if the tests have failed? In the section [Why UI Tests "Should" Fail](#why-ui-tests-"should"-fail), we'll explain this
+if the tests have failed? In the section [Why UI Tests "Should" Fail](#why-ui-tests-should-fail), we'll explain this
 uncommon approach.
 
 ### Why UI Tests "Should" Fail
@@ -86,8 +86,8 @@ modifications of other pages or components.
 
 Thanks to this approach, it's much easier to find the application pages that shouldn't have changed, as your task
 becomes utterly simple: You only need to review the application screenshots that the bundle created. Even better, you
-won't struggle _searching_ the differences between the application layouts because all the differences will be
-graciously highlighted by the aShot library.
+won't have to _search_ the differences between the application layouts because all the differences will be graciously
+highlighted by the aShot library.
 
 Therefore, it's okay when the tests fail for the redesigned layouts: This approach simplifies finding any
 irregularities with the layouts, and you'll notice the bugs and changes really quickly.
@@ -106,8 +106,8 @@ It's necessary to create _baseline_ screenshots only once for each page. Note th
 fine before you create any baseline screenshots.
 
 The _actual_ screenshots are created each time you run the UI tests. If there are failed tests, then the _actual_
-screenshots are taken and stored to the project. And if you run the UI tests in [baseline mode], then the actual
-screenshots are saved as baseline.
+screenshots will be stored in the project. And if you run the UI tests in [baseline mode], then the actual screenshots
+are saved as _baseline_.
 
 The _difference_ screenshots are only created when the tests failed. aShot creates diff screenshots by comparing the
 _baseline_ and _actual_ screenshots and marking any differences.
@@ -150,8 +150,8 @@ You can follow to the dedicated guide that talks about more advanced aspects of 
 When you create page objects for UI testing with Selenium Automation Bundle, you should always make sure that your page
 objects:
 
-* Inherit `AbstractPage`, and
-* Implement `UIComparison`.
+* Inherit the `AbstractPage` class, and
+* Implement the `UIComparison` trait (you may want to learn more about [Groovy traits]).
 
 Thanks to `AbstractPage` and `UIComparison`, you'll be able to call several useful methods on your page objects in the
 UI tests:
@@ -164,7 +164,7 @@ UI tests:
 
 When you create test classes for UI testing with Selenium Automation Bundle, your test classes should always:
 
-* Inherit `UITest`.
+* Inherit the `UITest` base test class.
 
 Thanks to `UITest`, your UI tests not only handle the basic configurations, but also can benefit from using the [soft
 assertions] mechanism.
@@ -175,4 +175,5 @@ assertions] mechanism.
 [introduction to writing ui testing]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/Introduction-to-UI-Testing.md
 [hiding elements in ui tests]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/advanced/UI-Testing/Hiding-Elements-in-UI-Tests.md
 [ignoring elements in ui tests]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/advanced/UI-Testing/Ignoring-Elements-in-UI-Tests.md
+[groovy traits]: http://docs.groovy-lang.org/next/html/documentation/core-traits.html
 [soft assertions]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/advanced/UI-Testing/Soft-Assertions.md
