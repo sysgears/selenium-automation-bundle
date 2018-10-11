@@ -102,8 +102,7 @@ class AShotService {
                     allure.attach("Actual screenshot for: $screenshotName", screenshot.getImage())
 
                     log.info("Layout for $screenshotName doesn't match to the baseline screenshot.")
-                    throw new AssertionError("Layout for: $screenshotName doesn't match to the " +
-                            "baseline screenshot.")
+                    throw new AssertionError("Layout for '$screenshotName' doesn't match the baseline screenshot.")
                 } else {
                     log.info("Layout is identical for ${fullPaths.baseline}")
                 }
