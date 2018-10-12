@@ -1,8 +1,8 @@
 # Data Driven Testing with Selenium Automation Bundle
 
-Selenium Automation Bundle embraces the [Data Driven Testing] (DDT) pattern to help you manage large sets of data that 
-you need to use in your tests. With YAML files and our `data` module, you get a simple way to store and retrieve test 
-data in your data-driven tests.
+Selenium Automation Bundle embraces the [Data Driven Testing] (DDT) pattern to help you manage large sets of test data 
+that you use in your tests. With YAML files and our `data` module, you get a simple way to retrieve test data in your 
+data-driven tests.
 
 In this guide, you'll know more about our implementation of the Data Driven Testing pattern, and you'll run a demo DDT 
 test.
@@ -17,8 +17,8 @@ That's what Data Driven Testing is about: DDT means testing your application usi
 the application handles different user inputs and what outputs it gives for those inputs.
 
 DDT is an important part of testing as it helps to determine how stable is an application. But DDT also leads to
-headaches when you need to handle the huge sets of data in your tests. And if your objects with data are complex,
-meaning they can include other objects, managing them becomes even more difficult.
+headaches when you add sets of test data directly in your tests. And if your test objects with data are complex, meaning 
+they can include other objects, managing them becomes even more difficult.
 
 You may hardcode the test data in your test classes, but whenever you decide to change a property in an object, it'll 
 take time to change the same property in others tests. Overall, handling test data scattered across dozens of files 
@@ -45,8 +45,8 @@ With our mechanism for DDT, you can:
 * Request an entire data set from a YAML file or only the specific test data
 * Create data objects with high level of complexity
 
-Speaking of storing data in files, you can consider YAML files as your "database" that's much easier to access and 
-handle than a conventional relational (MySQL) or document-oriented (MongoDB) database.
+Speaking of storing data in files, you can consider YAML files as your "database" that's much easier to access than a 
+conventional relational (MySQL) or document-oriented (MongoDB) database.
 
 ## Running a Data Driven Test
 
@@ -128,7 +128,7 @@ class Tools extends FunctionalTest {
     }
     
     /**
-     * Create the method that will get the data from YAML file and map it to your test.     *  
+     * Create the method that will get the data from YAML file and map it to your test.  
      */
     @DataProvider(name = 'getTestData')
     Object[][] getTestData(Method m) {
@@ -146,9 +146,9 @@ class Tools extends FunctionalTest {
                 .searchFor(query)
 
         new ResultsPage()
-                .waitForPageToLoadElements()
-                .selectCategory(category)
-                .validateUrlParams(params)
+                .waitForPageToLoadElements() // waits until the page is fully loaded
+                .selectCategory(category) // selects the category by clicking a link
+                .validateUrlParams(params) // compares URL params to data from test_data.yml
     }
     // other code is omitted
 }
@@ -156,13 +156,13 @@ class Tools extends FunctionalTest {
 
 Let's review how the class works:
 
-1. The class instantiates the `test_data.yml` file with data to be used in test.
+1. The class instantiates the `test_data.yml` file to be used in test.
 2. The class creates `getTestData()`, which is a TestNG Data Provider. `getTestData()` uses `DataLoader` to first read 
-test data from a file, and then map data using `mapper`, an instance of `DataMapper`. `mapper` is available through 
-`FunctionalTest`.
-3. The test method `checkUrlParameterChanges()` is annotated with `@Test`, which sets `dataProvider` to `getTestData()`.
+test data from a file, and then to map data using `mapper`, an instance of `DataMapper`. `mapper` is available through 
+`FunctionalTest`, which the `Tools` class inherits.
+3. The test method `checkUrlParameterChanges()` is annotated with `@Test` to set `dataProvider` to `getTestData()`.
 4. `checkUrlParameterChanges()` accepts three `@Locator` annotations with the string queries for necessary data.
-5. The Data Provider `getTestData()` will inject the data from YAML files into the test method according to requests 
+5. The Data Provider `getTestData()` will inject the data from YAML files into the test method according to the requests 
 passed to `@Locator`.
 
 In order to complete the overall picture, it's worth looking at the demo YAML file `src/test/resources/data/google/test_data.yml`. 
@@ -178,21 +178,21 @@ Here's its excerpt:
         q: google
 ```
 
-With all that information, the test will work like this:
+With all that information, the test works like this when executed:
 
-1. A `GooglePage` instance is created, and the method `searchFor()` is with the query `query` that was passed to the 
-first `@Locator` annotation in `checkUrlParameterChanges()` method.
+1. A `GooglePage` instance is created, and the method `searchFor()` is called with the value of `query` requested be the 
+first `@Locator` annotation.
 2. The `query` value is `google` and is retrieved by the Data Provider `getTestData()` from `test_data.yml`. (Yes, our 
 demo test searches for `google` using Google).
 3. Once the request `google` is sent, the browser shows the search results page. Therefore, the test instantiates the 
-`ResultsPage` class.
-4. The `resultsPage` instance waits until the page is fully loaded, and then calls the method `selectCategory()` with 
-the `category` value as requested in `@Locator` and retrieved by `getTestData()` from `test_data.yml`. The value for
-`category` is `Images`. In other words, once the results page for the request `google` is loaded, Selenide clicks on 
-`Images` to open the images results.
-5. Finally, the `validateUrlParams()` is called with the `params` from `test_data.yml`. 
+`ResultsPage` page object.
+4. The `resultsPage` instance waits until the page is fully loaded (the method `waitForPageToLoadElements()` is called
+for that). Then, `selectCategory()` is called with the `category` value as requested in `@Locator`. The value for 
+`category` is `Images`, as you can see in `test_data.yml`. In other words, once the results page for the request `google` 
+is loaded, Selenide clicks on the link `Images` to open the images results for `google`.
+5. Finally, the `validateUrlParams()` is called with the `params` value from `test_data.yml`. 
 
-The URL for the page looks like this:
+To explain better the fifth step, we should take a look at the URL for the results page:
 
 ```
 https://www.google.com/search?q=google&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiekPniiP_dAhXBlYsKHau7CeIQ_AUIDigB&biw=1174&bih=588
@@ -208,7 +208,7 @@ will pass successfully.
 ___
 
 In a real application, when your application uses complex objects, it's easy to mimic the object structure in a YAML 
-file and retrieve various object properties in your tests.
+file and retrieve various object properties in your tests thanks to the bundle's `data` module.
 
 We've only scratched the surface of the Data Driven Testing approach in Selenium Automation Bundle. If you want to know
 more, follow to [Data Driven Testing in Action].

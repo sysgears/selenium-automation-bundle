@@ -1,63 +1,98 @@
 # Data Driven Testing Module
 
-This section of Selenium Automation Bundle documentations discusses the key components of the `data` module. Here, you
-can find more information about the classes you can use in your data driven tests.
+In this section, you can find information about the classes and annotations you can use in your data-driven tests.
 
 ## Data Module
 
-The `data` module is located in `src/main/groovy/com/sysgears/seleniumbundle/core/`. The module contains two classes and
-three annotations that you'll need to use in your data-driven tests for requesting data.
+The `data` module is located in `src/main/groovy/com/sysgears/seleniumbundle/core/`. This module contains two classes 
+and three annotations that you'll need to use in your data-driven tests for requesting and mapping data.
 
 ### DataLoader
 
-`DataLoader` is a custom class that retrieves test data using the `@Locator` parameters.
+`DataLoader` is a custom class that reads the contents of the YAML files and returns values as List or Map.
 
-`DataLoader` provides two methods that you can use in your test classes to request data from Yaml files. Depending on
-how your data is structured in a Yaml file, you can get a _map_ using `readMapFromYaml()` or _list_ using
+`DataLoader` provides two methods that you can use in your test classes to request data from YAML files. Depending on
+how your data is structured in a YAML file, you can get a _Map_ using `readMapFromYaml()` or a _List_ using
 `readListFromYaml()`.
 
-Usage example:
+Usage example (notice that he `DataLoader` class is intended for use with [`DataMapper`](#datamapper)):
 
 ```groovy
-// a test method that uses DataLoader methods
+@DataProvider(name = 'getData')
+Object[][] getData(Method m) {
+    // use DataLoader static methods to read data from the YAML file
+    mapper.map(DataLoader.readListFromYml(YOUR_YAML_FILE), m, this)
+}
 ```
-
-The `DataLoader` class is intended for use with [`DataMapper`](#datamapper).
 
 ### DataMapper
 
-`DataMapper` is the main class that uses the custom annotations to look up the test data and map those data to a
-two-dimensional array. `DataLoader` can process test data, find requested data from a Yaml file, and convert those data
-into `Object[][]` as required by TestNG [Data Provider annotation].
+`DataMapper` is a custom class that uses the custom annotations to look up the test data and map those data to a
+two-dimensional array. `DataLoader` can process test data, find requested data from YAML files, and convert those data
+into `Object[][]` as required by TestNG [Data Provider].
 
-The mechanics are quite simple: The `DataMapper` class gets data from a YML file, and then `@DataProvider` injects this
-data in our tests.
+You don't have to explicitly instantiate `DataMapper` in your tests. The `DataMapper` instance is created by the base 
+test class `BaseTest`. Your actual test gets the `DataMapper` instance through `FunctionalTest`: your actual test should
+inherit `FunctionalTest`, which in turn inherits `BaseTest`.
+
+#### map
+
+The `DataMapper` class provides the method `map` that you'll be using in your test classes. `map` accepts three 
+parameters:
+
+* `List<Map>`, the data retrieved from the YAML file. Use [`DataLoader`] to retrieve the data.
+* `m`, the name of the test method that uses the Data Provider method. You can pass just `m` to this parameter.
+* `Object testClass`, the test class. Always pass `this` to this parameter.
 
 Usage example:
 
 ```groovy
-// a test method that uses DataMapper
+@DataProvider(name = 'getData')
+Object[][] getData(Method m) {
+    // use mapper, a DataMapper instance to map data from YAML file
+    mapper.map(DataLoader.readListFromYml(DATAFILE), m, this)
+}
 ```
 
 ### Annotations
 
-#### Find
+Selenium Automation Bundle provides three annotations to help you build your requests to a YAML file. 
 
-The `@Find` annotation is necessary to search for necessary data sets and their values that will be used in the test.
-You can use `@Find` as follows:
+#### @Query
+
+You need to use the `@Query` annotation before the test class. `@Query` is always used with [`@Find`](#@find) annotation.
+
+Usage example:
 
 ```groovy
-@Find(first = "tomato", second = "potato" )
+//
+@Query(@Find(name = "category", value = "News"))
 void myMethod() {}
 ```
 
-To make this annotation work, your Yaml file must contain the fields `first` and `second` with values `tomato` and
-`potato`.
+#### @Find
+
+The `@Find` annotation is used to get the arguments for the [`@Query` annotation](#@query).
+
+Usage example:
+
+```groovy
+@Query(@Find(name = "tomato", value = "potato" ))
+void myMethod() {
+    myPageObject.doSomethingToTest()
+}
+```
+
+To make this annotation work, your YAML file must contain the field `tomato` with the value `potato`:
+
+```yaml
+- tomato: potato
+```
 
 #### Locator
 
-The `@Locator` annotation will let you specify the value you need to use in your test. You can pass a string for the
-value on the highest level, or a string with dot separator to link to a lower-level value.
+The `@Locator` annotation will let you specify the values you need to use in your test. The annotation accepts a string
+with any level of nesting. The nested elements must be separated by a dot.
 
 Usage example: For example, your Yaml file may have the following structure:
 
@@ -67,38 +102,15 @@ Usage example: For example, your Yaml file may have the following structure:
     food: value on a lower level
 ```
 
-To access the values stored in `query` and `food`, you can use `@Locator` in your test classes like this:
+To access the values stored in `query` and `food`, you can use `@Locator` in your test classes this way:
 
 ```groovy
-void checkSomething(
-         @Locator("query") String query,
-         @Locator("result.food") String food) {
-
-     pageObject.doSomethingWith(query)
+void checkSomething(@Locator("query") String query, @Locator("result.food") String food) {
+     pageObject.doSomethingWith(query).doSomethingAgain(food)
 }
 ```
 
-`@Locator` accepts a string with the name of the property. You can also pass a list of names separated by dots to access
-any value on lower levels.
+As you can see, you need to pass only the last nested element to the page object method. `@Locator` will return the 
+correct data according to the request.
 
-#### Query
-
-You can use the `@Query` annotation before the test class and pass a query according to the structure in your Yaml file.
-
-Usage example:
-
-```yml
-
-```
-
-```groovy
-//
-@Query(@Find(name = "category", value = "News"))
-void myMethod() {}
-```
-
-### MapHelper
-
-
-
-[data provider annotation]: http://testng.org/doc/documentation-main.html#annotations
+[data provider]: http://testng.org/doc/documentation-main.html#annotations
