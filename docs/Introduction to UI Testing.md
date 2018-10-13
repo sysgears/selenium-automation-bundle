@@ -1,6 +1,6 @@
 # Introduction to User Interface (Layout) Testing with Selenium Automation Bundle
 
-Selenium Automation Bundle provides a simple way to test a web application's user interface (UI). You only need to take
+Selenium Automation Bundle provides a simple way to test a web application's user interface (UI). You first need to take
 screenshots of the initial layout after it was manually tested (read: you need to verify that the basic application's
 layouts look fine and function correctly). After that, when the UI changes, you need to run the same UI tests again.
 
