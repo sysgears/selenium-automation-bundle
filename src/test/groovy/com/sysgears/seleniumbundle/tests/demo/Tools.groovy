@@ -25,7 +25,7 @@ class Tools extends FunctionalTest {
 
     @DataProvider(name = 'getTestData')
     Object[][] getTestData(Method m) {
-        mapper.map(DataLoader.readListFromYml(DATAFILE), m, this)
+        mapper.map(DataLoader.readListFromYml(DATAFILE), m)
     }
 
     @Test(dataProvider = "getTestData",

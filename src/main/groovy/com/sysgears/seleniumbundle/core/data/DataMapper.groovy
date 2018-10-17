@@ -31,7 +31,7 @@ class DataMapper {
      * @throws RuntimeException if while getting the value from data set any of the non-terminal steps into nested map
      * return non-map instance
      */
-    Object[][] map(List<Map> data, Method method, Object testClass)
+    Object[][] map(List<Map> data, Method method)
             throws MissingLocatorAnnotationException, RuntimeException {
 
         // reads a search criteria represented by key-value pairs (helps to find specific test records in the raw data)
