@@ -21,14 +21,14 @@ Usage example (notice that he `DataLoader` class is intended for use with [`Data
 @DataProvider(name = 'getData')
 Object[][] getData(Method m) {
     // use DataLoader static methods to read data from the YAML file
-    mapper.map(DataLoader.readListFromYml(YOUR_YAML_FILE), m, this)
+    mapper.map(DataLoader.readListFromYml(YOUR_YAML_FILE), m)
 }
 ```
 
 ### DataMapper
 
 `DataMapper` is a custom class that uses the custom annotations to look up the test data and map those data to a
-two-dimensional array. `DataLoader` can process test data, find requested data from YAML files, and convert those data
+two-dimensional array. `DataMapper` can process test data, find requested data from YAML files, and convert those data
 into `Object[][]` as required by TestNG [Data Provider].
 
 You don't have to explicitly instantiate `DataMapper` in your tests. The `DataMapper` instance is created by the base 
@@ -37,12 +37,11 @@ inherit `FunctionalTest`, which in turn inherits `BaseTest`.
 
 #### map
 
-The `DataMapper` class provides the method `map` that you'll be using in your test classes. `map` accepts three 
+The `DataMapper` class provides the method `map` that you'll be using in your test classes. `map` accepts two
 parameters:
 
 * `List<Map>`, the data retrieved from the YAML file. Use [`DataLoader`] to retrieve the data.
 * `m`, the name of the test method that uses the Data Provider method. You can pass just `m` to this parameter.
-* `Object testClass`, the test class. Always pass `this` to this parameter.
 
 Usage example:
 
@@ -50,7 +49,7 @@ Usage example:
 @DataProvider(name = 'getData')
 Object[][] getData(Method m) {
     // use mapper, a DataMapper instance to map data from YAML file
-    mapper.map(DataLoader.readListFromYml(DATAFILE), m, this)
+    mapper.map(DataLoader.readListFromYml(DATAFILE), m)
 }
 ```
 

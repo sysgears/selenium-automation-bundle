@@ -1,6 +1,6 @@
 # Detailed Guide on UI Testing with Selenium Automation Bundle
 
-This guide provides an overview of how works the demo UI test that you've run in the [introduction to UI testing].
+This guide provides an overview of the demo UI test that you've run in the [introduction to UI testing].
 
 We'll have a look at the `UITestExample` test class, which tests the user interface of the Google search page. The test
 class' implementation is located in the `src/test/groovy/.../tests/ui/` directory.
@@ -120,7 +120,8 @@ field changes and can break the test when you don't test it.)
 #### checkWithoutChangesInLayout
 
 As the name of the method suggests, it'll test the Google search page without changing the layout. This test won't fail
-as it doesn't change the layout anyhow:
+as it doesn't change the layout anyhow
+ it just shows how the module works for a case(pages) without changes. It does make new screenshot, compare and makes log record that the screenshot is identical to the baseline that was taken earlier.:
 
 ```groovy
 /**

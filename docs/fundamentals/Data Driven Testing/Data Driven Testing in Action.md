@@ -7,31 +7,35 @@ files you may want to look at:
 * `src/test/resources/data/google/test_data.yml`, the YAML file with the test data
 
 You may have looked at a short review of the `Tools` class in [Introduction to Data Driven Testing]. In this guide we're
-going give more details how the data-driven tests work and how they should be created.
+going to give more details how the data-driven tests work and how they should be created.
 
 ## General Considerations for Creating Test Classes for Data Driven Testing
 
 First, it's necessary to mention the available functionalities provided by the bundle for Data Driven Testing:
  
-* `DataLoader`, the class that let's you load test data from YAML files
-* `DataMapper`, the class that let's you map the test data retrieved from YAML files by `DataLoader`
+* `DataLoader`, loads test data from YAML files using two static methods
+* `DataMapper`, maps the test data to test method parameters annotated with `@Locator`, `@Query`, or `@Find`
 * `@Find`, `@Locator`, and `@Query`, the annotations to build queries for test data
 
 Here are a few considerations for writing tests that are used in Data Driven Testing scenarios. Your test class should:
 
 * Import `DataLoader` from `src/main/groovy/.../core/data/`.
 * Import necessary annotations from `src/main/groovy/.../core/data/annotations/`.
-* Inherit `FunctionalTest`, a base test class that provides a `DataMapper` instance.
+* Inherit `FunctionalTest` to get a `DataMapper` instance.
+    * `DataMapper` is in fact instantiated in `BaseTest`, which `FunctionalTest` inherits.
 * Create a property in your class to reference the YAML file with the test data.
-* Use TestNG `@DataProvider` to create a Data Provider method to be able to retrieve test data.
+* Use TestNG `@DataProvider` annotation to create a Data Provider method to retrieve test data.
     
-Let's put the listed recommendations into the context. In the section below, we discuss a concrete data-driven test.
+Let's put the listed recommendations into the context. In the section below, we'll have a look at a concrete data-driven
+test.
 
 ## Demo Test Class Tools for Data Driven Testing
 
-The data-driven test, shown below, follows all the recommendations from the [previous section](#general-considerations-for-creating-test-classes-for-data-driven-testing). 
-The `Tools` class below is fairly long, but we'll break it [into chunks](#creating-page-object-and-data-file-properties) 
-and explain each part of the test.
+The data-driven test `Tools`, shown below, follows all the recommendations from the
+[previous section](#general-considerations-for-creating-test-classes-for-data-driven-testing).
+
+The `Tools` class is fairly long, but we'll break it [into chunks](#creating-page-object-and-data-file-properties) and
+explain each part of the test.
 
 ```groovy
 package com.sysgears.seleniumbundle.tests.demo
@@ -99,9 +103,11 @@ class Tools extends FunctionalTest {
 
 ### Creating Page Object and Data File Properties
 
-The following two lines are self-explanatory, but it's worth mentioning that you should instantiate the YAML file with 
-your data. `Tools` stores the reference to the demo file `test_data.yml` in `DATAFILE` that will be used in Data 
-Provider method:
+The following two lines are self-explanatory, but it's worth mentioning that you should create a property to reference
+the YAML file with your data.
+
+`Tools` stores the reference to the demo file `test_data.yml` in the `DATAFILE` constant to be used in Data Provider
+method:
 
 ```groovy
 protected GooglePage googlePage
@@ -110,8 +116,8 @@ private final static String DATAFILE = "src/test/resources/data/google/test_data
 
 ### Creating a Data Provider
 
-As required by TestNG, your Data Provider method must be annotated with `@DataProvider` and return an array of array of
-objects &ndash; `Object[][]`. 
+As required by TestNG, your Data Provider method must be annotated with `@DataProvider` and return a two-dimensional
+array of objects &ndash; `Object[][]`.
 
 The `Tools` class creates its own Data Provider method `getTestData()` to respect this requirement:
 
@@ -124,19 +130,22 @@ Object[][] getTestData(Method m) {
 
 Here's how Data Provider in Selenium Automation Bundle is created:
 
-* `@DataProvider` accepts the `name` parameter, which you'll use to reference the created Data Provider.
-* Data Provider calls `map()` on `mapper` (the instance of `DataMapper` available through `FunctionalTest`). 
-[The method `map()`] returns `Object[][]` created from data from the YAML file.  
+* `@DataProvider` accepts the `name` parameter, which you'll use to reference the created Data Provider from test
+methods.
+* Data Provider calls `map()` on `mapper` (the instance of `DataMapper`). [The method `map()`] returns `Object[][]`
+created from data from the YAML file.
 * Data Provider uses `DataLoader.readListFromYml()` to read data from the YAML file.
 
-Notice that the parameter `m` passed to `getTestData()` is the method (such as `checkOptionsForCategories()`) that will 
-use `getTestData()`. Also notice that you need to call the method `mapper.map()` and pass three parameters to it: the 
-retrieved test data as `List<Map>`, the method that will use `getTestData()`, and the `this` object.
+Notice that the parameter `m` passed to `getTestData()` is the actual test method such as `checkOptionsForCategories()`,
+and this method will use `getTestData()`.
 
-As you can see from the example, you can use the `DataLoader` static methods `readListFromYml()` and `readMapfromYaml()` 
-to retrieve data from YAML file and pass it as the first argument to `mapper.map()`. 
+Also notice that you need to call the method `mapper.map()` and pass two parameters: the retrieved test data as
+`List<Map>` and the method `m` that will use `getTestData()`.
+
+You can use the `DataLoader` static methods `readListFromYml()` and `readMapfromYaml()` to retrieve data from YAML file
+and pass it as the first argument to `mapper.map()`.
  
-Now that you know how a Data Provider is created with Selenium Automation Bundle, you can have a look at the actual test 
+Now that you know how Data Provider is created with Selenium Automation Bundle, you can have a look at the actual test
 that uses `getTestData()`.
 
 ### Using Data Providers in Tests
@@ -172,8 +181,10 @@ void checkOptionsForCategories(
 Here's how it works:
 
 1. The `@Test` annotation sets the `dataProvider` to `getTestData` to retrieve the test data from `test_data.yml`.
+
 2. The `@Query` annotation allows you to specify what data you need from a YAML file. `@Query` uses another annotation,
 `@Find`, as an argument. `@Find` lets you specify the key-value pairs for data search.
+
 3. The `@Locator` annotation accepts a string with the query.
 
 `query` and `category` passed to the first two `@Locator`s are simple. But you can also get specific values with the 
@@ -202,7 +213,9 @@ Now, as you run the test:
 
 ### YAML File
 
-The YAML file with the demo data is located in `src/test/resources/data/google/test_data.yml`. Here's what it looks like:
+The YAML file with the demo data is located in `src/test/resources/data/google/test_data.yml`.
+
+Here's what it looks like:
 
 ```yaml
 - query: google
@@ -226,6 +239,8 @@ The YAML file with the demo data is located in `src/test/resources/data/google/t
         - Recent
         - Sorted by relevance
 ```
+
+The data in the YAML file is structured as `List<Map>`. Each list item provides a separate set of data for a tests.
 
 In your tests, the objects in the YAML file would look like this:
 
