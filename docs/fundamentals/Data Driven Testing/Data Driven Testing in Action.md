@@ -1,13 +1,51 @@
 # Data Driven Testing in Action
 
+You may have looked at a short review of the `Tools` class in [Introduction to Data Driven Testing]. In this guide we're
+going to give more details how data-driven testing is done with Selenium Automation Bundle.
+
+## Why Data Driven Testing?
+
+Imagine that you need to test an ecommerce website. The website supports two currencies &ndash; dollar and euro; offers
+three types of discounts &ndash; 5%, 10%, and 15%; and provides nine product groups. Overall, you get 54 combinations to
+test (2 currencies * 3 discount types * 9 product groups is 54), and your task is to test all them to find out whether
+the application correctly calculates the amount that the buyer will have to pay.
+
+In the end, you'll need to create separate objects with a currency, discount, and product group for each combination.
+
+That's what Data Driven Testing is about. You don't write a dozen test cases to test a feature in your application, but
+you use a dozen test objects with different data to feed to a single test case. In DDT, the element that helps to find a
+defect is _the data_ rather than the test scenarios. Using large sets of data will help you understand how the
+application handles different user inputs and what outputs it gives for those inputs.
+
+## Data Driven Testing in Real Life
+
+DDT often leads to headaches when you add sets of test data directly in your tests. And if your test objects with
+data are complex, meaning they can include other objects, managing them becomes even more difficult.
+
+You may hardcode the test data in your test classes, but whenever you decide to change a property in an object, it'll
+take time to change the same property in others tests. Overall, handling test data scattered across dozens of files
+isn't the best approach to Data Driven Testing.
+
+What if you had all your sets of data stored in YAML files and be easily accessible from your tests? TestNG gives you
+the possibility to feed data as two-dimensional array to your test classes. But Selenium Automation Bundle goes even
+further and helps you separate test data from your tests and arrange data in a way that you can avoid repeating them.
+
+## Data Driven Testing with Selenium Automation Bundle
+
+With our mechanism for DDT:
+
+* You can localize data per test file
+* You don't need to connect to a database
+* You can request specific data from a YAML file
+
+Speaking of storing data in files, you can consider YAML files as your "database" that's much easier to access than a
+conventional relational (MySQL) or document-oriented (MongoDB) database.
+
 Selenium Automation Bundle provides a demo test that takes advantage of the Data Driven Testing approach. There are two
 files you may want to look at:
 
 * `src/test/groovy/.../tests/demo/Tools.groovy`, the demo test class
 * `src/test/resources/data/google/test_data.yml`, the YAML file with the test data
-
-You may have looked at a short review of the `Tools` class in [Introduction to Data Driven Testing]. In this guide we're
-going to give more details how the data-driven tests work and how they should be created.
 
 ## General Considerations for Creating Test Classes for Data Driven Testing
 
