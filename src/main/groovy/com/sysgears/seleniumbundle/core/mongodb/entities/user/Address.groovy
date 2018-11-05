@@ -1,7 +1,7 @@
 package com.sysgears.seleniumbundle.core.mongodb.entities.user
 
 /**
- * Address entity to be used with Mongo database.
+ * The address entity to be used with the Mongo database.
  */
 class Address {
 

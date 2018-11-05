@@ -16,8 +16,8 @@ class HideElementsExample extends FunctionalTest {
     }
 
     /**
-     * This test tries to click on the link, which leads to another site, but fails because when Selenium scrolls to this
-     * link to click on, the link appears under the fixed footer.
+     * This test tries to click on the link that leads to another website, but fails because when Selenium scrolls to
+     * this link, the link is hidden by the fixed footer.
      */
     @Test(invocationCount = 2)
     void clickOnElementUnderTheFixedFooter() {
@@ -25,8 +25,8 @@ class HideElementsExample extends FunctionalTest {
     }
 
     /**
-     * This test hides the fixed footer and then clicks on the link. As a final step, it checks the url of the new web
-     * page.
+     * This test hides the fixed footer and then clicks on the link. As a final step, the test checks the URL of the new
+     * web page.
      */
     @Test(invocationCount = 2)
     void hideFixedFooterAndClickOnTheElement() {

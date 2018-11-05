@@ -6,19 +6,19 @@ import groovy.util.logging.Slf4j
 import java.lang.reflect.Field
 
 /**
- * Provides methods for initializing and validating objects fields that have the {@link ImplicitInit} annotation.
+ * Provides methods for initializing and validating objects fields that are annotated with {@link ImplicitInit}.
  */
 @Slf4j
 class ParameterMapper {
 
     /**
-     * Initialize all the object fields that have the {@link ImplicitInit} annotation.
+     * Initializes all the object fields that are annotated with {@link ImplicitInit}.
      *
      * @param object object to be initialized
      * @param parameters map of parameters to be used for object initialization
      *
-     * @throws IllegalArgumentException is thrown in case a value is missing for a mandatory parameter
-     * or the value doesn't match the validation pattern
+     * @throws IllegalArgumentException is thrown if a value is missing for a mandatory parameter
+     * or the value does not match the validation pattern
      */
     void initParameters(Object object, Map<String, ?> arguments) throws IllegalArgumentException {
         getFieldsToInitialize(object.getClass()).each { field ->
@@ -47,7 +47,7 @@ class ParameterMapper {
      * @param argument value to verify
      * @param pattern validation pattern
      *
-     * @return true if argument matches the pattern, false otherwise
+     * @return true if the argument matches the pattern, false otherwise
      */
     private boolean validate(String value, String pattern) {
         value.matches(pattern)
@@ -71,21 +71,21 @@ class ParameterMapper {
      * @param arguments map of values to verify
      * @param pattern validation pattern
      *
-     * @return true if all arguments from map match the pattern, false otherwise
+     * @return true if all arguments from a map match the pattern, false otherwise
      */
     private boolean validate(Map arguments, String pattern) {
 
-        // Casting to ConfigObject is used to flatten the nested maps
+        // casting to ConfigObject is used to flatten the nested maps
         def values = (arguments as ConfigObject).flatten().values().toList()
         validate(values, pattern)
     }
 
     /**
-     * Gets all declared fields with {@link ImplicitInit} annotation of a given class and its superclasses.
+     * Gets all declared fields annotated by {@link ImplicitInit} in a given class and its superclasses.
      *
      * @param clazz class to get fields from
      *
-     * @return list of fields of a class and all its superclasses which are annotated with {@link ImplicitInit}
+     * @return list of fields of a class and all its superclasses that are annotated with {@link ImplicitInit}
      */
     private List<Field> getFieldsToInitialize(Class clazz) {
         def parent = clazz.getSuperclass()

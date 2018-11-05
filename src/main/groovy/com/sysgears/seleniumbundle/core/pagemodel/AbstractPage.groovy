@@ -28,7 +28,7 @@ abstract class AbstractPage<T> {
     protected String url
 
     /**
-     * Opens web page.
+     * Opens a web page.
      *
      * @return page object
      */
@@ -39,10 +39,10 @@ abstract class AbstractPage<T> {
     }
 
     /**
-     * Asserts whether current URL matches the page URL.
+     * Asserts whether the current URL matches the page's URL.
      */
     void assertUrl() {
-        assertTrue(url().contains(url), "Given url is: [$url], real url is: [${url()}]")
+        assertTrue(url().contains(url), "Given URL is: [$url], real URL is: [${url()}]")
     }
 
     /**
@@ -59,7 +59,7 @@ abstract class AbstractPage<T> {
     /**
      * Clears a set of text inputs.
      *
-     * @param list web element list to be cleared
+     * @param list list of web elements to be cleared
      */
     void clearTextInputs(List<SelenideElement> list) {
         list.each {
@@ -68,7 +68,7 @@ abstract class AbstractPage<T> {
     }
 
     /**
-     * Checks if the static elements of the page object are loaded and exist in DOM.
+     * Checks if static elements of the page object are loaded and exist in Document Object Model.
      *
      * @return page object
      */
@@ -90,8 +90,8 @@ abstract class AbstractPage<T> {
                         (element as ElementsCollection).shouldHave(CollectionCondition.sizeGreaterThan(0))
                     }
                 } catch (IllegalAccessException e) {
-                    log.error("Unable to get element: ${field.name}", e)
-                    throw new IllegalAccessException("Unable to get element: ${field.name}")
+                    log.error("Unable to get the element: ${field.name}", e)
+                    throw new IllegalAccessException("Unable to the get element: ${field.name}")
                 }
             }
         }
@@ -100,9 +100,9 @@ abstract class AbstractPage<T> {
     }
 
     /**
-     * Sets CSS style visibility to hidden in order to hide an element.
+     * Sets an element's visibility to hidden in order to hide an element.
      *
-     * @param elements element which has to be hidden
+     * @param elements element to be hidden
      *
      * @return page object
      */
@@ -114,9 +114,9 @@ abstract class AbstractPage<T> {
     }
 
     /**
-     * Sets CSS style visibility to hidden in order to hide a collection of elements.
+     * Sets the visibility to hidden for a collection of elements.
      *
-     * @param elementsCollections collection of elements which has to be hidden
+     * @param elementsCollections collection of elements to be hidden
      *
      * @return page object
      */

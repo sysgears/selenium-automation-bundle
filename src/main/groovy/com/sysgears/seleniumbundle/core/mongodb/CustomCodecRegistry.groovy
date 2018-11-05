@@ -17,8 +17,8 @@ class CustomCodecRegistry implements CodecRegistry {
     private final CodecRegistry codecRegistry
 
     /**
-     * Creates an instance of {@code CustomCodecRegistry} which contains a registry built from POJOs
-     * and default registry that is provided by mongo-java-driver library.
+     * Creates an instance of {@code CustomCodecRegistry} that contains a registry built from POJOs
+     * and a default registry that is provided by the mongo-java-driver library.
      */
     CustomCodecRegistry() {
         this.codecRegistry = CodecRegistries.fromRegistries(MongoClient.getDefaultCodecRegistry(),

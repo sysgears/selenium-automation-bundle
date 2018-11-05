@@ -12,7 +12,7 @@ import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.safari.SafariDriver
 
 /**
- * Defines WebDriver types for various browsers and provides methods for instantiating the WebDriver w/ and
+ * Defines the WebDriver types for various browsers and provides methods for instantiating the WebDriver w/ and
  * w/o capabilities.
  */
 enum Driver {
@@ -54,7 +54,7 @@ enum Driver {
     }
 
     /**
-     * Instantiates WebDriver object for specific browser.
+     * Instantiates the WebDriver object for a specific browser.
      *
      * @param capabilities capabilities object to start driver with, can be null
      *
@@ -63,7 +63,7 @@ enum Driver {
     abstract WebDriver createDriver(DesiredCapabilities capabilities = null)
 
     /**
-     * Returns specific enum constant by given browser name.
+     * Returns a specific enum constant by a given browser name.
      *
      * @param browserName name of the enum constant
      *

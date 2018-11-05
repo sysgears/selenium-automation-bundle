@@ -9,7 +9,7 @@ import groovy.util.logging.Slf4j
 import org.apache.commons.io.FilenameUtils
 
 /**
- * Class which provides the method to upload screenshots to Dropbox.
+ * The class that provides the method to upload screenshots to Dropbox.
  */
 @Slf4j
 class UploadToDropboxCommand extends AbstractCommand {
@@ -31,8 +31,8 @@ class UploadToDropboxCommand extends AbstractCommand {
      * @param @param arguments the map with arguments of the command
      * @param conf project properties
      *
-     * @throws IllegalArgumentException is thrown in case a value is missing for a mandatory parameter or
-     * the value doesn't match the validation pattern
+     * @throws IllegalArgumentException is thrown if a value is missing for a mandatory parameter or
+     * the value does not match the validation pattern
      */
     UploadToDropboxCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)
@@ -41,7 +41,7 @@ class UploadToDropboxCommand extends AbstractCommand {
     /**
      * Executes the command.
      *
-     * @throws IOException in case Dropbox client operations produce an error.
+     * @throws IOException if Dropbox Client operations produce an error
      */
     @Override
     void execute() throws IOException {

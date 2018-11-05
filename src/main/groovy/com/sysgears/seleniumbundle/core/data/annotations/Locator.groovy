@@ -6,14 +6,14 @@ import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
 /**
- * Maps a specific data entry from the structured data set to a method argument.
+ * Maps a specific data entry from the structured data set to the method argument.
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @interface Locator {
 
     /**
-     * Path to a specific value is specified with dot separator like data.users.admin.
+     * Path to a specific value is specified with the dot separator, for example: data.users.admin.
      */
     String value()
 }

@@ -8,8 +8,8 @@ import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
 /**
- * Indicates that a field should be initialized implicitly with {@link ParameterMapper}. This annotation has
- * 'pattern' and 'required' parameters which allow us to set constraints for a field value and specify whether the
+ * Indicates that a field should be initialized implicitly with {@link ParameterMapper}. {@link ParameterMapper} has the
+ * 'pattern' and 'required' parameters which allow for setting constraints for a field value and specify whether the
  * field is mandatory.
  */
 @Target(ElementType.FIELD)
@@ -17,7 +17,7 @@ import java.lang.annotation.Target
 @interface ImplicitInit {
 
     /**
-     * The pattern for parameter validation.
+     * Pattern for parameter validation.
      */
     String pattern() default ".*"
 

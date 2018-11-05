@@ -1,7 +1,7 @@
 package com.sysgears.seleniumbundle.core.command
 
 /**
- * Interface to be implemented by application commands.
+ * The interface to be implemented by the application command classes.
  */
 interface ICommand {
 

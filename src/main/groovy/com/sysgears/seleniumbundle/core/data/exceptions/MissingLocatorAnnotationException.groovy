@@ -3,12 +3,12 @@ package com.sysgears.seleniumbundle.core.data.exceptions
 import com.sysgears.seleniumbundle.core.data.annotations.Locator
 
 /**
- * Is thrown in case a parameter of a test method which uses data mapping mechanism doesn't have {@link Locator}.
+ * Is thrown when a parameter of a test method that uses the data mapping mechanism does not have {@link Locator}.
  */
 class MissingLocatorAnnotationException extends RuntimeException {
 
     /**
-     * Constructs a new MissingLocatorAnnotationException with the specified detail message.
+     * Constructs a new MissingLocatorAnnotationException with the specified message.
      *
      * @param message error message
      */

@@ -6,12 +6,12 @@ import com.sysgears.seleniumbundle.core.mongodb.DBConnection
 import com.sysgears.seleniumbundle.core.mongodb.entities.User
 
 /**
- * DAO for User entity.
+ * Data Access Object for the User entity.
  */
 class UserDAO {
 
     /**
-     * Mongo collection associated with User entity.
+     * Mongo collection associated with the User entity.
      */
     private final MongoCollection<User> collection
 
@@ -25,7 +25,7 @@ class UserDAO {
     }
 
     /**
-     * Finds user by email.
+     * Finds a user by email.
      *
      * @param email email of a user
      * @return object of User
