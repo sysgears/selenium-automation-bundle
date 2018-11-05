@@ -52,4 +52,8 @@ class DataLoader {
             throw new FileNotFoundException("Could not find data file: $filePath, specify valid path.")
         }
     }
+
+    static List<String> readListFromCsv(String path) {
+        new File(path).text.split("\n")
+    }
 }

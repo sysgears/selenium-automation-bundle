@@ -62,4 +62,12 @@ class DataMapper {
             } as Object[]
         } as Object[][]
     }
+
+    Object[][] mapFromCSV(List<String> data, String pattern) {
+        data.drop(1).collect { line ->
+            line.split(pattern).collect {
+                it.trim()
+            }
+        }
+    }
 }
