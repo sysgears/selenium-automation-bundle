@@ -36,6 +36,17 @@ class DataLoader {
     }
 
     /**
+     * Reads raw string from the .csv file.
+     *
+     * @param filePath path to file
+     *
+     * @return String from the .csv file
+     */
+    static String readRawDataFromCsv(String filePath) {
+        new File(filePath).text
+    }
+
+    /**
      * Reads raw data from the .yml file.
      *
      * @param filePath path to file
@@ -51,9 +62,5 @@ class DataLoader {
             log.error("Could not find data file: $filePath, specify valid path.", e)
             throw new FileNotFoundException("Could not find data file: $filePath, specify valid path.")
         }
-    }
-
-    static List<String> readListFromCsv(String path) {
-        new File(path).text.split("\n")
     }
 }

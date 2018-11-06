@@ -63,11 +63,35 @@ class DataMapper {
         } as Object[][]
     }
 
-    Object[][] mapFromCSV(List<String> data, String pattern) {
-        data.drop(1).collect { line ->
-            line.split(pattern).collect {
-                it.trim()
-            }
+    /**
+     * Finds sub sets of test data required for a test method execution from the given string in csv format.
+     * Uses "|" pipe delimiter for separating values and "new line" for separating data sets for different test methods.
+     * Removes header for
+     *
+     * @param data string with "|" separated values
+     * @param method method which uses TestNG Data Provider
+     * @param areHeaders if true, removes the first line of the data set with headers (column names), else does nothing
+     *
+     * @return Object[][]
+     */
+    Object[][] mapFromCSV(String data, Method method, Boolean areHeaders = true) {
+        def map = (data =~ /(?<=method:\s{0,2})(.*)\n([\S\s]*?)(?=\n\n|\z)/).with { matcher ->
+            matcher.collect { List dataSet ->
+                def rows = dataSet[2].split("\n")
+
+                if (areHeaders) {
+                    rows.drop(1) // this step here is for removing unnecessary headers
+                }
+
+                Object[][] values = rows.collect {
+                    it.split("|").collect { String value ->
+                        value.trim()
+                    }
+                }
+                [(dataSet[1]): values]
+            }.collectEntries()
         }
+
+        map[method.getName()]
     }
 }
