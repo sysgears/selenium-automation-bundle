@@ -35,7 +35,7 @@ class BaseTest implements IEnvironment {
     /**
      * Test data mapper, is responsible for test data preparation for TestNG data providers.
      */
-    protected DataMapper mapper = new DataMapper()
+    protected DataMapper mapper = new DataMapper(conf)
 
     /**
      * Instance of BrowserProxy.
