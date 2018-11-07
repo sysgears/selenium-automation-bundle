@@ -1,5 +1,6 @@
 package com.sysgears.seleniumbundle.core.data
 
+import com.sysgears.seleniumbundle.core.conf.Config
 import com.sysgears.seleniumbundle.core.data.annotations.Find
 import com.sysgears.seleniumbundle.core.data.annotations.Locator
 import com.sysgears.seleniumbundle.core.data.annotations.Query
@@ -16,6 +17,20 @@ import java.lang.reflect.Method
  */
 @Slf4j
 class DataMapper {
+
+    /**
+     * Project properties.
+     */
+    private Config conf
+
+    /**
+     * Creates an instance of DataMapper
+     *
+     * @param conf project properties
+     */
+    DataMapper(Config conf) {
+        this.conf = conf
+    }
 
     /**
      * Finds sub sets of test data required for a test method execution from the given test data collection by using
@@ -68,7 +83,7 @@ class DataMapper {
      * Uses "|" pipe delimiter for separating values and "new line" for separating data sets for different test methods.
      * Removes header for
      *
-     * @param data string with "|" separated values
+     * @param data string with separated values, delimiter is configured in Application.properties as regex expression
      * @param method method which uses TestNG Data Provider
      * @param areHeaders if true, removes the first line of the data set with headers (column names), else does nothing
      *
@@ -77,15 +92,27 @@ class DataMapper {
     Object[][] mapFromCSV(String data, Method method, Boolean areHeaders = true) {
         def map = (data =~ /(?<=method:\s{0,2})(.*)\n([\S\s]*?)(?=\n\n|\z)/).with { matcher ->
             matcher.collect { List dataSet ->
-                def rows = dataSet[2].split("\n")
+                def rows = dataSet[2].split(conf.data.csv.setSeparator)
 
-                if (areHeaders) {
-                    rows.drop(1) // this step here is for removing unnecessary headers
-                }
+                // drop(1) step here is for removing unnecessary headers
+                Object[][] values = (areHeaders ? rows.drop(1) : rows).collect {
+                    it.split(conf.data.csv.delimiter).collect { String value ->
+                        (value =~ /\[(.*)\]/).with { valueMatcher ->
+                            if (valueMatcher.find()) {
+                                def coll = valueMatcher[0][1].split(",").toList()
 
-                Object[][] values = rows.collect {
-                    it.split("|").collect { String value ->
-                        value.trim()
+                                if (coll.every { it.contains(":") }) {
+                                    coll.collectEntries { String pair ->
+                                        def entry = pair.split(":")
+                                        [entry[0], entry[1]]
+                                    }
+                                } else {
+                                    coll
+                                }
+                            } else {
+                                value.trim() // removes formatting spaces
+                            }
+                        }
                     }
                 }
                 [(dataSet[1]): values]

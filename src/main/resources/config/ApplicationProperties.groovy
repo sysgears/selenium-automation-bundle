@@ -13,6 +13,13 @@ browser {
     version = ""
 }
 
+data {
+    csv {
+        setSeparator = "\n"
+        delimiter = "\\|"
+    }
+}
+
 // ui tests configuration
 ui {
     path {
