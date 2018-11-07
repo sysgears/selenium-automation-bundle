@@ -16,7 +16,7 @@ browser {
 data {
     csv {
         setSeparator = "\n"
-        delimiter = "\\|"
+        delimiter = "\\|" // do not use comma as it is reserved for separating values for List and Map
     }
 }
 

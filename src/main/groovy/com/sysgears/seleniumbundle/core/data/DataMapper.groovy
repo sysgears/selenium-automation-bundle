@@ -90,16 +90,16 @@ class DataMapper {
      * @return Object[][]
      */
     Object[][] mapFromCSV(String data, Method method, Boolean areHeaders = true) {
-        def map = (data =~ /(?<=method:\s{0,2})(.*)\n([\S\s]*?)(?=\n\n|\z)/).with { matcher ->
+        def map = (data =~ /(?<=method:\s{0,2})([^\s].*)\n([\S\s]*?)(?=\n\n|\z)/).with { matcher ->
             matcher.collect { List dataSet ->
                 def rows = dataSet[2].split(conf.data.csv.setSeparator)
 
                 // drop(1) step here is for removing unnecessary headers
-                Object[][] values = (areHeaders ? rows.drop(1) : rows).collect {
-                    it.split(conf.data.csv.delimiter).collect { String value ->
+                Object[][] values = (areHeaders ? rows.drop(1) : rows).collect { String row ->
+                    row.split(conf.data.csv.delimiter).collect { String value ->
                         (value =~ /\[(.*)\]/).with { valueMatcher ->
                             if (valueMatcher.find()) {
-                                def coll = valueMatcher[0][1].split(",").toList()
+                                def coll = valueMatcher[0][1].split(",").collect { String item -> item.trim() }
 
                                 if (coll.every { it.contains(":") }) {
                                     coll.collectEntries { String pair ->
