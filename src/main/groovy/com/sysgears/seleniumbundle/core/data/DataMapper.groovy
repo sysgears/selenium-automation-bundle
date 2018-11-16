@@ -83,40 +83,48 @@ class DataMapper {
      * Uses "|" pipe delimiter for separating values and "new line" for separating data sets for different test methods.
      * Removes header for
      *
-     * @param data string with separated values, delimiter is configured in Application.properties as regex expression
+     * @param filePath path to file
      * @param method method which uses TestNG Data Provider
      * @param areHeaders if true, removes the first line of the data set with headers (column names), else does nothing
      *
      * @return Object[][]
      */
-    Object[][] mapFromCSV(String data, Method method, Boolean areHeaders = true) {
-        def map = (data =~ /(?<=method:\s{0,2})([^\s].*)\n([\S\s]*?)(?=\n\n|\z)/).with { matcher ->
+    Object[][] mapFromCSV(String filePath, Method method, Boolean areHeaders = true) {
+
+        def map = (new File(filePath).text =~ /(?<=method:\s{0,2})([^\s].*)\n([\S\s]*?)(?=\n\n|\z)/).with { matcher ->
             matcher.collect { List dataSet ->
-                def rows = dataSet[2].split(conf.data.csv.setSeparator)
+                [(dataSet[1]): dataSet[2].split(conf.data.csv.setSeparator)]
+            }.collectEntries()
+        }.collectEntries { k, String[] v ->
 
-                // drop(1) step here is for removing unnecessary headers
-                Object[][] values = (areHeaders ? rows.drop(1) : rows).collect { String row ->
-                    row.split(conf.data.csv.delimiter).collect { String value ->
-                        (value =~ /\[(.*)\]/).with { valueMatcher ->
-                            if (valueMatcher.find()) {
-                                def coll = valueMatcher[0][1].split(",").collect { String item -> item.trim() }
+            // drop(1) step here is for removing unnecessary headers
+            def values = (areHeaders ? v.drop(1) : v).collect { String row ->
+                row.split(conf.data.csv.delimiter).collect { String value -> value.trim() }
+            }
+            [k, values]
+        }.collectEntries { k, dataSet ->
 
-                                if (coll.every { it.contains(":") }) {
-                                    coll.collectEntries { String pair ->
-                                        def entry = pair.split(":")
-                                        [entry[0], entry[1]]
-                                    }
-                                } else {
-                                    coll
+            def val = dataSet.collect { row ->
+                row.collect { value ->
+                    (value =~ /\[(.*)\]/).with { valueMatcher ->
+                        if (valueMatcher.find()) {
+                            def coll = valueMatcher[0][1].split(",").collect { String item -> item.trim() }
+
+                            if (coll.every { it.contains(":") }) {
+                                coll.collectEntries { String pair ->
+                                    def entry = pair.split(":")
+                                    [entry[0], entry[1]]
                                 }
                             } else {
-                                value.trim() // removes formatting spaces
+                                coll
                             }
+                        } else {
+                            value // removes formatting spaces
                         }
                     }
                 }
-                [(dataSet[1]): values]
-            }.collectEntries()
+            }
+            [k, val as Object[][]]
         }
 
         map[method.getName()]

@@ -36,17 +36,6 @@ class DataLoader {
     }
 
     /**
-     * Reads raw string from the .csv file.
-     *
-     * @param filePath path to file
-     *
-     * @return String from the .csv file
-     */
-    static String readRawDataFromCsv(String filePath) {
-        new File(filePath).text
-    }
-
-    /**
      * Reads raw data from the .yml file.
      *
      * @param filePath path to file
