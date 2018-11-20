@@ -22,7 +22,7 @@ class ToolsDemoForCsvData extends FunctionalTest {
 
     @DataProvider(name = 'getTestDataFromCsv')
     Object[][] getTestDataFromCsv(Method m) {
-        mapper.mapFromCSV(DataLoader.readRawDataFromCsv(DATAFILE), m)
+        mapper.mapFromDataFile(DataLoader.readMapFromDataFile(DATAFILE, conf.data.csv.setSeparator), m)
     }
 
     @Test(dataProvider = "getTestDataFromCsv",

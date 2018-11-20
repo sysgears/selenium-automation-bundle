@@ -36,6 +36,22 @@ class DataLoader {
     }
 
     /**
+     * Reads data as map from the .data file.
+     *
+     * @param filePath path to file
+     * @param pattern regex pattern to split sets of test data in .data file
+     *
+     * @return String from the .csv file
+     */
+    static Map readMapFromDataFile(String filePath, String pattern) throws FileNotFoundException {
+        (new File(filePath).text =~ /(?<=method:\s{0,2})([^\s].*)\n([\S\s]*?)(?=\n\n|\z)/).with { matcher ->
+            matcher.collect { List dataSet ->
+                [(dataSet[1]): (dataSet[2] as String).split(pattern)]
+            }.collectEntries()
+        }
+    }
+
+    /**
      * Reads raw data from the .yml file.
      *
      * @param filePath path to file

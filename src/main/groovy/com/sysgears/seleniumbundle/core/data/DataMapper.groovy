@@ -5,6 +5,7 @@ import com.sysgears.seleniumbundle.core.data.annotations.Find
 import com.sysgears.seleniumbundle.core.data.annotations.Locator
 import com.sysgears.seleniumbundle.core.data.annotations.Query
 import com.sysgears.seleniumbundle.core.data.exceptions.MissingLocatorAnnotationException
+import com.sysgears.seleniumbundle.core.data.utils.DataFileParser
 import com.sysgears.seleniumbundle.core.data.utils.MapHelper
 import com.sysgears.seleniumbundle.core.utils.AnnotationHelper
 import groovy.util.logging.Slf4j
@@ -79,7 +80,7 @@ class DataMapper {
     }
 
     /**
-     * Finds sub sets of test data required for a test method execution from the given string in csv format.
+     * Finds sub sets of test data required for a test method execution from the given string in a pipe separated format.
      * Uses "|" pipe delimiter for separating values and "new line" for separating data sets for different test methods.
      * Removes header for
      *
@@ -89,44 +90,28 @@ class DataMapper {
      *
      * @return Object[][]
      */
-    Object[][] mapFromCSV(String filePath, Method method, Boolean areHeaders = true) {
+    Object[][] mapFromDataFile(Map rawMap, Method method, Boolean isHeader = true) {
+        def data = isHeader ? dropHeaders(rawMap) : rawMap
 
-        def map = (new File(filePath).text =~ /(?<=method:\s{0,2})([^\s].*)\n([\S\s]*?)(?=\n\n|\z)/).with { matcher ->
-            matcher.collect { List dataSet ->
-                [(dataSet[1]): dataSet[2].split(conf.data.csv.setSeparator)]
-            }.collectEntries()
-        }.collectEntries { k, String[] v ->
-
-            // drop(1) step here is for removing unnecessary headers
-            def values = (areHeaders ? v.drop(1) : v).collect { String row ->
-                row.split(conf.data.csv.delimiter).collect { String value -> value.trim() }
-            }
-            [k, values]
-        }.collectEntries { k, dataSet ->
-
-            def val = dataSet.collect { row ->
-                row.collect { value ->
-                    (value =~ /\[(.*)\]/).with { valueMatcher ->
-                        if (valueMatcher.find()) {
-                            def coll = valueMatcher[0][1].split(",").collect { String item -> item.trim() }
-
-                            if (coll.every { it.contains(":") }) {
-                                coll.collectEntries { String pair ->
-                                    def entry = pair.split(":")
-                                    [entry[0], entry[1]]
-                                }
-                            } else {
-                                coll
-                            }
-                        } else {
-                            value // removes formatting spaces
-                        }
-                    }
+        data.collectEntries { methodName, rawData ->
+            Object[][] methodData = rawData.collect { String row ->
+                row.split(conf.data.csv.delimiter as String).collect {
+                    def value = it.trim()
+                    value.matches(/\[.*\]/) ? DataFileParser.parseValue(value) : value
                 }
             }
-            [k, val as Object[][]]
-        }
+            [methodName, methodData]
+        }[method.getName()]
+    }
 
-        map[method.getName()]
+    /**
+     * Removes first row (column names) of map values.
+     *
+     * @param data map with data
+     *
+     * @return map
+     */
+    private Map dropHeaders(Map<String, String[]> data) {
+        data.collectEntries { [it.key, it.value.drop(1)] }
     }
 }
