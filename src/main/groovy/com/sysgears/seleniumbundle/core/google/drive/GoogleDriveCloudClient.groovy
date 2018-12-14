@@ -17,7 +17,6 @@ import com.google.api.services.drive.model.File
 import com.google.common.collect.Iterables
 import com.sysgears.seleniumbundle.core.conf.Config
 import org.apache.commons.io.FilenameUtils
-import org.apache.commons.lang3.StringUtils
 
 import javax.activation.MimetypesFileTypeMap
 
@@ -27,24 +26,19 @@ import javax.activation.MimetypesFileTypeMap
 class GoogleDriveCloudClient {
 
     /**
-     * Instance of JsonFactory to be used by Google Drive API.
-     */
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance()
-
-    /**
-     * If modifying scopes, delete your previously saved credentials.
-     */
-    private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE)
-
-    /**
      * Mime type of a folder.
      */
     private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder"
 
     /**
-     * Instance of service to be used by Google Drive API.
+     * Instance of JsonFactory to be used by Google Drive API.
      */
-    private Drive service
+    private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance()
+
+    /**
+     * If modifying scopes, delete your previously saved credentials.
+     */
+    private final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE)
 
     /**
      * Instance of HTTP transport to be used by Google Drive API.
@@ -57,82 +51,17 @@ class GoogleDriveCloudClient {
     private final Config conf = Config.instance
 
     /**
+     * Instance of service to be used by Google Drive API.
+     */
+    final Drive service
+
+    /**
      * Creates an instance of GoogleDriveCloudClient.
      */
     GoogleDriveCloudClient() {
-        this.service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+        service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(conf.google.drive.applicationName)
                 .build()
-    }
-
-    /**
-     * Gets File object for a file which is stored by a given path.
-     *
-     * @param path path to a file on Google Drive
-     *
-     * @return File object
-     */
-    File getFileByPath(String path) {
-        getFilesInFolder(getFolder(FilenameUtils.getPath(path)).getId()).find {
-            it.getName() == FilenameUtils.getName(path)
-        }
-    }
-
-    /**
-     * Gets files in a folder by the given folderId.
-     *
-     * @param folderId id of a folder to search for files in
-     *
-     * @return List of File object
-     */
-    List<File> getFilesInFolder(String folderId) {
-        getFilesByParent(folderId).findResults {
-            it.getMimeType() != FOLDER_MIME_TYPE ? it : getFilesInFolder(it.getId())
-        }?.flatten() as List<File>
-    }
-
-    /**
-     * Gets File object of the last folder in the path.
-     *
-     * @param path path to get the last folder from
-     *
-     * @return File object of the last folder in the given path
-     */
-    File getFolder(String path, String parentId = getRootFolderId()) {
-        def currentFolderName = StringUtils.substringBefore(path, java.io.File.separator)
-        def remainingPath = StringUtils.substringAfter(path, java.io.File.separator)
-
-        def currentFolder = getFilesByParent(parentId).find {
-            it.getName() == currentFolderName
-        }
-
-        remainingPath ? getFolder(remainingPath, currentFolder.getId()) : currentFolder
-    }
-
-    /**
-     * Get path to a file from the root folder on Drive.
-     *
-     * @param fileId id of a file to get path to
-     *
-     * @return path to file on Drive relatively to Drive root folder
-     */
-    String getPathFromRootFolderFor(String fileId) {
-        def path = [getFileById(fileId).getName()]
-        def parentId = fileId
-        def rootFolderId = getRootFolderId()
-
-        while (parentId != rootFolderId) {
-            def parentFile = getParentFor(parentId)
-
-            if (parentFile.getId() == rootFolderId) {
-                break
-            }
-
-            parentId = parentFile.getId()
-            path << parentFile.getName()
-        }
-
-        path.reverse().join("/")
     }
 
     /**
@@ -185,91 +114,82 @@ class GoogleDriveCloudClient {
     }
 
     /**
+     * Gets File object for a file which is stored by a given path.
+     *
+     * @param path path to a file on Google Drive
+     *
+     * @return File object
+     */
+    File getFileByPath(String path) {
+        getAllFilesInFolder(getFolder(FilenameUtils.getPath(path)).getId()).find {
+            it.getName() == FilenameUtils.getName(path)
+        }
+    }
+
+    /**
+     * Get path to a file from the root folder on Drive.
+     *
+     * @param fileId id of a file to get path to
+     *
+     * @return path to file on Drive relatively to Drive root folder
+     */
+    String getPathByFileId(String fileId) {
+        def file = getFileById(fileId)
+        def parent = getParentFor(fileId)
+        def closingElement = file.getMimeType() == FOLDER_MIME_TYPE ? java.io.File.separator : ""
+
+        parent && fileId != getRootFolderId() ?
+                "${getPathByFileId(parent.getId())}${file.getName()}$closingElement" :
+                ""
+    }
+
+    /**
+     * Gets all (including nested) files in a folder recursively by the given folderId.
+     *
+     * @param folderId id of a folder to search for files in
+     *
+     * @return List of File object
+     */
+    List<File> getAllFilesInFolder(String folderId) {
+        getFilesByParent(folderId).findResults {
+            it.getMimeType() != FOLDER_MIME_TYPE ? it : getAllFilesInFolder(it.getId())
+        }?.flatten() as List<File>
+    }
+
+    /**
+     * Gets File object of the last folder in the path.
+     *
+     * @param path path to get the last folder from
+     *
+     * @return File object of the last folder in the given path
+     */
+    File getFolder(String path) {
+        def folderNames = path.split(java.io.File.separator)
+        def currentFolderId = getRootFolderId()
+
+        folderNames.each { currentFolderName ->
+            currentFolderId = getFilesByParent(currentFolderId).find {
+                it.getName() == currentFolderName
+            }.getId()
+        }
+
+        getFileById(currentFolderId)
+    }
+
+    /**
      * Creates folders if they are not created yet.
      *
      * @param path hierarchy of folders which has to be created
      * @param parentId id of a parent folder, if parent id is not specified, the hierarchy will be created relatively
      * to root folder
      */
-    boolean createFolders(String path, String parentId = null) {
-        def folderNames = path.split("/").toList().reverse()
-        parentId = parentId ? parentId : getRootFolderId()
-        def created = false
+    String createFolders(String path) {
+        def folderNames = path.split(java.io.File.separator)
+        def currentFolderId = getRootFolderId()
 
-        while (folderNames) {
-            def currentFolderId = getFolderByParent(folderNames.last(), parentId)?.getId()
-
-            if (!currentFolderId) {
-                parentId = createFolder(folderNames.pop(), parentId).getId()
-                created = true
-            } else {
-                parentId = currentFolderId
-                folderNames.pop()
-            }
-        }
-
-        created
-    }
-
-    /**
-     * Gets id of root folder of the Drive.
-     *
-     * @return id of the root folder
-     */
-    private String getRootFolderId() {
-        service.files().get("root").execute().getId()
-    }
-
-    /**
-     * Gets File object for given fileId.
-     *
-     * @param fileId id of a file to get
-     *
-     * @return File object
-     */
-    private File getFileById(String fileId) {
-        service.files().get(fileId).set("fields", "parents, id, name, kind, mimeType, trashed").execute()
-    }
-
-    /**
-     * Gets list of files which have the given parentId.
-     *
-     * @param parentId id of a parent file
-     *
-     * @return List of Files
-     */
-    private List<File> getFilesByParent(String parentId) {
-        service.files().list().setQ("'$parentId' in parents").set("fields", "files(kind, trashed, parents, " +
-                "id, name, mimeType)").execute().getFiles().findAll {
-            !it.getTrashed()
-        }
-    }
-
-    /**
-     * Gets parent of a file with given fileId.
-     *
-     * @param fileId id of a file to find a parent for
-     *
-     * @return File object which represents parent for given file
-     */
-    private File getParentFor(String fileId) {
-        def parents = getFileById(fileId).getParents()
-        def parentId = Iterables.getOnlyElement(parents)
-
-        getFileById(parentId)
-    }
-
-    /**
-     * Gets File instance of a folder by folder name and its parent id.
-     *
-     * @param name name of a folder
-     * @param parentId id of a parent file
-     *
-     * @return File object of the folder
-     */
-    private File getFolderByParent(String name, String parentId) {
-        getFilesByParent(parentId).find {
-            it.getName() == name && it.getMimeType() == FOLDER_MIME_TYPE && !it.getTrashed()
+        folderNames.each { currentFolderName ->
+            currentFolderId = getFolderByParent(currentFolderName, currentFolderId)?.getId() ?:
+                    createFolder(currentFolderName, currentFolderId).getId()
         }
     }
 
@@ -291,6 +211,74 @@ class GoogleDriveCloudClient {
         service.files().create(fileMetadata)
                 .setFields("id")
                 .execute()
+    }
+
+    /**
+     * Gets id of root folder of the Drive.
+     *
+     * @return id of the root folder
+     */
+    private String getRootFolderId() {
+        service.files().get("root").execute().getId()
+    }
+
+    /**
+     * Gets File object for given fileId.
+     *
+     * @param fileId id of a file to get
+     *
+     * @return File object
+     */
+    private File getFileById(String fileId) {
+        service.files().get(fileId)
+                .setFields("parents, id, name, kind, mimeType, trashed")
+                .execute()
+    }
+
+    /**
+     * Gets list of files which have the given parentId.
+     *
+     * @param parentId id of a parent file
+     *
+     * @return List of Files
+     *
+     * @throws IOException
+     */
+    private List<File> getFilesByParent(String parentId) throws IOException {
+        service.files().list()
+                .setQ("'$parentId' in parents")
+                .setFields("files(kind, trashed, parents, id, name, mimeType)")
+                .execute()
+                .getFiles()
+                .findAll { !it.getTrashed() }
+    }
+
+    /**
+     * Gets parent of a file with given fileId.
+     *
+     * @param fileId id of a file to find a parent for
+     *
+     * @return File object which represents parent for given file
+     */
+    private File getParentFor(String fileId) {
+        def parents = getFileById(fileId).getParents()
+        def parentId = Iterables.getOnlyElement(parents)
+
+        parentId ? getFileById(parentId) : null
+    }
+
+    /**
+     * Gets File instance of a folder by folder name and its parent id.
+     *
+     * @param name name of a folder
+     * @param parentId id of a parent file
+     *
+     * @return File object of the folder
+     */
+    private File getFolderByParent(String name, String parentId) {
+        getFilesByParent(parentId).find {
+            it.getName() == name && it.getMimeType() == FOLDER_MIME_TYPE && !it.getTrashed()
+        }
     }
 
     /**

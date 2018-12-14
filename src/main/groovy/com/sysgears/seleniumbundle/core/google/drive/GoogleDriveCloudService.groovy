@@ -11,7 +11,7 @@ class GoogleDriveCloudService {
     /**
      * Instance of GoogleDriveCloudClient.
      */
-    private GoogleDriveCloudClient client = new GoogleDriveCloudClient()
+    GoogleDriveCloudClient client = new GoogleDriveCloudClient()
 
     /**
      * Downloads a file from Google Drive.
@@ -26,17 +26,17 @@ class GoogleDriveCloudService {
     /**
      * Downloads all files stored in remote path on Google Drive.
      *
-     * @param remotePath path to a folder on Google Drive
+     * @param remoteFolderPath path to a folder on Google Drive
      * @param localPath local path to download the files to
      */
-    void downloadFiles(String remotePath, String localPath) {
-        def folderId = client.getFolder(remotePath).getId()
+    void downloadFiles(String remoteFolderPath, String localPath) {
+        def folderId = client.getFolder(remoteFolderPath).getId()
 
-        client.getFilesInFolder(folderId).each {
-            def pathOnRemote = client.getPathFromRootFolderFor(it.getId())
+        client.getAllFilesInFolder(folderId).each {
+            def remoteFilePath = client.getPathByFileId(it.getId())
 
-            client.downloadFileById(it.getId(),
-                    FilenameUtils.separatorsToSystem(localPath) + (pathOnRemote - remotePath))
+            downloadFile(remoteFilePath,
+                    FilenameUtils.separatorsToSystem(localPath) + (remoteFilePath - remoteFolderPath))
         }
     }
 
@@ -47,18 +47,17 @@ class GoogleDriveCloudService {
      * @param remotePath path to the file on Google Drive
      */
     void uploadFile(String localPath, String remotePath) {
-        def pathToFileDirectory = FilenameUtils.getPath(remotePath)
+        def fileOnDrive = client.getFileByPath(remotePath)
+        def parentId
 
-        if (!client.createFolders(pathToFileDirectory)) {
-            def fileOnDrive = client.getFileByPath(remotePath)
-
-            if (fileOnDrive && !fileOnDrive.getTrashed()) {
-                client.delete(fileOnDrive.getId())
-            }
+        if (fileOnDrive && !fileOnDrive.getTrashed()) {
+            parentId = fileOnDrive.getParents().first()
+            client.delete(fileOnDrive.getId())
+        } else {
+            parentId = client.createFolders(FilenameUtils.getPath(remotePath))
         }
 
-        client.uploadFileToParentFolder(FilenameUtils.separatorsToSystem(localPath),
-                client.getFolder(pathToFileDirectory).getId())
+        client.uploadFileToParentFolder(FilenameUtils.separatorsToSystem(localPath), parentId)
     }
 
     /**
@@ -70,7 +69,7 @@ class GoogleDriveCloudService {
     void uploadFiles(String localPath, String remotePath) {
 
         FileHelper.getFiles(FilenameUtils.separatorsToSystem(localPath)).each {
-            uploadFiles(it.path, remotePath + (it.path - localPath))
+            uploadFile(it.path, remotePath + (it.path - localPath))
         }
     }
 }
