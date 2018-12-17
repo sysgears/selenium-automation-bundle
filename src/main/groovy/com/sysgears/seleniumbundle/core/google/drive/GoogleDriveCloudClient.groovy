@@ -69,8 +69,10 @@ class GoogleDriveCloudClient {
      *
      * @param fileId id of a file to be downloaded
      * @param pathToSave path where the file has to be saved locally
+     *
+     * @throws IOException I/O exception
      */
-    void downloadFileById(String fileId, String pathToSave) {
+    void downloadFileById(String fileId, String pathToSave) throws IOException {
 
         def localFile = new java.io.File(pathToSave)
         localFile.getParentFile().mkdirs()
@@ -87,8 +89,10 @@ class GoogleDriveCloudClient {
      *
      * @param pathToFile path to a local file to be uploaded
      * @param parentId id of the parent folder to upload the file to
+     *
+     * @throws IOException I/O exception
      */
-    void uploadFileToParentFolder(String pathToFile, String parentId = null) {
+    void uploadFileToParentFolder(String pathToFile, String parentId = null) throws IOException {
         parentId = parentId ? parentId : getRootFolderId()
         def fileName = new java.io.File(pathToFile).getName()
 
@@ -108,8 +112,10 @@ class GoogleDriveCloudClient {
      * Deletes a file with given fileId.
      *
      * @param fileId id of a file to delete
+     *
+     * @throws IOException I/O exception
      */
-    void delete(String fileId) {
+    void delete(String fileId) throws IOException {
         service.files().delete(fileId).execute()
     }
 
@@ -119,8 +125,10 @@ class GoogleDriveCloudClient {
      * @param path path to a file on Google Drive
      *
      * @return File object
+     *
+     * @throws IOException I/O exception
      */
-    File getFileByPath(String path) {
+    File getFileByPath(String path) throws IOException {
         getAllFilesInFolder(getFolder(FilenameUtils.getPath(path)).getId()).find {
             it.getName() == FilenameUtils.getName(path)
         }
@@ -132,8 +140,10 @@ class GoogleDriveCloudClient {
      * @param fileId id of a file to get path to
      *
      * @return path to file on Drive relatively to Drive root folder
+     *
+     * @throws IOException I/O exception
      */
-    String getPathByFileId(String fileId) {
+    String getPathByFileId(String fileId) throws IOException {
         def file = getFileById(fileId)
         def parent = getParentFor(fileId)
         def closingElement = file.getMimeType() == FOLDER_MIME_TYPE ? java.io.File.separator : ""
@@ -149,8 +159,10 @@ class GoogleDriveCloudClient {
      * @param folderId id of a folder to search for files in
      *
      * @return List of File object
+     *
+     * @throws IOException I/O exception
      */
-    List<File> getAllFilesInFolder(String folderId) {
+    List<File> getAllFilesInFolder(String folderId) throws IOException {
         getFilesByParent(folderId).findResults {
             it.getMimeType() != FOLDER_MIME_TYPE ? it : getAllFilesInFolder(it.getId())
         }?.flatten() as List<File>
@@ -162,8 +174,10 @@ class GoogleDriveCloudClient {
      * @param path path to get the last folder from
      *
      * @return File object of the last folder in the given path
+     *
+     * @throws IOException I/O exception
      */
-    File getFolder(String path) {
+    File getFolder(String path) throws IOException {
         def folderNames = path.split(java.io.File.separator)
         def currentFolderId = getRootFolderId()
 
@@ -182,8 +196,10 @@ class GoogleDriveCloudClient {
      * @param path hierarchy of folders which has to be created
      * @param parentId id of a parent folder, if parent id is not specified, the hierarchy will be created relatively
      * to root folder
+     *
+     * @throws IOException I/O exception
      */
-    String createFolders(String path) {
+    String createFolders(String path) throws IOException {
         def folderNames = path.split(java.io.File.separator)
         def currentFolderId = getRootFolderId()
 
@@ -201,8 +217,10 @@ class GoogleDriveCloudClient {
      * to root folder
      *
      * @return created File object
+     *
+     * @throws IOException I/O exception
      */
-    private File createFolder(String name, String parentId = null) {
+    private File createFolder(String name, String parentId = null) throws IOException {
         File fileMetadata = new File()
                 .setName(name)
                 .setMimeType(FOLDER_MIME_TYPE)
@@ -217,8 +235,10 @@ class GoogleDriveCloudClient {
      * Gets id of root folder of the Drive.
      *
      * @return id of the root folder
+     *
+     * @throws IOException I/O exception
      */
-    private String getRootFolderId() {
+    private String getRootFolderId() throws IOException {
         service.files().get("root").execute().getId()
     }
 
@@ -228,8 +248,10 @@ class GoogleDriveCloudClient {
      * @param fileId id of a file to get
      *
      * @return File object
+     *
+     * @throws IOException I/O exception
      */
-    private File getFileById(String fileId) {
+    private File getFileById(String fileId) throws IOException {
         service.files().get(fileId)
                 .setFields("parents, id, name, kind, mimeType, trashed")
                 .execute()
@@ -242,7 +264,7 @@ class GoogleDriveCloudClient {
      *
      * @return List of Files
      *
-     * @throws IOException
+     * @throws IOException I/O exception
      */
     private List<File> getFilesByParent(String parentId) throws IOException {
         service.files().list()
