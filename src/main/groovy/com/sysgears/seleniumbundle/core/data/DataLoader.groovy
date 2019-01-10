@@ -36,19 +36,17 @@ class DataLoader {
     }
 
     /**
-     * Reads data as map from the .data file.
+     * Reads data as a list from the plain data file, (data in "pipe" separated format).
      *
      * @param filePath path to file
-     * @param pattern regex pattern to split sets of test data in .data file
+     * @param pattern regex pattern to split sets of test data in plain data file
      *
-     * @return String from the .csv file
+     * @return list of string data sets
+     *
+     * @throws FileNotFoundException if the file was not found
      */
-    static Map readMapFromDataFile(String filePath, String pattern) throws FileNotFoundException {
-        (new File(filePath).text =~ /(?<=method:\s{0,2})([^\s].*)\n([\S\s]*?)(?=\n\n|\z)/).with { matcher ->
-            matcher.collect { List dataSet ->
-                [(dataSet[1]): (dataSet[2] as String).split(pattern)]
-            }.collectEntries()
-        }
+    static List readListFromPlainDataFile(String filePath, String pattern) throws FileNotFoundException {
+        new File(filePath).text.split(pattern)
     }
 
     /**

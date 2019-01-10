@@ -14,9 +14,10 @@ browser {
 }
 
 data {
-    csv {
-        setSeparator = "\n"
+    plain {
+        setSeparator = "\n\n"
         delimiter = "\\|" // do not use comma as it is reserved for separating values for List and Map
+        isHeader = true // should be set to true in case plain data files contain header
     }
 }
 

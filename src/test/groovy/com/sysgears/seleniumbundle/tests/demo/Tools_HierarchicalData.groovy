@@ -2,6 +2,7 @@ package com.sysgears.seleniumbundle.tests.demo
 
 import com.sysgears.seleniumbundle.common.FunctionalTest
 import com.sysgears.seleniumbundle.core.data.DataLoader
+import com.sysgears.seleniumbundle.core.data.HierarchicalData
 import com.sysgears.seleniumbundle.core.data.annotations.Find
 import com.sysgears.seleniumbundle.core.data.annotations.Locator
 import com.sysgears.seleniumbundle.core.data.annotations.Query
@@ -13,10 +14,11 @@ import org.testng.annotations.Test
 
 import java.lang.reflect.Method
 
-class Tools extends FunctionalTest {
+class Tools_HierarchicalData extends FunctionalTest {
 
     protected GooglePage googlePage
-    private final static String DATAFILE = "src/test/resources/data/google/test_data.yml"
+    private data = new HierarchicalData(DataLoader.readListFromYml("src/test/resources/data/google/test_data.yml"),
+            this.class).data
 
     @BeforeMethod
     void openApplication() {
@@ -24,8 +26,8 @@ class Tools extends FunctionalTest {
     }
 
     @DataProvider(name = 'getTestData')
-    Object[][] getTestData(Method m) {
-        mapper.map(DataLoader.readListFromYml(DATAFILE), m)
+    Object[][] getTestData(Method method) {
+        data[method.name]
     }
 
     @Test(dataProvider = "getTestData",

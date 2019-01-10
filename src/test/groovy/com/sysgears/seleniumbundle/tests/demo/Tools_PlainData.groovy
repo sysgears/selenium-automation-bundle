@@ -2,6 +2,7 @@ package com.sysgears.seleniumbundle.tests.demo
 
 import com.sysgears.seleniumbundle.common.FunctionalTest
 import com.sysgears.seleniumbundle.core.data.DataLoader
+import com.sysgears.seleniumbundle.core.data.PlainData
 import com.sysgears.seleniumbundle.pagemodel.GooglePage
 import com.sysgears.seleniumbundle.pagemodel.ResultsPage
 import org.testng.annotations.BeforeMethod
@@ -10,10 +11,11 @@ import org.testng.annotations.Test
 
 import java.lang.reflect.Method
 
-class ToolsDemoForCsvData extends FunctionalTest {
+class Tools_PlainData extends FunctionalTest {
 
-    protected GooglePage googlePage
-    private final static String DATAFILE = "src/test/resources/data/google/test_data.csv"
+    private GooglePage googlePage
+    private data = new PlainData(DataLoader.readListFromPlainDataFile("src/test/resources/data/google/test_data.csv",
+            conf.data.plain.setSeparator), this.class).data
 
     @BeforeMethod
     void openApplication() {
@@ -21,8 +23,8 @@ class ToolsDemoForCsvData extends FunctionalTest {
     }
 
     @DataProvider(name = 'getTestDataFromCsv')
-    Object[][] getTestDataFromCsv(Method m) {
-        mapper.mapFromDataFile(DataLoader.readMapFromDataFile(DATAFILE, conf.data.csv.setSeparator), m)
+    Object[][] getTestDataFromCsv(Method method) {
+        data[method.name]
     }
 
     @Test(dataProvider = "getTestDataFromCsv",

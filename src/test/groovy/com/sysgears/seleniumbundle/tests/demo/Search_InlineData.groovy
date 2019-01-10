@@ -6,7 +6,7 @@ import com.sysgears.seleniumbundle.pagemodel.ResultsPage
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
-class Search extends FunctionalTest {
+class Search_InlineData extends FunctionalTest {
 
     protected GooglePage googlePage
 
