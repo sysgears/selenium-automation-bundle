@@ -45,7 +45,7 @@ results in the browser.
 
 ### Java
 
-Install Java 8 or higher.
+Install Java 8.
 
 ### Google Chrome
 
@@ -276,13 +276,6 @@ methods can be used to verify if the app state, stored in MongoDB, was changed a
 Video Recorder is a simple library sometimes necessary to debug tests. When some of your tests fail, it can be quite
 difficult to figure out why that happened. But with Video Recorder, you can record all the dynamic changes that happen
 on the web page during testing. Video Recorder has [a simple API for TestNG] which you may have a look at.
-
-___
-
-## What's Next?
-
-After running the demo tests, you'll want to know _how_ they were created. You can read the [introduction to writing
-tests] with Selenium Automation Bundle and start testing your web application right away.
 
 ___
 
