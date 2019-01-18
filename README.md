@@ -23,7 +23,7 @@ and running automated data-driven tests with Selenide, TestNG, and Allure.
 
 ## Wiki
 
-You can consult the [Wiki] or [`docs`] to know more about writing tests and general use of the bundle. For start, you
+You can consult the [Wiki] or [docs] to know more about writing tests and general use of the bundle. For start, you
 can follow to the documents below:
 
 * [Introduction to Writing Tests with Selenium Automation Bundle]
@@ -293,7 +293,7 @@ Copyright © 2016, 2017 [SysGears INC]. This source code is licensed under the [
 [mit]: LICENSE
 [sysgears inc]: https://sysgears.com
 [wiki]: https://github.com/sysgears/selenium-automation-bundle/wiki
-[`docs`]: https://github.com/sysgears/selenium-automation-bundle/tree/master/docs
+[docs]: https://github.com/sysgears/selenium-automation-bundle/tree/master/docs
 [introduction to writing tests with selenium automation bundle]: https://github.com/sysgears/selenium-automation-bundle/wiki/Intro-to-Writing-Tests
 [detailed guide to writing tests with selenium automation bundle]: https://github.com/sysgears/selenium-automation-bundle/wiki/Guide-to-Writing-Tests
 [Data Driven Testing with Selenium Automation Bundle]: https://github.com/sysgears/selenium-automation-bundle/blob/master/docs/Introduction%20to%20Data%20Driven%20Testing.md
