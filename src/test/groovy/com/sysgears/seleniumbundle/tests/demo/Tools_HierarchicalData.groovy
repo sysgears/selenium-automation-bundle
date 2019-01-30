@@ -31,7 +31,7 @@ class Tools_HierarchicalData extends FunctionalTest {
     }
 
     @Test(dataProvider = "getTestData",
-            description = "Checks that url parameters specified in test data are changed based on chosen category")
+            description = "Checks that the URL parameters specified in test data are changed based on chosen category")
     void checkUrlParameterChanges(
             @Locator("query") String query,
             @Locator("category") String category,
@@ -45,7 +45,7 @@ class Tools_HierarchicalData extends FunctionalTest {
                 .validateUrlParams(params)
     }
 
-    @Test(dataProvider = "getTestData", description = "Checks that specific tools are available for chosen category")
+    @Test(dataProvider = "getTestData", description = "Checks that specific tools are available for a chosen category")
     @Query(@Find(name = "category", value = "News"))
     void checkOptionsForCategories(
             @Locator("query") String query,

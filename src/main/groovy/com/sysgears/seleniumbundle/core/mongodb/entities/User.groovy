@@ -8,12 +8,12 @@ import org.apache.commons.lang3.builder.ToStringStyle
 import org.bson.types.ObjectId
 
 /**
- * User entity to be used with Mongo database.
+ * The User entity to be used with the Mongo database.
  */
 class User {
 
     /**
-     * User id in database.
+     * User ID in the database.
      */
     private ObjectId _id
 
@@ -23,7 +23,7 @@ class User {
     private String emailAddress
 
     /**
-     * Displayed name.
+     * Displayed username.
      */
     private String userNameDisplay
 

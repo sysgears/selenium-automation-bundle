@@ -21,7 +21,7 @@ import static com.sysgears.seleniumbundle.core.webdriver.Driver.getDriverType
 
 /**
  * The main configuration class for tests execution. Sets global properties, initializes WebDriver, configures Selenide,
- * handles common pre-/post-conditions.
+ * and handles common pre- and post-conditions for running tests.
  */
 @Listeners([VideoListener.class])
 class BaseTest implements IEnvironment {
@@ -37,17 +37,17 @@ class BaseTest implements IEnvironment {
     protected BrowserProxy browserProxy
 
     /**
-     *  OS that is used for test execution.
+     * The operating system used for test execution.
      */
     protected String os
 
     /**
-     * Browser name.
+     * Browser.
      */
     protected String browser
 
     /**
-     * Implementation of {@link IEnvironment} interface.
+     * Implementation of the {@link IEnvironment} interface.
      *
      * @return os property
      */
@@ -57,7 +57,7 @@ class BaseTest implements IEnvironment {
     }
 
     /**
-     * Implementation of {@link IEnvironment} interface.
+     * Implementation of the {@link IEnvironment} interface.
      *
      * @return browser property.
      */
@@ -67,20 +67,21 @@ class BaseTest implements IEnvironment {
     }
 
     /**
-     * Sets Selenide global configuration properties. Static configuration of Selenide is thread safe. They are set as a
-     * global parameters per suite before starting parallel threads.
+     * Sets the global configuration parameters for Selenide. They are set per suite before starting
+     * parallel threads. The static Selenide configuration is thread safe by default.
      */
     @BeforeSuite(alwaysRun = true)
     void initSelenideConfiguration() {
         System.setProperty("wdm.targetPath", "${System.getProperty("user.dir")}/src/test/resources/webdrivers")
-        Configuration.baseUrl = conf.baseUrl // sets base url for the application under the test
-        Configuration.screenshots = false // disables screenshot for failed tests
-        Configuration.savePageSource = false // prevents page source saving for failed tests
+        Configuration.baseUrl = conf.baseUrl // sets the base URL for the application under test
+        Configuration.screenshots = false // disables taking screenshots for failed tests
+        Configuration.savePageSource = false // prevents saving the page source for failed tests
     }
 
     /**
-     * Workaround for an issue with method 'click()' in Microsoft Edge. Methods replaces default Selenide command 'click'
-     * with our custom implementation.
+     * Replaces the default Selenide command 'click' with the custom implementation.
+     * The method is implemented as a workaround for the issue with the method 'click()' in
+     * Microsoft Edge.
      */
     @BeforeSuite(alwaysRun = true, dependsOnMethods = "initSelenideConfiguration")
     void customizeSelenideCommands() {
@@ -90,17 +91,17 @@ class BaseTest implements IEnvironment {
     @BeforeClass(alwaysRun = true)
     @Parameters(["platform", "browser"])
     void setupGlobalParameters(@Optional String platform, @Optional String browser) {
-        this.os = platform ?: conf.os // falls back to globally configured value
-        this.browser = browser ?: conf.browser.name // falls back to globally configured value
+        this.os = platform ?: conf.os // falls back to the globally configured value
+        this.browser = browser ?: conf.browser.name // falls back to the globally configured value
     }
 
     /**
-     * Driver initialization is thread safe as it is initialized per thread / class.
+     * Driver initialization is thread safe because it is initialized per thread and class.
      */
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setupGlobalParameters")
     void initSelenideWebDriverRunner() {
 
-        // works only with Chrome, if used with any browser except Chrome it will be ignored
+        // Works only for Chrome. Ignored if used with any other browser.
         browserProxy = new BrowserProxy(new BrowserMobProxyServer())
 
         def driver = !conf.remoteUrl ? DriverInitializer.createDriver(browser, browserProxy.seleniumProxy)
@@ -118,7 +119,7 @@ class BaseTest implements IEnvironment {
     }
 
     /**
-     * Handles test method post-conditions, cleans browser state before the next execution.
+     * Handles test method post-conditions and cleans the browser's state before the next execution.
      */
     @AfterMethod(alwaysRun = true)
     void logout() {

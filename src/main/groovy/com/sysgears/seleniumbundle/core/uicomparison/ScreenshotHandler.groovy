@@ -24,7 +24,7 @@ class ScreenshotHandler {
     private WebDriver driver
 
     /**
-     * Creates an instance of the ScreenshotHandler.
+     * Creates an instance of ScreenshotHandler.
      *
      * @param aShot AShot instance
      * @param driver WebDriver instance
@@ -35,7 +35,7 @@ class ScreenshotHandler {
     }
 
     /**
-     * Captures the screenshot of the page opened in the browser.
+     * Captures a screenshot of the page opened in the browser.
      *
      * @return Screenshot
      */
@@ -44,12 +44,12 @@ class ScreenshotHandler {
     }
 
     /**
-     * Compares baseScreenshot screenshot with new screenshot.
+     * Compares baseline screenshot with the new screenshot.
      *
      * @param baseScreenshot to be compared with
-     * @param newScreenshot screenshot which is made on the moment of comparison
+     * @param newScreenshot taken at the moment of comparison
      *
-     * @return Buffered image with marked discrepancies if there are any
+     * @return Buffered image with marked differences if any
      */
     BufferedImage compare(Screenshot baseScreenshot, Screenshot newScreenshot) {
         ImageDiff diff = new ImageDiffer().makeDiff(baseScreenshot, newScreenshot)

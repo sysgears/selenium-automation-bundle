@@ -7,18 +7,18 @@ import com.sysgears.seleniumbundle.core.utils.PathHelper
 import groovy.util.logging.Slf4j
 
 /**
- * Class which provides the method to update baseline screenshots.
+ * The class that provides the method to update the baseline screenshots.
  */
 @Slf4j
 class UpdateScreenshotsCommand extends AbstractCommand {
 
     /**
-     * Path to root folder of baseline screenshots.
+     * Path to the root folder with the baseline screenshots.
      */
     private String baselinePath
 
     /**
-     * Path to root folder of resulting screenshots.
+     * Path to the root folder of the resulting screenshots.
      */
     private String actualPath
 
@@ -28,8 +28,8 @@ class UpdateScreenshotsCommand extends AbstractCommand {
      * @param arguments map with arguments of the command
      * @param conf project properties
      *
-     * @throws IllegalArgumentException is thrown in case a value is missing for a mandatory parameter or
-     * the value doesn't match the validation pattern
+     * @throws IllegalArgumentException if a value is missing for a mandatory parameter or
+     * the value does not match the validation pattern
      */
     UpdateScreenshotsCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)
@@ -38,7 +38,7 @@ class UpdateScreenshotsCommand extends AbstractCommand {
     }
 
     /**
-     * Executes the command. Moves screenshots from actual to baseline directory.
+     * Executes the command. Moves screenshots from the "actual/" to the "baseline/" directory.
      *
      * @throws IOException if an I/O error occurs
      */
@@ -62,7 +62,7 @@ class UpdateScreenshotsCommand extends AbstractCommand {
             FileHelper.deleteFile("$baselinePath${it}")
         }
 
-        log.info ("Mooving ${actualPaths.size()} screenshots...")
+        log.info ("Moving ${actualPaths.size()} screenshots...")
 
         actualPaths.each {
             FileHelper.moveFile("$actualPath${it}", "$baselinePath${it}")

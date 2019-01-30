@@ -13,12 +13,12 @@ import java.lang.annotation.Target
 @interface Find {
 
     /**
-     * Key for specifying a specific data set.
+     * Key for specifying a concrete data set.
      */
     String name()
 
     /**
-     * Value for specifying a specific data set.
+     * Value for specifying a concrete data set.
      */
     String value()
 }

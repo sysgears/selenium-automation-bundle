@@ -12,12 +12,12 @@ import java.awt.image.BufferedImage
 class ScreenshotLoader {
 
     /**
-     * Saves buffered image to a file of .png format.
+     * Saves buffered image to a file in PNG.
      *
      * @param bufferedImage image to be saved
      * @param path path to save the image
      *
-     * @throws IOException if file write operation has failed due to I/O error
+     * @throws IOException if writing to file failed due to I/O error
      */
     void save(BufferedImage bufferedImage, String path) throws IOException {
         File newImage = new File(path)
@@ -31,13 +31,13 @@ class ScreenshotLoader {
     }
 
     /**
-     * Retrieves buffered image from the file stored in given path.
+     * Retrieves a buffered image from the file located by a given path.
      *
      * @param path path to the file
      *
      * @return buffered image
      *
-     * @throws IOException if file retrieve operation has failed due to I/O error
+     * @throws IOException if retrieving a file has failed due to I/O error
      */
     BufferedImage retrieve(String path) throws IOException {
         try {

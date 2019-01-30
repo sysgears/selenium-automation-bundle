@@ -1,8 +1,8 @@
 package com.sysgears.seleniumbundle.core.uicomparison
 /**
- * Adds methods to perform layout comparison with baseline screenshots.
+ * The trait that adds methods to perform layout comparison using baseline screenshots.
  *
- * @param < T >    particular Page Object type that implements trait is required for chaining methods
+ * @param < T > concrete page object type that implements the trait is required for chaining methods
  */
 trait UIComparison<T> {
 
@@ -17,21 +17,22 @@ trait UIComparison<T> {
     private IEnvironment environment
 
     /**
-     * List of CSS locators for elements which should be excluded from comparison analysis.
+     * List of CSS locators for the elements to be excluded from comparison.
      */
     private List<String> ignoredElements
 
     /**
-     * Compares layout for web page.
+     * Compares the layout of a web page.
      *
      * @param name name of a screenshot
      *
      * @return page object
      *
-     * @throws IOException is thrown if there is no baseline screenshot during comparison or file with ignored
-     * elements wasn't found
-     * @throws AssertionError is thrown if layout of the screenshot doesn't match to the baseline screenshot
-     * @throws IllegalArgumentException is thrown if Application.properties doesn't have any of ui.path properties
+     * @throws IOException if there is no baseline screenshot for comparison or a file with ignored
+     * elements was not found
+     * @throws AssertionError if the layout of the new screenshot does not match the baseline screenshot
+     * @throws IllegalArgumentException if ApplicationProperties.groovy has no "ui.path" properties with
+     * the paths to screenshots
      */
     T compareLayout(String name) throws IOException, AssertionError, IllegalArgumentException {
         AShotService.compareLayout(name)
@@ -39,7 +40,7 @@ trait UIComparison<T> {
     }
 
     /**
-     * Sets test environment.
+     * Sets the test environment.
      *
      * @param environment environment object
      *
@@ -52,9 +53,9 @@ trait UIComparison<T> {
     }
 
     /**
-     * Sets elements which should be excluded from comparison analysis.
+     * Sets the elements that should be excluded from comparison.
      *
-     * @param ignoredElements list of CSS locators for elements which should be excluded from comparison analysis
+     * @param ignoredElements list of CSS locators for the elements to be excluded from comparison
      *
      * @return page object
      */
@@ -65,7 +66,7 @@ trait UIComparison<T> {
     }
 
     /**
-     * Returns AShotService instance, creates if the service is null.
+     * Returns an AShotService instance or creates a new instance of AShotService if the service is null.
      *
      * @return AShot service
      */

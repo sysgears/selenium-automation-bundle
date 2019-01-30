@@ -10,11 +10,11 @@ import org.json.JSONObject
 import org.openqa.selenium.Proxy
 
 /**
- * Initializes and configures the proxy for a browser. Proxy is set between a browser and a server. The proxy is used
- * for capturing network traffic sent and received by specific domain for further analysis. The packets are stored in
- * HAR files.
+ * Initializes and configures the proxy for a browser. The proxy is set between the browser and the server. The proxy
+ * captures the network traffic sent and received by a specific domain for further analysis. The captured packets of
+ * data are stored in HAR files.
  *
- * HAR file - is HTTP Archive which has detailed information about HTTP requests and responses.
+ * HAR file - an HTTP Archive file with detailed information about the HTTP requests and responses.
  */
 class BrowserProxy {
 
@@ -41,7 +41,7 @@ class BrowserProxy {
     /**
      * Creates a new HAR file to log HTTP requests and responses.
      *
-     * @return existing HAR file, or null if none exists or HAR capture was disabled
+     * @return existing HAR file, or null if no file exists or if capturing traffic was disabled
      */
     Har createNewHar() {
         proxyServer.newHar()
@@ -50,17 +50,17 @@ class BrowserProxy {
     /**
      * Gets list of entries from the current HAR object.
      *
-     * @return list of entries from Har object
+     * @return list of entries from an HAR object
      */
     List<HarEntry> getHarEntries() {
         proxyServer.getHar().log.entries
     }
 
     /**
-     * Gets List of HarEntries of the requests which were sent to the given url by the given method.
+     * Gets a list of HarEntries of the requests that were sent to a given URL with an HTTP method.
      *
-     * @param url which the request was sent to
-     * @param method which the request was sent by e.g. GET, POST, etc.
+     * @param url request URL
+     * @param method HTTP method such as GET, POST, and others
      *
      * @return list of found HarEntries
      */
@@ -71,12 +71,12 @@ class BrowserProxy {
     }
 
     /**
-     * Gets List of HarEntries of the requests which were sent to the given url by the given method with the given query
+     * Gets a list of HarEntries of the HTTP requests that were sent to a given URL with the HTTP method and query
      * parameters.
      *
-     * @param url which the request was sent to
+     * @param url request URL
      * @param queryParameters map of parameters
-     * @param method which the request was sent by e.g. GET, POST, etc.
+     * @param method HTTP method such as GET, POST, and others
      *
      * @return list of found HarEntries
      */
@@ -89,12 +89,11 @@ class BrowserProxy {
     }
 
     /**
-     * Gets List of HarEntries of the requests which were sent to the given url by the given method with the given
-     * body parameters.
+     * Gets a list of HarEntries of the requests that were sent to a given URL with HTTP method and body parameters.
      *
-     * @param url which the request was sent to
-     * @param requestBody key-value pairs represented in map
-     * @param method which the request was sent by e.g. GET, POST, etc.
+     * @param url request URL
+     * @param requestBody key-value pairs represented by map
+     * @param method HTTP method such as GET, POST, and others
      *
      * @return list of found HarEntries
      */
@@ -105,10 +104,10 @@ class BrowserProxy {
     }
 
     /**
-     * Gets HarEntry of the last request which was sent to the given url by the given method.
+     * Gets HarEntry of the last request that was sent to a given URL with an HTTP method.
      *
-     * @param url which the request was sent to
-     * @param method which the request was sent by e.g. GET, POST, etc.
+     * @param url request URL
+     * @param method HTTP method such as GET, POST, and others
      *
      * @return last HarEntry from the found list
      */
@@ -117,10 +116,10 @@ class BrowserProxy {
     }
 
     /**
-     * Gets HarResponse of the last request which was sent to the given url by the given method.
+     * Gets HarResponse of the last request that was sent to a given URL with an HTTP method.
      *
-     * @param url which the request was sent to
-     * @param method which the request was sent by e.g. GET, POST, etc.
+     * @param url request URL
+     * @param method HTTP method GET, POST, and others
      *
      * @return HarResponse of the found HTTP request
      */
@@ -135,7 +134,7 @@ class BrowserProxy {
      *
      * @return instance of BrowserMobProxy
      *
-     * @throws IllegalStateException if you try to start already running server
+     * @throws IllegalStateException if you try to start the server that is currently running
      */
     private BrowserMobProxyServer startProxyServer(BrowserMobProxyServer server) throws IllegalStateException {
         server.setTrustAllServers(true)

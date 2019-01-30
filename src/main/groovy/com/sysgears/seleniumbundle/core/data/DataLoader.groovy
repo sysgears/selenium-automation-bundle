@@ -50,7 +50,7 @@ class DataLoader {
     }
 
     /**
-     * Reads raw data from the .yml file.
+     * Reads the raw data from the .yml file.
      *
      * @param filePath path to file
      *
@@ -62,8 +62,8 @@ class DataLoader {
         try {
             new Yaml().load(new File(filePath).newInputStream().text)
         } catch (FileNotFoundException e) {
-            log.error("Could not find data file: $filePath, specify valid path.", e)
-            throw new FileNotFoundException("Could not find data file: $filePath, specify valid path.")
+            log.error("Could not find the data file: $filePath, specify the valid path.", e)
+            throw new FileNotFoundException("Could not find the data file: $filePath, specify the valid path.")
         }
     }
 }

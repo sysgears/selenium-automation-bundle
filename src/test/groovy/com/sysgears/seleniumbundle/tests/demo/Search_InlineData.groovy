@@ -15,7 +15,7 @@ class Search_InlineData extends FunctionalTest {
         googlePage = new GooglePage().open().waitForPageToLoadElements().selectLanguage()
     }
 
-    @Test(description = "Checks number of results on the first page")
+    @Test(description = "Checks the number of results on the first page")
     void checkSearch() {
         googlePage
                 .searchFor("SysGears")

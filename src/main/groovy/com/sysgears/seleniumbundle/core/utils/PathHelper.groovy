@@ -8,7 +8,7 @@ import org.apache.commons.io.FilenameUtils
 class PathHelper {
 
     /**
-     * Converts path to Unix like style.
+     * Converts path to Unix-like style.
      *
      * @param path file path
      *

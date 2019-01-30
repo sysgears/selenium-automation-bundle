@@ -6,10 +6,10 @@ import com.sysgears.seleniumbundle.core.conf.Config
 import groovy.util.logging.Slf4j
 
 /**
- * Main class of the application.
+ * The main class of the bundle.
  * <p>
- * This class is responsible for parsing command line options,
- * as well as executing parsed command with its arguments.
+ * This class is responsible for parsing the command line options
+ * as well as executing parsed commands with the given arguments.
  */
 @Slf4j
 class Main {

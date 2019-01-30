@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
 /**
- * Demonstrates simple use cases of Mongo module.
+ * Demonstrates simple use cases of the MongoDB module in the bundle.
  */
 class MongoExample extends FunctionalTestWithMongo {
 

@@ -8,7 +8,7 @@ import groovy.util.logging.Slf4j
 import org.apache.commons.io.FilenameUtils
 
 /**
- * Class which provides the method to download screenshots from Dropbox.
+ * The class that provides the method to download screenshots from Dropbox.
  */
 @Slf4j
 class DownloadFromDropboxCommand extends AbstractCommand {
@@ -30,8 +30,8 @@ class DownloadFromDropboxCommand extends AbstractCommand {
      * @param arguments map that contains command arguments
      * @param conf project properties
      *
-     * @throws IllegalArgumentException is thrown in case a value is missing for a mandatory parameter or
-     * the value doesn't match the validation pattern
+     * @throws IllegalArgumentException if a value is missing for a mandatory parameter or
+     * the value does not match the validation pattern
      */
     DownloadFromDropboxCommand(Map<String, List<String>> arguments, Config conf) throws IllegalArgumentException {
         super(arguments, conf)
@@ -40,7 +40,7 @@ class DownloadFromDropboxCommand extends AbstractCommand {
     /**
      * Executes the command.
      *
-     * @throws IOException in case Dropbox client operations produced an error
+     * @throws IOException if the Dropbox Client operations produced an error
      */
     @Override
     void execute() throws IOException {

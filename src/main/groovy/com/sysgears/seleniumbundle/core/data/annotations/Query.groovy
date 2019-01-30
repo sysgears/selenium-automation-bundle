@@ -9,7 +9,7 @@ import java.lang.annotation.Target
 
 /**
  * Defines a search query for {@link HierarchicalData} so it could retrieve specific data sets from test data files.
- * Uses {@link Find} as an arguments for specifying key-value pairs as search criteria.
+ * Uses {@link Find} as an argument for specifying key-value pairs as the search criteria.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

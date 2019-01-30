@@ -18,8 +18,9 @@ import org.testng.annotations.Listeners
 class AllureListener implements ITestListener {
 
     /**
-     * Handles post-processing for failed tests, takes screenshots and attaches them to Allure report.
-     * Makes additional check if the listener should be applied to the test.
+     * Handles post-processing for the failed tests, takes screenshots and attaches them
+     * to the Allure report. Additionally verifies if the listener should be applied to
+     * the test.
      *
      * @param result test result
      */
@@ -39,11 +40,11 @@ class AllureListener implements ITestListener {
     }
 
     /**
-     * Checks if the listener is applied globally on the test suite level in the testng.xml file.
+     * Checks if the listener is applied globally on the test suite level in testng.xml.
      *
      * @param result test result
      *
-     * @return true - if testng.xml has this listener in configuration, false - if not
+     * @return true if testng.xml has this listener in configuration; false - if not
      */
     private boolean isListenerAppliedGlobally(ITestResult result) {
         def listeners = result.testContext.currentXmlTest.suite.listeners

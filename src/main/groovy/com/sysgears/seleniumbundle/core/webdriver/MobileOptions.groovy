@@ -1,9 +1,9 @@
 package com.sysgears.seleniumbundle.core.webdriver
 
 /**
- * Defines options for mobile devices which are used for running chrome WebDriver in mobile emulation mode.
- * Enum values are used for gradle task parametrization e.g. gradle test -Ddevice=iPad command will start chrome browser
- * in iPad emulation mode.
+ * Defines options for mobile devices that are used for running Chrome WebDriver in mobile emulation mode.
+ * Enum values are used for parameterize Gradle tasks, for example, the "gradle test -Ddevice=iPad" command will start
+ * Chrome in iPad emulation mode.
  */
 enum MobileOptions {
 
@@ -32,7 +32,7 @@ enum MobileOptions {
     private String displayName
 
     /**
-     * Map of device options required for starting browser in mobile emulation mode.
+     * Map of device options required for starting the browser in mobile emulation mode.
      */
     private chromeOptions
 
