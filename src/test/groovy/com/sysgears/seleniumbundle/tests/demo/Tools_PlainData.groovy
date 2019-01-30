@@ -15,7 +15,7 @@ class Tools_PlainData extends FunctionalTest {
 
     private GooglePage googlePage
     private data = new PlainData(DataLoader.readListFromPlainDataFile("src/test/resources/data/google/test_data.csv",
-            conf.data.plain.setSeparator), this.class).data
+            conf.data.plain.dataSetSeparator), this.class).data
 
     @BeforeMethod
     void openApplication() {

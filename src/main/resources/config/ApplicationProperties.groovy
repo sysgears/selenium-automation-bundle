@@ -15,9 +15,9 @@ browser {
 
 data {
     plain {
-        setSeparator = "\n\n"
+        dataSetSeparator = "\n\n"
         delimiter = "\\|" // do not use comma as it is reserved for separating values for List and Map
-        isHeader = true // should be set to true in case plain data files contain header
+        hasHeader = true // should be set to true in case plain data files contain header
     }
 }
 
