@@ -36,6 +36,20 @@ class DataLoader {
     }
 
     /**
+     * Reads data as a list from the plain data file, (data in "pipe" separated format).
+     *
+     * @param filePath path to file
+     * @param pattern regex pattern to split sets of test data in plain data file
+     *
+     * @return list of string data sets
+     *
+     * @throws FileNotFoundException if the file was not found
+     */
+    static List readListFromPlainDataFile(String filePath, String pattern) throws FileNotFoundException {
+        new File(filePath).text.split(pattern)
+    }
+
+    /**
      * Reads the raw data from the .yml file.
      *
      * @param filePath path to file

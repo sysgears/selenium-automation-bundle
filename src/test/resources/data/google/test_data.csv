@@ -1,0 +1,9 @@
+method: checkUrlParameterChanges
+QUERY                             | CATEGORY | RESULT.URL.PARAMS
+google                            | Images   | [tbm:isch, q:google]
+bing                              | News     | [tbm:nws, q:bing]
+
+method: checkOptionsForCategories
+QUERY                             | CATEGORY | RESULT.PAGE_ELEMENTS.TOOLS
+google                            | Images   | [Size, Color, Usage rights, Type, Time, More tools]
+bing                              | News     | [All news, Recent, Sorted by relevance]

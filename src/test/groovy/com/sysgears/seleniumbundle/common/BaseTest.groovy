@@ -5,7 +5,6 @@ import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.WebDriverRunner
 import com.codeborne.selenide.commands.Commands
 import com.sysgears.seleniumbundle.core.conf.Config
-import com.sysgears.seleniumbundle.core.data.DataMapper
 import com.sysgears.seleniumbundle.core.proxy.BrowserProxy
 import com.sysgears.seleniumbundle.core.selenide.commands.Click
 import com.sysgears.seleniumbundle.core.uicomparison.IEnvironment
@@ -31,11 +30,6 @@ class BaseTest implements IEnvironment {
      * Project properties.
      */
     protected Config conf = Config.instance
-
-    /**
-     * Test data mapper, responsible for preparing test data for TestNG data providers.
-     */
-    protected DataMapper mapper = new DataMapper()
 
     /**
      * Instance of BrowserProxy.

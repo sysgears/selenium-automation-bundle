@@ -1,6 +1,6 @@
 package com.sysgears.seleniumbundle.core.data.annotations
 
-import com.sysgears.seleniumbundle.core.data.DataMapper
+import com.sysgears.seleniumbundle.core.data.HierarchicalData
 
 import java.lang.annotation.ElementType
 import java.lang.annotation.Retention
@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
 /**
- * Defines a search query for {@link DataMapper} so it could retrieve specific data sets from test data files.
+ * Defines a search query for {@link HierarchicalData} so it could retrieve specific data sets from test data files.
  * Uses {@link Find} as an argument for specifying key-value pairs as the search criteria.
  */
 @Target(ElementType.METHOD)

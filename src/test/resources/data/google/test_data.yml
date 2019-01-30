@@ -5,6 +5,14 @@
       params:
         tbm: isch
         q: google
+    page_elements:
+      tools:
+        - Size
+        - Color
+        - Usage rights
+        - Type
+        - Time
+        - More tools
 
 - query: bing
   category: News

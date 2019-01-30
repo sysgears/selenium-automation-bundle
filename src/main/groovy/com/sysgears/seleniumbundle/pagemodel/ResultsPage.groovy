@@ -53,7 +53,7 @@ class ResultsPage extends AbstractPage<ResultsPage> implements UIComparison<Resu
     ResultsPage validateUrlParams(Map params) {
         def url = WebDriverRunner.url()
         def result = params.every { k, v ->
-            v ? url.contains("$k=$v") : !url.contains("$k")
+            url.contains("$k=$v")
         }
 
         Assert.assertTrue(result, "Query '$params' were not found in url.")
