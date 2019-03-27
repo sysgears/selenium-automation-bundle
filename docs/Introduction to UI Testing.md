@@ -69,10 +69,7 @@ with the command `./gradlew downloadAllure allureServe`. Learn more about report
 
 An Allure report with the UI tests:
 
-<p align="center">
-    <img src="./images/selenium-automation-bundle-demo-ui-test-baseline-mode.png"
-         alt="Selenium Automation Bundle - report with screenshots after running first UI test in baseline mode" />
-</p>
+![Selenium Automation Bundle - report with screenshots after running first UI test in baseline mode](https://user-images.githubusercontent.com/21691607/54425070-17c63480-471d-11e9-82a6-c17c57e0dce0.png)
 
 ### Run the UI Test with UI Comparison
 
@@ -124,10 +121,7 @@ You can now generate a report to view the screenshots of the test. Run:
 
 You default browser will open with the report. You can open the Suites tab and navigate to the test that failed:
 
-<p align="center">
-    <img src="./images/selenium-automation-bundle-demo-ui-test-screenshots-dont-match.png"
-         alt="Selenium Automation Bundle - Failed UI test, screenshots don't match" />
-</p>
+![Selenium Automation Bundle - Failed UI test, screenshots don't match](https://user-images.githubusercontent.com/21691607/54425095-29a7d780-471d-11e9-87be-3b649b74e137.png)
 
 Again, if you want to see the demo UI test code with an explanation how UI testing works, consult the [detailed UI
 testing guide].
