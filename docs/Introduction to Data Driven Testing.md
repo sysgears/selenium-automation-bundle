@@ -1,219 +1,101 @@
 # Data Driven Testing with Selenium Automation Bundle
 
-Selenium Automation Bundle embraces the [Data Driven Testing] (DDT) pattern to help you manage large sets of test data 
-that you use in your tests. With YAML files and our `data` module, you get a simple way to retrieve test data in your 
-data-driven tests.
+Selenium Automation Bundle embraces the Data Driven Testing (DDT) pattern and lets you separate test data from test classes and store data in a table- or tree-like structure while giving a convenient way to access it.
 
-In this simple guide, you're going to run a demo data-driven test to just get your feet wet.
+In this introduction guide, we show a couple of demo tests to get your feet wet with Data Driven Testing. But first, we have a look at the DDT approach in general to ensure that we're in the same boat.
 
-## Selenium Automation Bundle Mechanism for Data Driven Testing
+## What's Data Driven Testing?
 
-Our mechanism for writing data-driven tests is built around the TestNG the [Data Providers]. Armed with the power of
-Data Providers and our custom classes and annotations, you can easily retrieve data from YAML files in your tests.
+Imagine that you need to test an ecommerce website. The website supports two currencies &mdash; dollar and euro; offers
+three types of discounts &mdash; 5%, 10%, and 15%; and provides nine product groups (we leave them to your imagination). 
 
-Here are the classes and annotations that we've developed for DDT:
+Overall, you get 54 combinations &mdash; 2 currencies * 3 discount types * 9 product groups &mdash; and you need to test your application with each of them to find out whether the amounts to be paid are calculated correctly. Therefore, you have to create individual test objects with the properties `currency`, `discount`, and `productGroup` and various values for those properties for each combination.
 
-* `DataLoader`, the class that loads test data from YAML files
-* `DataMapper`, the class that transforms loaded data to a `Map` or `List`
-* `Locator`, `@Find`, and `@Query`, the annotations for building data queries
+This is what Data Driven Testing is about: We use _dozens_ of objects with different data to feed them to a _single_ test case. In DDT, the **test data** rather than the test scenarios helps to find defects in software applications. When testing our applications using large sets of data, we can understand how the application handles different user inputs and what outputs it gives for those inputs.
 
-We'll have a closer look at these components of the `data` module in a later section. For now, you can run your first
-data-driven test with Selenium Automation Bundle.
+But DDT also comes with a problem: How should we store and manage test data?
 
-## Running a Data Driven Test
+### How to manage test data for data-driven tests
 
-Selenium Automation Bundle provides a demo data-driven test `Tools`. To run this test, first replace the default TestNG 
-configuration with the configuration below (look for `testng.xml` file in `src/test/resources`):
+You may not want to flood your tests with test data even if you're a strong adherent of the Keep It Simple, Stupid principle. If you do hardcode data in test classes, then whenever you decide to change a property in an object, you'll spend time changing the same property in _other_ tests that use the same object. And if your test objects are complex, meaning they include other objects, managing them becomes a yet harder challenge.
+
+Overall, handling test data scattered across dozens of files isn't the best approach to Data Driven Testing.
+
+What if you had all the sets of data stored in CSV or YAML files easily accessible from your tests? Selenium Automation Bundle helps you achieve that by separating test data from test classes and arranging it in a readable way.
+
+## Selenium Automation Bundle mechanism for Data Driven Testing
+
+Our mechanism for writing data-driven tests is built of a few custom classes and annotations powered by Data Providers, 
+a TestNG facility to request data in test classes.
+
+Here are the classes and annotations that form our DDT mechanism:
+
+* `DataLoader`, a simple class that gets data from CSV and YAML files
+* `PlainData`, a class that transforms CSV data to a `Map` or `List`
+* `HierarchicalData`, a class that transforms YAML data to a `Map` or `List`
+* `@Locator`, `@Find`, and `@Query` annotations for building queries for YAML data
+
+You can find out more about the listed classes and annotations in a dedicated guide:
+
+* [Data Module for Data Driven Tests]
+
+## Data Driven Testing in action
+
+Selenium Automation Bundle comes a couple of demo data-driven tests that verify the same thing &mdash; the existence of certain parameters in the URL returned after a search request was sent to Google.
+
+Here are the test classes and data files we created to demo DDT with our bundle:
+
+* `src/test/groovy/.../tests/demo/Tools_PlainData.groovy`, the test class that gets data from CSV
+* `src/test/groovy/.../tests/demo/Tools_HierarchicalData.groovy`, the test class that uses data from YAML
+* `src/test/resources/data/google/test_data.csv`, the test data in the CSV-like format
+* `src/test/resources/data/google/test_data.yml`, the test data in the YAML format
+
+Both `Tools_PlainData` and `Tools_HierarchicalData` open the Google search page, send a request using data from `test_data.csv` or `test_data.yml` data files respectively, and verify that the URL of the returned page has the parameters specified in those data files.
+
+The two approaches to managing test data are suitable for different situations but aim to fulfill the same tasks:
+
+* Provide a convenient method to structure data
+* Make it simple to retrieve data in test classes
+* Ensure great readability and manageability of data
+
+In the dedicated guides, [Data Driven Tests with CSV Files] and [Data Driven Tests with YAML Files], we explain the advantages and disadvantages of storing and handling test data in CSV and YAML files. The key idea is that these two approaches aren't reciprocally exclusive: You can mix them depending on the needs of your application to handle particular testing scenarios in the best possible way.
+
+To run the demo data-driven tests, first change the default TestNG configuration in the `src/test/resources/testng.xml`
+file. Use the configuration below:
 
 ```xml
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Suite">
-    <test name="Demo Data Driven Test">
+    <test name="Data Driven Testing with Selenium Automation Bundle">
         <classes>
-            <class name="com.sysgears.seleniumbundle.tests.demo.Tools"/>
+            <class name="com.sysgears.seleniumbundle.tests.demo.Tools_HierarchicalData"/>
+            <class name="com.sysgears.seleniumbundle.tests.demo.Tools_PlainData"/>
         </classes>
     </test>
 </suite>
 ```
 
-Now you can run the test using the following command:
+Now, run the tests and open a report in a browser using the command below:
 
 ```bash
 ./gradlew clean test allureServe
 ```
 
-**NOTE**: If you see the error `Cannot find allure commandline` after the test was run, you need to download Allure and
-generate the report with the command `./gradlew downloadAllure allureServe`. Learn more about report generation in
-[Reporting].
+> **NOTE**: If you see the error `Cannot find allure commandline` after the test were executed, download and run the
+Allure reporter with `./gradlew downloadAllure allureServe`. Your default browser will automatically open the report.
+You can learn more about reporting with Selenium Automation Bundle in the [Reporting] guide.
 
-Once the test is completed, your default browser will open the report:
+Once the test execution is completed, you'll a report similar to this:
 
-<p align="center">
-  <img src="./images/selenium-automation-bundle-data-driven-test-example.png"
-       alt="Selenium Automation Bundle - Data Driven Test" />
-</p>
+![Selenium Automation Bundle Data Driven Test Report Example](https://user-images.githubusercontent.com/21691607/54425135-3debd480-471d-11e9-95c2-dbe674ff694c.png)
 
-The demo example that you've just run is based on the following files:
+For now, it's only clear what the test classes _do_, not how they _work_. Other than viewing the code, you can check out these two guides with detailed explanations of the demo data driven tests:
 
-* `src/test/groovy/.../tests/demo/Tools.groovy`, the test class
-* `src/test/resources/data/google/test_data.yml`, the test data
+* [Data Driven Tests with CSV Files]
+* [Data Driven Tests with YAML Files]
 
-In the following section, we'll briefly review how the demo data-driven test works. If you need a detailed explanation,
-you can follow to [Data Driven Testing in Action].
-
-## Demo Test Class for Data Driven Testing
-
-The data-driven test `Tools`, shown below, demonstrates the use of DDT in Selenium Automation Bundle:
-
-```groovy
-package com.sysgears.seleniumbundle.tests.demo
-
-import com.sysgears.seleniumbundle.common.FunctionalTest
-import com.sysgears.seleniumbundle.core.data.DataLoader
-import com.sysgears.seleniumbundle.core.data.annotations.Locator
-import com.sysgears.seleniumbundle.pagemodel.GooglePage
-import com.sysgears.seleniumbundle.pagemodel.ResultsPage
-
-import org.testng.annotations.BeforeMethod
-import org.testng.annotations.DataProvider
-import org.testng.annotations.Test
-
-import java.lang.reflect.Method
-
-class Tools extends FunctionalTest {
-    /**
-     * Declare the page object.
-     */
-    protected GooglePage googlePage
-
-    /**
-     * Declare and initialize DATAFILE.
-     */
-    private final static String DATAFILE = "src/test/resources/data/google/test_data.yml"
-
-    /**
-     * Instantiate the page object before each test method.
-     */
-    @BeforeMethod
-    void openApplication() {
-        googlePage = new GooglePage().open().waitForPageToLoadElements().selectLanguage()
-    }
-    
-    /**
-     * Create a Data Provider method that will get data from YAML and map them to test methods.
-     *
-     * Use the TestNG Data Provider mechanism - the @DataProvider annotation, and return
-     * Object[][], a two-dimensional array.
-     *
-     * Pass the test method to Data Provider method as argument Method m.
-     *
-     * In the Data Provider method body use mapper - a DataMapper instance - to map data
-     * from a Yaml file. The DataMapper instance is automatically created.
-     *
-     * Retrieve data using mapper.map() method. Use DataLoader static method readListFromYml()
-     * to transform data to List.
-     */
-    @DataProvider(name = 'getTestData')
-    Object[][] getTestData(Method m) {
-        mapper.map(DataLoader.readListFromYml(DATAFILE), m)
-    }
-
-    @Test(dataProvider = "getTestData",
-          description = "Checks that url parameters specified in test data are changed based on chosen category")
-    void checkUrlParameterChanges(
-            @Locator("query") String query,
-            @Locator("category") String category,
-            @Locator("result.url.params") Map params) {
-
-        googlePage
-                .searchFor(query)
-
-        new ResultsPage()
-                .waitForPageToLoadElements() // waits until the page is fully loaded
-                .selectCategory(category) // selects the category by clicking a link
-                .validateUrlParams(params) // compares URL params to data from test_data.yml
-    }
-    // other code is omitted
-}
-```
-
-Let's review how the class works:
-
-1. The class declares and initializes the `test_data.yml` file to be used in test.
-
-2. The class creates `getTestData()`, which is a TestNG Data Provider. `getTestData()` uses `DataLoader` to first read
-test data from a file, and then to map test data using `mapper`, an instance of `DataMapper`.
-
-> `mapper` is available through the `BaseTest` test class. `BaseTest` is extended by `FunctionalTest` that your actual
-> test class should inherit.
-
-3. The test method `checkUrlParameterChanges()` is annotated with `@Test` that sets `dataProvider` to `getTestData()`.
-
-4. `checkUrlParameterChanges()` accepts three parameters &ndash; `query`, `category`, and `params`, each of which is
-with annotated `@Locator()`, which contains the string queries for necessary data from the YAML file.
-
-In other words, your YAML file must have a list that starts with the string `query`, which points to the actual data
-you'll need in your test. This data through `@Locator` will be mapped to the parameter `String query` in
-`checkUrlParameterChanges()`. Eventually, you can use this `query` parameter in your test.
-
-In order to complete the overall picture, it's worth looking at the demo YAML file
-`src/test/resources/data/google/test_data.yml`. Here's its excerpt:
-
-```yml
-- query: google
-  category: Images
-  result:
-    url:
-      params:
-        tbm: isch
-        q: google
-```
-
-Notice that `@Locator(`query`)` grabs the `query` request in YAML file and maps the `google` value to the `query`
-parameter in the test class.
-
-With all that information, the test works like this when executed:
-
-1. A `GooglePage` instance is created. The method `searchFor()` is called with the parameter `query`, which references
-the value requested by `@Locator('query')`.
-
-2. `query` in annotation points to `google` and is retrieved by the Data Provider `getTestData()` from `test_data.yml`.
-(Yes, our demo test searches for `google` using Google).
-
-3. Once the request `google` is sent, the browser shows the search results page. Therefore, the test instantiates the 
-`ResultsPage` page object.
-
-4. The `resultsPage` instance runs the actual test.
-
-    * It first waits until the page is fully loaded using `waitForPageToLoadElements()`.
-    * Then, `selectCategory()` is called with the `category` parameter, which stores the value retrieved by
-      `@Locator('category')`. The value for `category` is `Images`, as you can see in `test_data.yml`. In other words,
-      once the results page for the request `google` is loaded, Selenide clicks on the link `Images` to open the images
-      results for the `google` search request.
-    * Finally, the `validateUrlParams()` is called with the `params` value from `test_data.yml`.
-
-To explain better the last step in the fourth point, we should take a look at the URL for the results page:
-
-google.com/search?**_q=google_**&source=lnms&**_tbm=isch_**&sa=X&ved=0ahUKEwiekPniiP_dAhXBlYsKHau7CeIQ_AUIDigB&biw=1174&bih=588
-
-You can see the parameters in the URL such as `q` and `tbm`. The `validateUrlParams()` simply compares the parameters'
-values taken from the URL to the values stored in `test_data.yml` file. If you get back to `test_data.yml`, you'll 
-see the properties `result.url.params.q` and `result.url.params.tbm` store the values `google` and `isch` respectively.
-
-Because the values for the parameters `q` and `tbm` are identical in the URL and `test_data.yml`, this data driven test 
-will pass successfully.
-
-___
-
-In a real application, when your application uses complex objects, it's easy to mimic the object structure in a YAML 
-file and retrieve various object properties in your tests thanks to the bundle's `data` module.
-
-We've only scratched the surface of the Data Driven Testing approach in Selenium Automation Bundle. If you want to know
-more, follow to [Data Driven Testing in Action].
-
-[data driven testing]: https://en.wikipedia.org/wiki/Data-driven_testing
-[data providers]: http://testng.org/doc/documentation-main.html#parameters-dataproviders
-[reporting]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Reporting.md
-[data driven testing in action]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/Data%20Driven%20Testing/Data%20Driven%20Testing%20in%20Action.md
-[creating test classes]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/advanced/Writing%20Tests.md#general-considerations-before-writing-tests
+[data module for data driven tests]: https://github.com/sysgears/selenium-automation-bundle/blob/master/docs/fundamentals/Data%20Driven%20Testing/Data%20Module%20for%20Data-Driven%20Tests.md
+[reporting]: https://github.com/sysgears/selenium-automation-bundle/blob/master/docs/fundamentals/Reporting.md
+[data driven tests with csv files]: https://github.com/sysgears/selenium-automation-bundle/blob/master/docs/fundamentals/Data%20Driven%20Testing/Data%20Driven%20Tests%20with%20CSV.md
+[data driven tests with yaml files]: https://github.com/sysgears/selenium-automation-bundle/blob/master/docs/fundamentals/Data%20Driven%20Testing/Data%20Driven%20Tests%20with%20YAML.md 
