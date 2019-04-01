@@ -47,12 +47,15 @@ Here are the test classes and data files we created to demo DDT with our bundle:
 
 * `src/test/groovy/.../tests/demo/Tools_PlainData.groovy`, the test class that gets data from CSV
 * `src/test/groovy/.../tests/demo/Tools_HierarchicalData.groovy`, the test class that uses data from YAML
-* `src/test/resources/data/google/test_data.csv`, the test data in the CSV-like format
-* `src/test/resources/data/google/test_data.yml`, the test data in the YAML format
 
 Both `Tools_PlainData` and `Tools_HierarchicalData` open the Google search page, send a request using data from `test_data.csv` or `test_data.yml` data files respectively, and verify that the URL of the returned page has the parameters specified in those data files.
 
-The two approaches to managing test data are suitable for different situations but aim to fulfill the same tasks:
+In our bundle, we follow this approach to creating test data files: We create an individual data file per test file and store all the files under the `src/test/resources/data` folder. So here are the two data files for the aforementioned demo tests:
+
+* `src/test/resources/data/google/test_data.csv`, the test data in the CSV-like format
+* `src/test/resources/data/google/test_data.yml`, the test data in the YAML format
+
+The formats to managing test data are suitable for different situations but aim to fulfill the same tasks:
 
 * Provide a convenient method to structure data
 * Make it simple to retrieve data in test classes
