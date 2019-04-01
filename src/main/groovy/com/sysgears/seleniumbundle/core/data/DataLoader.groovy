@@ -10,7 +10,7 @@ import org.yaml.snakeyaml.Yaml
 class DataLoader {
 
     /**
-     * Reads a map from the .yml file.
+     * Reads a map from a .yml file.
      *
      * @param file path to the .yml file
      *
@@ -23,7 +23,7 @@ class DataLoader {
     }
 
     /**
-     * Reads a list from the .yml file.
+     * Reads a list from a .yml file.
      *
      * @param file path to the file
      *
@@ -36,7 +36,7 @@ class DataLoader {
     }
 
     /**
-     * Reads data as a list from the plain data file, (data in "pipe" separated format).
+     * Reads data as a list from a plain data file (data in the pipe-separated format).
      *
      * @param filePath path to file
      * @param pattern regex pattern to split sets of test data in plain data file
@@ -50,9 +50,9 @@ class DataLoader {
     }
 
     /**
-     * Reads the raw data from the .yml file.
+     * Reads the raw data from a .yml file.
      *
-     * @param filePath path to file
+     * @param filePath a path to a file
      *
      * @return data from the .yml file that can be casted to specific type
      *
@@ -62,8 +62,8 @@ class DataLoader {
         try {
             new Yaml().load(new File(filePath).newInputStream().text)
         } catch (FileNotFoundException e) {
-            log.error("Could not find the data file: $filePath, specify the valid path.", e)
-            throw new FileNotFoundException("Could not find the data file: $filePath, specify the valid path.")
+            log.error("Could not find the data file: $filePath, specify a valid path.", e)
+            throw new FileNotFoundException("Could not find the data file: $filePath, specify a valid path.")
         }
     }
 }

@@ -28,7 +28,7 @@ class Tools_PlainData extends FunctionalTest {
     }
 
     @Test(dataProvider = "getTestDataFromCsv",
-            description = "Checks that url parameters specified in test data are changed based on chosen category")
+          description = "Checks that url parameters specified in test data are changed based on chosen category")
     void checkUrlParameterChanges(String query, String category, Map params) {
         googlePage
                 .searchFor(query)
@@ -39,7 +39,8 @@ class Tools_PlainData extends FunctionalTest {
                 .validateUrlParams(params)
     }
 
-    @Test(dataProvider = "getTestDataFromCsv", description = "Checks that specific tools are available for chosen category")
+    @Test(dataProvider = "getTestDataFromCsv",
+          description = "Checks that specific tools are available for the selected category")
     void checkOptionsForCategories(String query, String category, List tools) {
         googlePage
                 .searchFor(query)

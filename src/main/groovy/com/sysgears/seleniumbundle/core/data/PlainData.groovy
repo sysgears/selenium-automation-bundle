@@ -3,22 +3,23 @@ package com.sysgears.seleniumbundle.core.data
 import java.lang.reflect.Method
 
 /**
- * Represents plain data retrieved from plain data files
+ * Represents plain data retrieved from plain data files.
  */
 class PlainData extends AbstractTestData {
 
     /**
-     * Instantiates plain data object
+     * Instantiates a plain data object
      *
-     * @param rawData plain data retrieved from PlainData file (pipe separated format)
-     * @param clazz test class that contains meta information (annotations on methods) for getting test data
+     * @param rawData plain data retrieved from a PlainData file in pipe-separated format
+     * @param clazz a test class that contains meta information (annotations on methods) to get test data
      */
     PlainData(List rawData, Class clazz) {
         super(rawData, clazz)
     }
 
     /**
-     * Finds sub-sets of test data required for a test method execution from the given list of strings in a pipe separated format.
+     * Finds subsets of test data required for a test method execution from the given list of strings in a pipe
+     * separated format.
      * Uses "|" pipe delimiter for separating values and "new line" for separating rows.
      * Removes header if data.plain.hasHeader option in Application.properties is set to true
      *
@@ -40,7 +41,7 @@ class PlainData extends AbstractTestData {
     }
 
     /**
-     * Parses string value to list or map depending on syntax format used in plain data file
+     * Parses string value to list or map depending on the syntax format used in plain data file
      * e.g. [1,2,3] or [a:1, b:2, c:3].
      *
      * @param value string value to be parsed
