@@ -21,7 +21,7 @@ abstract class AbstractTestData {
     protected Map<String, Object[][]> data
 
     /**
-     * Creates new Test Data instance
+     * Creates a new Test Data instance.
      *
      * @param rawData raw test data retrieved from data files
      * @param clazz test class that contains test methods to be run

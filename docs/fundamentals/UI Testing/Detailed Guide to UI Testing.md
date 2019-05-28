@@ -172,10 +172,7 @@ layout with the new logo.
 Then, the bundle will use the [aShot] library to compare the actual and baseline screenshots. And because there are the
 logos are different, this test will fail, and you'll see three attached screenshots in the report:
 
-<p align=center>
-    <img src="../../images/selenium-automation-bundle-demo-ui-test-screenshots-dont-match.png"
-    alt="Selenium Automation Bundle -- Demo UI Test with failed screenshot" />
-</p>
+![Selenium Automation Bundle -- Demo UI Test with failed screenshot](https://user-images.githubusercontent.com/21691607/54425095-29a7d780-471d-11e9-87be-3b649b74e137.png)
 
 [introduction to ui testing]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/Introduction%20to%20UI%20Testing.md
 [soft assertions]: https://github.com/sysgears/selenium-automation-bundle/blob/docs/docs/fundamentals/UI%20Testing/Soft%20Assertions.md

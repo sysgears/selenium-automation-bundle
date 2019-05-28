@@ -55,10 +55,7 @@ layouts.
 Also note that if you don't create the baseline screenshots before running UI tests for comparison, the tests that run
 `compareLayout()` will fail. See the screenshot below:
 
-<p align="center">
-    <img src="../../images/selenium-automation-bundle-failed-ui-test-no-baseline-screenshot.png"
-         alt="Selenium Automation Bundle UI Testing - Failed Test" />
-</p>
+![Selenium Automation Bundle UI Testing - Failed Test](https://user-images.githubusercontent.com/21691607/54425106-31677c00-471d-11e9-876e-c496a178d126.png)
 
 ## Running the UI Tests in Baseline Mode
 

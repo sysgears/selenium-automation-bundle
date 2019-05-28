@@ -170,9 +170,7 @@ with the command `./gradlew downloadAllure allureServe`. Learn more about report
 As you can see in the screenshot below, the test that didn't ignore the StarWars animation has failed (the StarWars logo
 is yellow, but the bundle marked the changed parts in red):
 
-<p align="center">
-    <img src="../../images/selenium-automation-bundle-failed-ui-test-without-ignoring-starwars-animation.png" />
-</p>
+![Selenium Automation Bundle failed UI test without ignoring the StarWars animation](https://user-images.githubusercontent.com/21691607/54425123-388e8a00-471d-11e9-9d41-5c293b21dd7e.png)
 
 [ui comparison]: https://github.com/sysgears/selenium-automation-bundle/blob/master/docs/UI_Testing/UI_Comparison_Module.mdn
 [general recommendations on creating ui test classes]: https://github.com/sysgears/selenium-automation-bundle/blob/master/docs/advanced/UI_Testing/General-Concept-and-Testing-Flow.md#General-Considerations-for-Writing-Test-Classes-for-UI-Tests.m

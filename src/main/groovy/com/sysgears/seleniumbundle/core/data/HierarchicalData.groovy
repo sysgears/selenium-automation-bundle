@@ -11,25 +11,25 @@ import groovy.util.logging.Slf4j
 import java.lang.reflect.Method
 
 /**
- * Represents hierarchical data retrieved from .yml files
+ * Represents hierarchical data retrieved from .yml files.
  */
 @Slf4j
 class HierarchicalData extends AbstractTestData {
 
     /**
-     * Instantiates hierarchical data object
+     * Instantiates a hierarchical data object.
      *
-     * @param rawData raw data retrieved from .yml file
-     * @param clazz test class that contains meta information (annotations on methods) for getting test data
+     * @param rawData raw data retrieved from a .yml file
+     * @param clazz a test class that contains meta information (annotations on methods) for getting test data
      */
     HierarchicalData(List rawData, Class clazz) {
         super(rawData, clazz)
     }
 
     /**
-     * Finds sub-sets of test data required for test method execution from the given test data collection by using
-     * the {@link Query} and {@link Find} annotations defined on the method, identifies specific data entries in the sub-sets
-     * by {@link Locator}. Returns selected data entries as Object[][].
+     * Finds subsets of test data required for test method execution from the given test data collection by using
+     * the {@link Query} and {@link Find} annotations defined on the method, identifies specific data entries in the
+     * sub-sets by {@link Locator}. Returns selected data entries as Object[][].
      *
      * @param data structured test data
      * @param method method which uses TestNG Data Provider
